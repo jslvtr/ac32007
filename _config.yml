@@ -9,7 +9,7 @@ permalink:	/blog/:title
 title:		Thinny
 tagline:	'blog'
 description:	'My personal blog.'
-url:		http://camporez.com
+url:		http://jslvtr.github.io/ac32007
 
 author:
   name:		'Ian Camporez Brunelli'
@@ -37,14 +37,14 @@ social:
   - icon:	feed
     url:	http://camporez.com/atom.xml
     desc:	Subscribe to my feed
-    
+
 menu:
   - title:	Home
-    url:	/
-    
+    url:	http://jslvtr.github.io/ac32007/
+
   - title:	About
-    url:	/about
-    
+    url:	http://jslvtr.github.io/ac32007/about
+
 copyright:
   author:	Camporez
   url:		http://camporez.com

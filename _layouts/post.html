@@ -1,92 +1,46 @@
 ---
 layout: default
-disqus: false
-archive: false
-post_class: post-template
+article: true
 ---
 
-<header class="main-header post-head {% if page.cover %}" style="background-image: url({{ page.cover }}) {%else%}no-cover{% endif %}">
-    <nav class="main-nav {% if page.cover %} overlay {% endif %} clearfix">
-        <a class="back-button icon-arrow-left" href="{{ site.baseurl }}">Home</a>
-        <a class="subscribe-button icon-feed" href="{{ site.baseurl }}rss.xml">Subscribe</a>
-    </nav>
+<header class="{% if page.dark %}dark{% else %}clean{% endif %}" style="background-image: url({% if page.image %}{{ page.image }}{% else %}{{ site.cover }}{% endif %});{% if page.background_position %} background-position: {{ page.background_position }};{% endif %}height: 100%;">
+	{% if page.video %}
+		<video id="bg-video" preload="auto" autoplay="true" loop="loop" muted="muted" volume="0">
+			{% if page.video_webm %}<source src="{{ page.video_webm }}" type="video/webm">{% endif %}
+			{% if page.video_ogv %}<source src="{{ page.video_ogv }}" type="video/ogg ogv">{% endif %}
+			{% if page.video_mp4 %}<source src="{{ page.video_mp4 }}" type="video/mp4">{% endif %}
+		</video>
+	{% endif %}
+	{% include top.html %}
+	<div id="post-info">
+		<h1>{{ page.title }}</h1>
+		{% if page.quote %}
+			<h2>{{ page.quote }}</h2>
+		{% endif %}
+		<a class="site-title" href="{{ site.url }}"><img src="{{ site.icon }}" class="site-icon-small">{{ site.title }}</a>, in {{ page.date | date_to_long_string }}
+	</div>
+	<div id="nav-icon" style="bottom: 60px;">
+		<a class="scroll" data-speed="1000" href="#article"><span class="genericon genericon-expand"></span></a>
+	</div>
 </header>
-
-<main class="content" role="main">
-
-    <article class="post">
-
-        <header class="post-header">
-            <h1 class="post-title">{{ page.title }}</h1>
-            <section class="post-meta">                
-                <time class="post-date" datetime="{{ page.date | date:"%Y-%m-%d" }}">{{ page.date | date_to_string }}</time>
-                {% if page.categories.size > 0 %} 
-                    {{ page.categories | array_to_sentence_string | prepend: 'on ' }} 
-                {% endif %}
-            </section>
-        </header>
-
-<!--         <header class="post-header">
-            <a id="blog-logo" href="{{site.url}}">
-                {% if site.logo %}
-                    <img src="{{site.logo}}" alt="{{ site.name }}" />
-                {% else %}
-                    <span class="blog-title">{{ site.name }}</span>
-                {%endif%} 
-            </a>
-        </header> -->
-        
-        <!-- <span class="post-meta">
-            <time datetime="{{ page.date | date:"%Y-%m-%d" }}">{{ page.date | date_to_string }}</time>
-            {% if page.categories.size > 0 %} 
-                {{ page.categories | array_to_sentence_string | prepend: 'on ' }} 
-            {% endif %}
-        </span> -->
-
-        <!-- <h1 class="post-title">{{ page.title }}</h1> -->
-
-        <section class="post-content">
-            {{content}}
-        </section>
-
-        {% if page.archive %}
-        <section class="archive">
-            <h5>Archive</h5>
-            <ul>
-                {% for post in site.posts %}
-                    <li><span>{{ post.date | date_to_string }}</span>  <a href="{{ post.url }}">{{ post.title }}</a></li>
-                {% endfor %}    
-            </ul>
-        </section>
-        {% endif %}
-
-        <footer class="post-footer">
-            <!-- If we want to display author's name and bio -->
-            {% if site.author %}
-                <figure class="author-image">
-                    <a class="img" href="{{ site.baseurl }}" style="background-image: url(/assets/images/profile.png)">
-                    <span class="hidden">{{site.author}}'s Picture</span></a>
-                </figure>
-                <section class="author">
-                    <!-- Author Name -->
-                    <h4> {{ site.author }} </h4>
-                    <!-- Author Bio -->
-                    <p> 
-                        Here goes the author description. You might want to place some links too in here
-                    </p>
-                </section>                
-            {% endif %}
-
-            <!-- Share links section -->
-            {% include share.html %}
-            
-            <!-- Disqus comments -->
-            {% if page.disqus %}
-                {% include disqus.html %}
-            {% endif %}
-            
-        </footer>
-
-    </article>
-
-</main>
+<div id="article">
+	{{ content }}
+</div>
+{% for post in site.related_posts limit:1 %}
+<footer class="{% if post.dark %}dark{% else %}clean{% endif %}" style="background-image: url({% if post.image %}{{ post.image }}{% else %}{{ site.cover }}{% endif %});{% if post.background_position %} background-position: {{ post.background_position }};{% endif %}height: 75%; min-height: 500px;">
+	<div id="nav-icon" style="top: 25px;">
+		<a class="scroll" data-speed="1000" href="#article"><span class="genericon genericon-collapse"></span></a>
+	</div>
+	<div id="post-info">
+		<h3>Featured post</h3>
+		<a href="{{ post.url }}">
+			<h1>{{ post.title }}</h1>
+			{% if post.quote %}
+				<h2>{{ post.quote }}</h2>
+			{% endif %}
+		</a>
+	</div>
+	<p class="copyright">&copy;{{ site.time | date: "%Y" }}, <a href="{{ site.copyright.url }}" target="_blank">{{ site.copyright.author }}</a>. <a href="{{ site.copyright.type_url }}" target="_blank">{{ site.copyright.type_title }}</a>.</p>
+</footer>
+{% endfor %}
+<script src="/assets/js/smooth-scroll.js"></script>

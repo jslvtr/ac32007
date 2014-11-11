@@ -1,8 +1,0 @@
----
-layout: post
-title:  "Hello"
-date:   2014-11-10 10:42:56
-categories: AC32007 update
----
-#oheyyyyy
-![](http://i.imgur.com/PKgcfRp.gif)

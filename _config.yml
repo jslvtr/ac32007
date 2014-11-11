@@ -1,14 +1,52 @@
-name: Your New Jekyll Site
-description: Blogging about stuffs
-meta_description: "Your New Jekyll Site, Blogging about stuffs"
+# Dependencies
+markdown:	redcarpet
+pygments:	true
 
-markdown: redcarpet
-highlighter: pygments
-logo: false
-paginate: 15
-baseurl: "http://jslvtr.github.io/ac32007" # the subpath of your site, e.g. /blog/
-url: "http://jslvtr.github.io/ac32007" # the base hostname & protocol for your site
+# Permalinks
+permalink:	/blog/:title
 
-# Details for the RSS feed generator
-url:            'blog url'
-author:         'Your Name'
+# Setup
+title:		Thinny
+tagline:	'blog'
+description:	'My personal blog.'
+url:		http://camporez.com
+
+author:
+  name:		'Ian Camporez Brunelli'
+  url:		https://google.com/+IanCamporezBrunelli
+
+paginate:	5
+
+# Custom vars
+icon:		/assets/images/icon.png
+cover:		/assets/images/cover.jpg
+
+social:
+  - icon:	twitter
+    url:	https://twitter.com/iancamporez
+    desc:	Follow me on twitter
+
+  - icon:	github
+    url:	https://github.com/camporez
+    desc:	Fork me on github
+
+  - icon:	googleplus-alt
+    url:	https://google.com/+IanCamporezBrunelli
+    desc:	Add me on google+
+
+  - icon:	feed
+    url:	http://camporez.com/atom.xml
+    desc:	Subscribe to my feed
+    
+menu:
+  - title:	Home
+    url:	/
+    
+  - title:	About
+    url:	/about
+    
+copyright:
+  author:	Camporez
+  url:		http://camporez.com
+  type_title:	Some rights reserved
+  type_url:	http://creativecommons.org/licenses/by-nc/2.5

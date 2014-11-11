@@ -1,18 +1,14 @@
-# Site settings
-title: AC32007
-email: your-email@domain.com
-description: > # this means to ignore newlines until "baseurl:"
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
-baseurl: "http://jslvtr.github.io/ac32007" # the subpath of your site, e.g. /blog/
-url: "http://jslvtr.github.io/ac32007" # the base hostname & protocol for your site
-twitter_username: jslvtr
-github_username:  jslvtr
+name: Your New Jekyll Site
+description: Blogging about stuffs
+meta_description: "Your New Jekyll Site, Blogging about stuffs"
 
-# Build settings
 markdown: redcarpet
 highlighter: pygments
-permalink: pretty
-paginate: 10
-exclude: ["node_modules", "README.md", "package.json"]
+logo: false
+paginate: 15
+baseurl: "http://jslvtr.github.io/ac32007" # the subpath of your site, e.g. /blog/
+url: "http://jslvtr.github.io/ac32007" # the base hostname & protocol for your site
+
+# Details for the RSS feed generator
+url:            'blog url'
+author:         'Your Name'

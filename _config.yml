@@ -12,3 +12,7 @@ github_username:  jslvtr
 
 # Build settings
 markdown: redcarpet
+highlighter: pygments
+permalink: pretty
+paginate: 10
+exclude: ["node_modules", "README.md", "package.json"]

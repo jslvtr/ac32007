@@ -1,11 +1,11 @@
 # Site settings
-title: {{projectName}}
-email: go@google.it
+title: AgileAPI
+email: thahoze@gmail.com
 description: > # this means to ignore newlines until "baseurl:"
   This is a blog which will follow the progress of the application we will be building.
 baseurl: "http://jslvtr.github.io/AgileAPI" # the subpath of your site, e.g. /blog/
 url: "http://jslvtr.github.io/AgileAPI" # the base hostname & protocol for your site
-twitter_username: teamiodev
+twitter_username: priamubaio
 github_username:  jslvtr
 
 # Build settings

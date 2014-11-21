@@ -33,8 +33,14 @@ function getMethod(url, callback) {
             })
             callback(result);
         }
-    }   else    {
-        getMethod("http://"+url, callback);
+    }   else if (error) {
+
+    }  else  {
+        if (response.statusCode == null){
+            console.log("no status code");
+        }
+
+
     }
 
 

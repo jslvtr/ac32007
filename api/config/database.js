@@ -27,7 +27,7 @@ function db_schema (delete_all) {
     if (delete_all) {
         client.execute(
             'DROP KEYSPACE IF EXISTS agile_api;',
-            function (err) { db_schema_error_handling(err, '[Success] Keyspace `agile_api` dropped.') }
+            function (err) { db_schema_error_handling(err, '[Success] Keyspace `agile_api` dropped.', function () {}) }
 
         );
     }

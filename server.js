@@ -4,6 +4,8 @@ var app      = express();
 var port     = process.env.PORT || 8080;
 var passport = require('passport');
 var flash    = require('connect-flash');
+var bodyParser = require('body-parser');
+var multer = require('multer');
 
 var morgan       = require('morgan');
 
@@ -19,6 +21,10 @@ passport.use(configPassport.tokenHandler());
 // set up our express application
 app.use(morgan('dev')); // log every request to the console
 app.use(passport.initialize());
+
+app.use(bodyParser.json()); // for parsing application/json
+//app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+//app.use(multer); // for parsing multipart/form-data
 
 // routes
 require('./api/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport

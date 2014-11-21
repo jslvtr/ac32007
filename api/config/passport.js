@@ -6,7 +6,7 @@ var BearerStrategy = require('passport-http-bearer').Strategy;
 var configDB = require('./database.js');
 
 function findByToken(token, fn) {
-    var query = 'SELECT * FROM users WHERE access_token = ?';
+    var query = 'SELECT * FROM agile_api.users WHERE access_token = ?';
     var params = [ token ];
 
     configDB.client.execute(query, params, {prepare: true}, function(err, result) {

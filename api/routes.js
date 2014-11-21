@@ -7,13 +7,16 @@ module.exports = function(app, passport) {
     // Auth
     app.post('/auth/login', authRoutes.login);
     app.post('/auth/register', authRoutes.register);
-    app.get('/auth/logout', authRoutes.logout);
+    app.get('/auth/logout',
+        passport.authenticate('bearer', { session: false }),
+        authRoutes.logout
+    );
 
     // API
     app.get('/', apiRoutes.about);
 
     // User
-    app.get('/user/:id/profile',
+    app.get('/user/:username/profile',
         passport.authenticate('bearer', { session: false }),
         userRoutes.profile
     );

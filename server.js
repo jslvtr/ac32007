@@ -31,6 +31,8 @@ app.use(bodyParser.json()); // for parsing application/json
 // routes
 require('./api/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
+
+
 // Launch
 app.listen(port);
 console.log('Server listening on localhost: ' + port);

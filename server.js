@@ -25,4 +25,4 @@ require('./api/routes.js')(app, passport); // load our routes and pass in our ap
 
 // Launch
 app.listen(port);
-console.log('Server listening on localhost: <conflict!!!!>' + port);
+console.log('Server listening on localhost: ' + port);

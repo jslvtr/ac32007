@@ -13,6 +13,22 @@ function InitClient () {
     return client;
 }
 
+function db_schema (delete_all) {
+    if (delete_all) {
+        var query = 'DROP KEYSPACE IF EXISTS agile_api;';
+        this.client.execute(query, function(err, result) {
+                if (err) {
+                    console.error(err);
+                } else {
+                    console.log('[Success] Keyspace `agile_api` dropped.');
+                }
+            }
+        );
+    }
+
+}
+
 module.exports = {
-    client: (client || InitClient())
+    client: (client || InitClient()),
+    initDB: db_schema
 };

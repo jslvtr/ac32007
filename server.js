@@ -11,7 +11,7 @@ var configDB = require('./api/config/database.js');
 var configPassport = require('./api/config/passport');
 
 // configuration
-// TODO: connect to our database
+configDB.initDB(false); // Change the boolean to remove the database data
 
 // Token Handler
 passport.use(configPassport.tokenHandler());

@@ -6,13 +6,16 @@ var BearerStrategy = require('passport-http-bearer').Strategy;
 var configDB = require('./database.js');
 
 function findByToken(token, fn) {
-    configDB.client.execute(
-        'SELECT * FROM users WHERE access_token = \"' + token + '";',
-        function(err, result) {
+    var query = 'SELECT * FROM users WHERE access_token = ?';
+    var params = [ token ];
+
+    configDB.client.execute(query, params, {prepare: true}, function(err, result) {
             if (err) {
                 return fn(err, null);
+            } else if (result.rows.length === 1) {
+                return fn(null, result.rows[0]);
             } else {
-                return fn(null, result.rows);
+                return fn(null, null);
             }
         }
     );

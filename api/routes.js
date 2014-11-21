@@ -21,7 +21,7 @@ module.exports = function(app, passport) {
 
     // API
     app.get('/', apiRoutes.about);
-    app.get('/headers', apiRoutes.headers);
+    app.get('/get', apiRoutes.methodGet);
     app.get('/do_dododo', apiRoutes.do_dododo);
 
     // User

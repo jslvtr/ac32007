@@ -15,7 +15,7 @@ function about (req, res) {
 }
 
 
-function headers(req, res)  {
+function methodGet(req, res)  {
     calls.getMethod(req.headers.url, function(callback){
         res.send(callback);
     })
@@ -30,6 +30,6 @@ function do_dododo(req, res)    {
 
 module.exports = {
     about       : about,
-    headers     : headers,
+    methodGet     : methodGet,
     do_dododo   : do_dododo
 };

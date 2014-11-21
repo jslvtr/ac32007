@@ -1,4 +1,5 @@
-var base_url = 'http://localhost:8080';
+//var base_url = 'http://localhost:8080';
+var base_url = 'https://agileapi.herokuapp.com';
 
 module.exports = {
     base_url : base_url,

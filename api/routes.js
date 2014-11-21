@@ -12,6 +12,13 @@ module.exports = function(app, passport) {
         authRoutes.logout
     );
 
+    app.get('/auth/facebook', passport.authenticate('facebook', { session: false, scope: [] }));
+
+    app.get('/auth/facebook/callback',
+        passport.authenticate('facebook', { session: false }),
+        authRoutes.facebook
+    );
+
     // API
     app.get('/', apiRoutes.about);
 

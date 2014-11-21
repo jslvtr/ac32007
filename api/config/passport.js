@@ -44,5 +44,16 @@ module.exports = {
                 });
             }
         )
+    },
+    facebookHandler : function(accessToken, refreshToken, profile, done) {
+        findByToken(accessToken, function (err, user) {
+            if (err) {
+                return done(err, false);
+            }
+            if (!user) {
+                return done(null, false);
+            }
+            return done(null, user);
+        })
     }
 };

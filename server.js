@@ -1,15 +1,16 @@
 // get all the tools we need
-var express  = require('express');
-var app      = express();
-var port     = process.env.PORT || 8080;
-var passport = require('passport');
-var flash    = require('connect-flash');
-var bodyParser = require('body-parser');
-var multer = require('multer');
+var express             = require('express');
+var app                 = express();
+var port                = process.env.PORT || 8080;
+var passport            = require('passport');
+var flash               = require('connect-flash');
+var bodyParser          = require('body-parser');
+var FacebookStrategy    = require('passport-facebook');
 
 var morgan       = require('morgan');
 
-var configDB = require('./api/config/database.js');
+var configDB = require('./api/config/database');
+var configAuth = require('./api/config/auth');
 var configPassport = require('./api/config/passport');
 
 // configuration
@@ -17,6 +18,7 @@ configDB.initDB(false); // Change the boolean to remove the database data
 
 // Token Handler
 passport.use(configPassport.tokenHandler());
+passport.use(new FacebookStrategy(configAuth.facebook, configPassport.facebookHandler));
 
 // set up our express application
 app.use(morgan('dev')); // log every request to the console

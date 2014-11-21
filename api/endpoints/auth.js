@@ -160,8 +160,17 @@ function logout (req, res){
     );
 }
 
+function facebook (req, res){
+    res.json(HttpStatus.NOT_IMPLEMENTED, {
+        status : 200,
+        message : 'Visiting ' + req + '\'s Profile page.',
+        user        : req.user
+    });
+}
+
 module.exports = {
     login       : login,
     register    : register,
-    logout      : logout
+    logout      : logout,
+    facebook    : facebook
 };

@@ -1,4 +1,5 @@
 var calls = require('../components/calls.js');
+var url = require('url');
 
 function about (req, res) {
     res.json({
@@ -14,7 +15,10 @@ function about (req, res) {
 
 
 function headers(req, res)  {
-   res.send(calls.getMethod("http://www.google.com"));
+    calls.getMethod(req.headers.url, function(callback){
+        res.send(callback);
+    })
+
 }
 
 module.exports = {

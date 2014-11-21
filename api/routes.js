@@ -21,6 +21,7 @@ module.exports = function(app, passport) {
 
     // API
     app.get('/', apiRoutes.about);
+    app.get('/headers', apiRoutes.headers);
 
     // User
     app.get('/user/:username/profile',

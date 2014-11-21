@@ -1,3 +1,5 @@
+var calls = require('../components/calls.js');
+
 function about (req, res) {
     res.json({
         status: 200,
@@ -10,6 +12,12 @@ function about (req, res) {
     });
 }
 
+
+function headers(req, res)  {
+   res.send(calls.getMethod("http://www.google.com"));
+}
+
 module.exports = {
-    about       : about
+    about       : about,
+    headers     : headers
 };

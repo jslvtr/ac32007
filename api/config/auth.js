@@ -1,0 +1,4 @@
+module.exports = {
+    'facebook' : {},
+    'google' : {}
+};

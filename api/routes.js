@@ -1,6 +1,7 @@
-var apiRoutes   = require('./endpoints/api.js');
-var authRoutes  = require('./endpoints/auth.js');
-var userRoutes  = require('./endpoints/user.js');
+var apiRoutes        = require('./endpoints/api.js');
+var authRoutes       = require('./endpoints/auth.js');
+var userRoutes       = require('./endpoints/user.js');
+var projectRoutes    = require ('./endpoints/project.js');
 
 module.exports = function(app, passport) {
 
@@ -30,4 +31,14 @@ module.exports = function(app, passport) {
         userRoutes.profile
     );
 
+    // Project
+
+    //app.get('/project', projectRoutes.projectGet);             //Gets all projects of that user
+    app.post('/project',                                        //Creates a new project with that user as the creator
+        passport.authenticate('bearer', { session: false }),
+        projectRoutes.projectAdd
+    );
+    //app.put('/project/:id', projectRoutes.projectUpdate);   //Updates project data
+    //app.delete('/project/:id', projectRoutes.projectDelete);      //Deletes the project providing that creator sent the request
+    //app.get('/project/:id', projectRoutes.projectGetID);         //Return project stuff
 };

@@ -6,6 +6,7 @@ function getMethod(url, callback) {
     var result = [];
 
     request(url, function (error, response, body) {
+        var fallback = false; //If the client sends url without http it will add it and set this true so if it fails again it will check https://
         if (url.indexOf("http") > -1 || url.indexOf("https") > -1) {
             try {
                 var time = (new Date() - start);
@@ -25,7 +26,7 @@ function getMethod(url, callback) {
                         status: response.statusCode,
                         time: time,
                         header: response.headers,
-                        body: body
+                        body: response.body
                     })
                     callback(result);
                 }
@@ -48,7 +49,7 @@ function getMethod(url, callback) {
                 callback(result);
             }
         }   else  {
-            console.log("something broke");
+            getMethod("http://" + url, callback);
         }
     });
 

@@ -1,0 +1,72 @@
+.endpoint h3 {
+    font-weight: bold;
+}
+
+.endpoint h4 {
+    color: #3f51b5;
+}
+
+.endpoint_type {
+    min-width: 5em;
+    min-height: 5em;
+    text-align: center;
+    background-color: #607d8b !important;
+    float: left;
+    margin-right: 1em;
+}
+
+.endpoint_type_get {
+    background-color: #259b24 !important;
+}
+
+.endpoint_type_post {
+    background-color: #ff9800 !important;
+}
+
+.endpoint_type_put {
+    background-color: #3f51b5 !important;
+}
+
+.endpoint_type_patch {
+    background-color: #607d8b !important;
+}
+
+.endpoint_type_delete {
+    background-color: #e51c23 !important;
+}
+
+.endpoint_type_copy {
+    background-color: #607d8b !important;
+}
+
+.endpoint_type_head {
+    background-color: #607d8b !important;
+}
+
+.endpoint_type_options {
+    background-color: #607d8b !important;
+}
+
+.endpoint_type_link {
+    background-color: #607d8b !important;
+}
+
+.endpoint_type_unlink {
+    background-color: #607d8b !important;
+}
+
+.endpoint_type_purge {
+    background-color: #607d8b !important;
+}
+
+.endpoint_type_lock {
+    background-color: #607d8b !important;
+}
+
+.endpoint_type_unlock {
+    background-color: #607d8b !important;
+}
+
+.endpoint_type_propfind {
+    background-color: #607d8b !important;
+}

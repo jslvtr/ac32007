@@ -38,41 +38,9 @@ angular.module('app.routes', ['ngRoute',])
       templateUrl: 'views/list/list.html',
       controller: 'listController'
     })
-    .when('/query', {
-      templateUrl: 'views/query/query.html',
-      controller: 'queryController'
-    })
-    .when('/query/stats/number', {
-      templateUrl: 'views/query/stats/stats.html',
-      controller: 'numberController'
-    })
-    .when('/query/stats/earning', {
-      templateUrl: 'views/query/stats/stats.html',
-      controller: 'earningController'
-    })
-    .when('/query/stats/date', {
-      templateUrl: 'views/query/stats/date.html',
-      controller: 'dateController'
-    })
-    .when('/query/stats/popularbycountry/type', {
-      templateUrl: 'views/query/stats/byCountries.html',
-      controller: 'byCountryController'
-    })
-    .when('/query/stats/popularbycountry/camera', {
-      templateUrl: 'views/query/stats/byCountries.html',
-      controller: 'popularCameraByCountryController'
-    })
-    .when('/query/stats/monthlysales', {
-      templateUrl: 'views/query/stats/stats.html',
-      controller: 'monthlySalesByBrandController'
-    })
-    .when('/query/stats/topsold', {
-      templateUrl: 'views/query/stats/topSold.html',
-      controller: 'topHobbyController'
-    })
-    .when('/query/stats/topfeatures', {
-      templateUrl: 'views/query/stats/topfeatures.html',
-      controller: 'topFeaturesController'
+    .when('/projects', {
+      templateUrl: 'views/projects/projects.html',
+      controller: 'projectsController'
     })
     .otherwise({
       templateUrl: 'views/404.html'

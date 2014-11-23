@@ -1,0 +1,39 @@
+<link rel="stylesheet" href="views/projects/projects.css" type="text/css" />
+
+<md-toolbar>
+  <div class="md-toolbar-tools">
+    <div ng-include="'partials/back.html'"></div>
+    <span class="md-flex"><h1>{{message}}</h1></span>
+  </div>
+</md-toolbar>
+
+<md-card ng-repeat="project in projects">
+    <md-toolbar md-theme="indigo">
+        <h1 class="md-toolbar-tools">
+            <span>{{ project.title }}</span>
+        </h1>
+    </md-toolbar>
+
+    <md-content>
+        <md-list>
+            <md-item ng-repeat="endpoint in project.endpoints">
+                <md-item-content class="endpoint">
+                    <div class="md-tile-content">
+                        <md-button class="md-fab md-primary md-tile-left endpoint_type" aria-label="endpoint" ng-class="'endpoint_type_' + endpoint.type.toLowerCase()">
+                            {{ endpoint.type }}
+                        </md-button>
+                        <!--<div class="md-tile-left endpoint_type" ng-class="'endpoint_type_' + endpoint.type.toLowerCase()">-->
+                            <!--<h1>{{ endpoint.type }}</h1>-->
+                        <!--</div>-->
+                        <h3>{{ endpoint.title }}</h3>
+                        <h4>{{ endpoint.url }}</h4>
+                        <p>
+                            {{ endpoint.description }}
+                        </p>
+                    </div>
+                </md-item-content>
+                <md-divider ng-if="!$last"></md-divider>
+            </md-item>
+        </md-list>
+    </md-content>
+</md-card>

@@ -27,17 +27,14 @@ function projectGetID  (req, res)  {
                     status: 420,
                     message: 'Can\'t create project.'
                 });
-
-            } else if (result.rows["0"]["[found]"] === true) {
+            }   else {
                 res.json(HttpStatus.ACCEPTED, {
                     status: 200,
-                    message: 'Project found'
-                });
-
-            } else {
-                res.json(HttpStatus.NO_CONTENT, {
-                    status: 204,
-                    message: 'Project already exists.'
+                    project : {
+                        title : result.rows[0].title,
+                        description : result.rows[0].description,
+                        owner :   result.rows[0].owner
+                    }
                 });
             }
         }

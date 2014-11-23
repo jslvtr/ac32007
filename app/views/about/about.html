@@ -1,6 +1,6 @@
 <md-toolbar>
     <div class="md-toolbar-tools">
-      <div ng-include="'../../partials/back.html'"></div>
+      <div ng-include="'partials/back.html'"></div>
       <span class="md-flex"><h1>{{title}}</h1></span>
     </div>
   </md-toolbar>
@@ -8,23 +8,21 @@
 
   <div ng-hide="version" style="text-align:center">
     <h1>Loading</h1>
-    <img src="assets/icons/loading.gif"/>
+    <md-progress-circular md-theme="blue" md-mode="indeterminate"></md-progress-circular>
     <p>If this takes long please check your connection.</p>
   </div>
 
   <div ng-show="version" style="text-align:center">
-    <img src="assets/icons/logo_grey.png" width="300px"/>
-    <h1>CamStats</h2>
-    <p style="width:50%; margin: 0 auto">CamStats is a database which contains information about cameras sold worldwide to help you develop the right camera for your target audience.</p>
+    <!--<img src="assets/icons/logo_grey.png" width="300px"/>-->
+    <h1>Agile API</h1>
+    <p style="width:50%; margin: 0 auto">Team API Tools</p>
     <br>
-    <h2>Module: {{ module }}</h2>
-    <h3>Team: {{team}}</h3>
-    <h4>Members</h4>
+    <h4>Authors</h4>
     <md-list>
-      <md-item ng-repeat="member in members">
+      <md-item ng-repeat="author in authors">
         <md-item-content>
           <div class="md-tile-content">
-            {{member}}
+            {{author}}
           </div>
         </md-item-content>
       </md-item>

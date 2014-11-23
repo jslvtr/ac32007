@@ -23,7 +23,9 @@ angular.module('app.indexController', [])
                 false;
 
             }).success(function (data, status, headers, config) {
-                if ($scope.sessionUser.access_token == data.access_token)  {
+                if (status === 401) { // Unauthorized
+                    $scope.isLoggedIn = false;
+                } else if ($scope.sessionUser.access_token == data.access_token)  {
                     $scope.isLoggedIn = true;
                 } else {
                     $scope.isLoggedIn = false;

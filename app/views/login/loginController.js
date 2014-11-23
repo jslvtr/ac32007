@@ -40,7 +40,7 @@ angular.module('app.loginController', [])
         $.ajax({
           type: "get",
           url: backend + "/profile/userid",
-          beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
+          beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)}
           }).done(function(data){
             //something
           }).fail(function(data){

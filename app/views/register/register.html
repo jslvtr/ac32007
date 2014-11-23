@@ -1,6 +1,6 @@
 <md-toolbar>
   <div class="md-toolbar-tools">
-    <div ng-include="'../../partials/back.html'"></div>
+    <div ng-include="'partials/back.html'"></div>
     <span class="md-flex"><h1>{{message}}</h1></span>
   </div>
 </md-toolbar>
@@ -12,7 +12,7 @@
       <form class="form-form" name="formform" ng-submit="submit()" >
         <md-text-float label="username" ng-model="form.username" required autofocus></md-text-float>
         <md-text-float label="password" ng-model="form.password" type="password" required></md-text-float>
-        <md-button class="md-raised md-primary" type="submit">Register</md-button>
+        <md-button class="md-raised md-primary" type="submit" aria-label="register button">Register</md-button>
       </form>
     </section>
     <br>

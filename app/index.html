@@ -1,7 +1,7 @@
 <html ng-app="app">
 <meta http-equiv="Content-type" content="text/html; charset=utf-8">
 <head>
-    <title>CamStats</title>
+    <title>Agile API</title>
 
     <!-- Libraries -->
     <script src="bower_components/angular/angular.js"></script>
@@ -58,92 +58,29 @@
     <link rel="stylesheet" type="text/css" href="bower_components/angular-material/themes/indigo-theme.css">
     <link rel="stylesheet" type="text/css" href="bower_components/angular-material/themes/green-theme.css">
 
-
     <link rel="stylesheet" type="text/css" href="css/style.css">
   </head>
   <body ng-controller="appController">
-
   <section layout="horizontal" style="height:100%" >
-
     <md-sidenav class="md-sidenav-left md-whiteframe-z2" component-id="left" is-locked-open="$media('md')" md-theme="light-blue-dark">
-<md-toolbar class="md-theme-indigo" >
-  <h1 class="md-toolbar-tools">Agile API</h1>
-</md-toolbar>
-
-      <md-content  ng-controller="LeftCtrl" md-theme="green">
-
-          <button class="menu-item menu-title" onClick="parent.location='#'" ink-ripple >Home</button>
-          <!-- ng-hide="isLoggedIn" -->
-          <button class="menu-item menu-title" ng-hide="isLoggedIn" onClick="parent.location='#/login'" ink-ripple>Login</button>
-          <button class="menu-item menu-title" ng-hide="isLoggedIn" onClick="parent.location='#/register'"  ink-ripple>Register</button>
-          <button class="menu-item menu-title" onClick="parent.location='#/about'" ink-ripple>About</button>
-          <button class="menu-item menu-title" ng-show="isLoggedIn" onClick="parent.location='#/profile'"  ink-ripple>Profile</button>
-          <div ng-show="isLoggedIn">
-
-
-            <div ng-show="!showList">
-              <md-button ng-click="showQueryIcon = !showQueryIcon" aria-label="Switch 1">show queries <img src="assets/icons/expandMore.svg" height="100%" width="100%"/>
+        <md-toolbar class="md-theme-indigo" >
+            <h1 class="md-toolbar-tools">Agile API</h1>
+        </md-toolbar>
+        <md-content  ng-controller="LeftCtrl" md-theme="green">
+            <button class="menu-item menu-title" onClick="parent.location='#'" ink-ripple >Home</button>
+            <button class="menu-item menu-title" onClick="parent.location='#/about'" ink-ripple>About</button>
+            <div ng-show="isLoggedIn">
+                <button class="menu-item menu-title" onClick="parent.location='#/login'" ink-ripple>Login</button>
+                <button class="menu-item menu-title" onClick="parent.location='#/register'" ink-ripple>Register</button>
+                <button class="menu-item menu-title" onClick="parent.location='#/profile'" ink-ripple>Profile</button>
             </div>
-            <div ng-show="showList">
-              <md-button ng-click="showQueryIcon = !showQueryIcon" aria-label="Switch 1">show queries <img src="assets/icons/expandLess.svg" height="100%" width="100%"/>
+            <div ng-hide="isLoggedIn">
+                <button class="menu-item menu-title" ng-show="isLoggedIn" onClick="parent.location='#/logout'" ink-ripple>Logout</button>
             </div>
-            <div class="check-element" ng-show="showQueryIcon">
-
-              <button class="menu-item menu-sub-item" ng-show="isLoggedIn" onClick="parent.location='#/query/stats/popularbycountry/type'" ink-ripple>Camera type by popularity by country</button>
-              <button class="menu-item menu-sub-item" ng-show="isLoggedIn" onClick="parent.location='#/query/stats/popularbycountry/camera'" ink-ripple>Cameras by popularity by country</button>
-              <button class="menu-item menu-sub-item" ng-show="isLoggedIn" onClick="parent.location='#/query/stats/number'" ink-ripple>Quantity of cameras sold globally</button>
-              <button class="menu-item menu-sub-item" ng-show="isLoggedIn" onClick="parent.location='#/query/stats/earning'"   ink-ripple>Global earnings</button>
-              <button class="menu-item menu-sub-item" ng-show="isLoggedIn" onClick="parent.location='#/query/stats/date'"  ink-ripple>Quantity/Earning sold</button>
-              <button class="menu-item menu-sub-item" ng-show="isLoggedIn" onClick="parent.location='#/query/stats/monthlysales'"  ink-ripple>Monthly profit of brands</button>
-              <button class="menu-item menu-sub-item" ng-show="isLoggedIn" onClick="parent.location='#/query/stats/topsold'"  ink-ripple>Popular cameras of multiple group types</button>
-              <button class="menu-item menu-sub-item" ng-show="isLoggedIn" onClick="parent.location='#/query/stats/topfeatures'"  ink-ripple>Most wanted features in cameras</button>
-
-            </div>
-            <div ng-show="isAdmin">
-              <div ng-show="!showList">
-                <md-button ng-click="showAdminMenu = !showAdminMenu" aria-label="Switch 1">Display all data<img src="assets/icons/expandMore.svg" height="100%" width="100%"/>
-              </div>
-              <div ng-show="showList">
-                <md-button ng-click="showAdminMenu = !showAdminMenu" aria-label="Switch 1">Display all data<img src="assets/icons/expandLess.svg" height="100%" width="100%"/>
-              </div>
-              <div class="check-element" ng-show="showAdminMenu">
-
-                <button class="menu-item menu-sub-item" ng-show="isLoggedIn" onClick="parent.location='#/list/camera'" ink-ripple>Cameras</button>
-                <button class="menu-item menu-sub-item" ng-show="isLoggedIn" onClick="parent.location='#/list/countries'" ink-ripple>Countries</button>
-                <button class="menu-item menu-sub-item" ng-show="isLoggedIn" onClick="parent.location='#/list/hobby'" ink-ripple>Hobbies</button>
-                <button class="menu-item menu-sub-item" ng-show="isLoggedIn" onClick="parent.location='#/list/lens'"   ink-ripple>Lens</button>
-                <button class="menu-item menu-sub-item" ng-show="isLoggedIn" onClick="parent.location='#/list/profession'"  ink-ripple>Profession</button>
-                <button class="menu-item menu-sub-item" ng-show="isLoggedIn" onClick="parent.location='#/list/sale'"  ink-ripple>Sales</button>
-                <button class="menu-item menu-sub-item" ng-show="isLoggedIn" onClick="parent.location='#/list/storage'"  ink-ripple>Storages</button>
-                <button class="menu-item menu-sub-item" ng-show="isLoggedIn" onClick="parent.location='#/list/type'"  ink-ripple>Types</button>
-                <button class="menu-item menu-sub-item" ng-show="isLoggedIn" onClick="parent.location='#/list/customer'"  ink-ripple>Customers</button>
-              </div>
-            </div>
-
-          </div>
-
-        <button class="menu-item menu-title" ng-show="isLoggedIn" onClick="parent.location='#/logout'"   ink-ripple>Logout</button>
-
-      </md-content>
-
+        </md-content>
     </md-sidenav>
-
-
-
-  <md-content ng-view class="ng-cloak" id="container2" flex></md-content>
-
-
-
-
-<div ng-include="'partials/rightsidebar.html'" ng-show="isLoggedIn"></div>
-
-  </div>
-
+    <md-content ng-view class="ng-cloak" id="container2" flex></md-content>
+    <div ng-include="'partials/rightsidebar.html'" ng-show="isLoggedIn"></div>
   </section>
-
-
-
-
-
   </body>
 </html>

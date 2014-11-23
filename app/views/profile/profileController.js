@@ -25,6 +25,7 @@ angular.module('app.profileController', [])
         }).success(function (data, status, headers, config) {
           $scope.profileUsername = data.user.username;
           $scope.profileMessage = data.message;
+          //TODO: Display data.teams list. This will be a list of teams the user belongs to.
         });
 
       } else {

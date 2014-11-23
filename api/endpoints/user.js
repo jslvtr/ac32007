@@ -4,6 +4,9 @@ function profile (req, res) {
     var sessionUser = req.user;
     var username = req.params.username;
 
+    //TODO: Get from database the teams this user belongs to.
+    // Send these teams along with the request, in an array.
+
     if (sessionUser.username === username) {
         res.json(HttpStatus.OK, {
             status : 200,
@@ -13,6 +16,7 @@ function profile (req, res) {
                 username: sessionUser.username,
                 email: sessionUser.email,
                 access_token: sessionUser.access_token
+                //teams: []
             }
         });
 

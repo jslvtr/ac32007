@@ -31,14 +31,35 @@ module.exports = function(app, passport) {
         userRoutes.profile
     );
 
-    // Project
+    /*
 
-    //app.get('/project', projectRoutes.projectGet);             //Gets all projects of that user
+                    Project
+
+        Routes
+            /project
+            /user/:user/project/:project
+
+        Where
+            :user is username
+            :project is project title
+
+    */
+
+//app.get('/project', projectRoutes.projectGet);                //Gets all projects of that user
     app.post('/project',                                        //Creates a new project with that user as the creator
         passport.authenticate('bearer', { session: false }),
         projectRoutes.projectAdd
     );
-    //app.put('/project/:id', projectRoutes.projectUpdate);   //Updates project data
-    //app.delete('/project/:id', projectRoutes.projectDelete);      //Deletes the project providing that creator sent the request
-    //app.get('/project/:id', projectRoutes.projectGetID);         //Return project stuff
+    app.put('/user/:user/project/:id',                                     //Updates project data
+        passport.authenticate('bearer', { session: false }),
+        projectRoutes.projectUpdate
+    );
+    app.delete('/user/:user/project/:id',                       //Deletes the project providing that creator sent the request
+        passport.authenticate('bearer', { session: false }),
+        projectRoutes.projectDelete
+    );
+    app.get('/user/:user/project/:id',                          //Return project data
+        passport.authenticate('bearer', { session: false }),
+        projectRoutes.projectGetID
+    );
 };

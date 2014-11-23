@@ -2,6 +2,122 @@
 var configDB = require('../config/database.js');
 var HttpStatus = require('http-status-codes');
 
+
+/*
+
+            TODO            Check if the user that has issued the delete
+                            is the user that owns the project
+
+
+ */
+function projectGetID  (req, res)  {
+
+    //Gets the information from the uri
+    var title = req.params.id;
+    var owner = req.params.user;
+    console.log("title: " + title + " | owner: " + owner);
+
+    var query = 'select * from agile_api.projects where title = ? and owner = ?;';
+    var params = [ title, owner ];
+
+
+    configDB.client.execute(query, params, {prepare: true}, function(err, result) {
+            if (err) {
+                res.json(HttpStatus.METHOD_FAILURE, {
+                    status: 420,
+                    message: 'Can\'t create project.'
+                });
+
+            } else if (result.rows["0"]["[found]"] === true) {
+                res.json(HttpStatus.ACCEPTED, {
+                    status: 200,
+                    message: 'Project found'
+                });
+
+            } else {
+                res.json(HttpStatus.NO_CONTENT, {
+                    status: 204,
+                    message: 'Project already exists.'
+                });
+            }
+        }
+    );
+
+}
+function projectUpdate  (req, res)  {
+
+    //Gets the information from the uri
+    //var title = req.params.id;
+    //var owner = req.params.user;
+
+    //todo change to get data from uri instead of data.
+    var title           = req.body.title;
+    var description     = req.body.description;
+    var owner           = req.body.owner;
+
+    var query = 'update agile_api.projects set description = ? where title = ? and owner = ?;';
+    var params = [ description, title, owner ];
+
+
+    configDB.client.execute(query, params, {prepare: true}, function(err, result) {
+            if (err) {
+                res.json(HttpStatus.METHOD_FAILURE, {
+                    status: 420,
+                    message: 'Can\'t update project.'
+                });
+                //console.log(err);
+
+            } else {
+                res.json(HttpStatus.CREATED, {
+                    status: 202,
+                    message: 'Project updated',
+                    project : {
+                        title : title,
+                        description : description,
+                        owner :   owner
+                    }
+                });
+            }
+        }
+    );
+
+}
+
+
+function projectDelete  (req, res)  {
+
+    //Gets the information from the uri
+    //var title = req.params.id;
+    //var owner = req.params.user;
+
+    //todo change to get data from uri instead of data.
+    var title   = req.body.title;
+    var owner   = req.body.owner;
+
+    var query = 'delete from agile_api.projects where title = ? and owner = ?;';
+    var params = [ title, owner ];
+
+
+    configDB.client.execute(query, params, {prepare: true}, function(err, result) {
+            if (err) {
+                res.json(HttpStatus.METHOD_FAILURE, {
+                    status: 420,
+                    message: 'Can\'t delete project.'
+                });
+                //console.log(err);
+
+            } else {
+                res.json(HttpStatus.NO_CONTENT, {
+                    status: 204,
+                    message: 'Project deleted'
+                });
+            }
+        }
+    );
+
+}
+
+
 function projectAdd (req, res)  {
     var title       = req.body.title;
     var description = req.body.description;
@@ -40,5 +156,8 @@ function projectAdd (req, res)  {
 }
 
 module.exports = {
-    projectAdd       : projectAdd
+    projectAdd      :   projectAdd,
+    projectDelete   :   projectDelete,
+    projectUpdate   :   projectUpdate,
+    projectGetID    :   projectGetID
 };

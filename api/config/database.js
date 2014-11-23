@@ -5,7 +5,7 @@ var client = null;
 
 var clientInfo = {
     //contactPoints: [ '127.0.0.1' ]
-    contactPoints: [ 'cassandra.yagocarballo.me' ]
+    contactPoints: ['cassandra.yagocarballo.me']
 };
 
 function InitClient () {

@@ -1,0 +1,13 @@
+<md-dialog>
+  <md-content ng-controller="listDialog">
+    <h3>Adding {{subject}}</h3>
+
+    <form class="type-form" name="typeForm" ng-submit="submitNewType(type.name)">
+      <md-text-float label="type Name" ng-model="type.name" required></md-text-float>
+      <div class="md-actions" layout="horizontal" layout-align="end">
+        <md-button aria-label="null" ng-click="cancel()">Cancel</md-button>
+        <md-button class="md-primary" aria-label="null" ng-click="hide()" type="submit">Add</md-button>
+      </div>
+    </form>
+  </md-content>
+</md-dialog>

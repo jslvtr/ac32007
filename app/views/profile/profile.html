@@ -1,0 +1,20 @@
+<md-toolbar>
+    <div class="md-toolbar-tools">
+      <div ng-include="'../../partials/back.html'"></div>
+      <span class="md-flex"><h1>{{title}}</h1></span>
+    </div>
+</md-toolbar>
+
+
+<md-card>
+  <div ng-hide="profileGroup" style="text-align:center">
+    <h1>Loading</h1>
+    <img src="assets/icons/loading.gif"/>
+    <p>If this takes long please check your connection.</p>
+  </div>
+  <div ng-show="profileGroup" style="text-align:center">
+    <img src="../../assets/icons/person.svg" height="150px"/>
+    <h2>Username: {{profileUsername}}</h2>
+    <h3>Group: {{profileGroup}}<h3>
+  </div>
+</md-card>

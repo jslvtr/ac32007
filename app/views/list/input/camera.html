@@ -1,0 +1,44 @@
+<!--
+              Input requirements
+
+  - brand
+  - model_name
+  - price
+  - battery_type
+  - megapixels
+  - can_do_video
+  - has_flash
+  - resolution
+  - type_id
+  - storage_id
+
+-->
+<md-dialog>
+  <md-content ng-controller="listDialog">
+    <h3>Add new hobby</h3>
+
+    <form class="type-form" name="typeForm" ng-submit="submitNewType(hobby.name)">
+      <md-text-float label="Brand name" ng-model="camera.brand" required></md-text-float>
+      <md-text-float label="Model name" ng-model="camera.model_name" required></md-text-float>
+      <md-text-float label="Price" ng-model="camera.price" required></md-text-float>
+      <md-text-float label="Battery type" ng-model="camera.battery_type" required></md-text-float>
+      <md-text-float label="megapixels" ng-model="camera.megapixels" required></md-text-float>
+      <md-switch ng-model="camera.has_flash" aria-label="Switch 1">
+        Can take video: {{ data.cb1 }}
+      </md-switch>
+      <md-switch ng-model="camera.can_do_video" aria-label="Switch 1">
+        Has flash: {{ data.cb1 }}
+      </md-switch>
+      <md-text-float label="Resolution" ng-model="camera.resolution" required></md-text-float>
+
+      <!-- should show all options for camera -->
+      <md-text-float label="Camera Type" ng-model="camera.type_id" required></md-text-float>
+      <md-text-float label="Storage Type" ng-model="camera.storage_id" required></md-text-float>
+
+      <div class="md-actions" layout="horizontal" layout-align="end">
+        <md-button aria-label="null" ng-click="cancel()">Cancel</md-button>
+        <md-button class="md-primary" aria-label="null" ng-click="hide()" type="submit">Add</md-button>
+      </div>
+    </form>
+  </md-content>
+</md-dialog>

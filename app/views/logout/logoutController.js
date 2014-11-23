@@ -1,5 +1,5 @@
 angular.module('app.logoutController', [])
-  .controller('logoutController', function($scope, $cookies, $location, toastService, $rootScope) {
+  .controller('logoutController', function($scope, $http, $location, toastService, $rootScope) {
       $scope.title = "Logout";
 
       var json_user = localStorage.getItem('user');
@@ -10,18 +10,27 @@ angular.module('app.logoutController', [])
 
       //If there is a cookie that exists then delete it
       if($scope.sessionUser) {
-        localStorage.clear();
-        toastService.displayToast("You have logged out");
+          $http({
+            url: backend + '/auth/logout',
+            method: 'GET',
+            dataType: 'json',
+            data: '',
+            headers: {
+              'Authorization' : 'Bearer ' + $scope.sessionUser.access_token
+            }
 
-        $rootScope.$broadcast('logged-in', false);
-        $rootScope.isLoggedIn = false;
+          }).error(function(data, status, headers, config) {
+            console.log("Error logging user out");
+            toastService.displayToast("Error, Can't logout");
+            $location.path("/");
 
-        if(!$rootScope.$$phase) {
-          $rootScope.$apply();
-          $scope.$apply();
-        }
+          }).success(function (data, status, headers, config) {
+            localStorage.clear();
+            $rootScope.$broadcast('logged-in', false);
+            toastService.displayToast("You have logged out");
 
-        $location.path("/");
+            $location.path("/");
+          });
 
       } else { //Looks like the user was not even logged in, better let them know
         $rootScope.$broadcast('logged-in', false);

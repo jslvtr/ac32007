@@ -87,7 +87,16 @@ module.exports = function(app, passport) {
         projectUserRoutes.projectInviteTarget
     );
 
+    app.delete('/user/:owner/project/:project/remove/:user',                          //remove a user
+        passport.authenticate('bearer', { session: false }),
+        projectUserRoutes.projectRemoveTarget
+    );
+
     app.get('/user/:owner/project/:project/invite/:user/accept/:secret',
         projectUserRoutes.projectInviteAccept
+    );
+
+    app.get('/user/:owner/project/:project/members',
+        projectUserRoutes.projectGetMembers
     );
 };

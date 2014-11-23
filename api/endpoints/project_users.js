@@ -59,7 +59,6 @@ function projectInviteTarget (req, res) {
                         status: 420,
                         message: 'Can\'t create invite.'
                     });
-                    console.log(err);
                 } else if (result.rows["0"]["[applied]"] === true) {
                     var mailOptions = {
                         from: 'stuart <remonkou@gmail.com>', // sender address
@@ -76,8 +75,10 @@ function projectInviteTarget (req, res) {
                         if(error){
                             console.log(error);
                         }else{
-                            console.log('Message sent: ' + info.response);
-                            res.json(info.response);
+                            res.json({
+                                status  :   200,
+                                message :   "Email sent"
+                            });
                         }
                     });
 
@@ -188,8 +189,71 @@ function projectInviteAccept(req, res)  {
 
 }
 
+function projectRemoveTarget(req, res)  {
+    var owner       = req.params.owner;
+    var project     = req.params.project;
+    var user        = req.params.user;
+    var sessionUser = req.user;
+
+    if (sessionUser.username == owner) {
+        var query       = 'delete from agile_api.project_members where project_id = ? and owner_id = ? and user_id = ?;';
+        var params      = [ project, owner, user ];
+
+        configDB.client.execute(query, params, {prepare: true}, function(err, result) {
+                if (err) {
+                    res.json(HttpStatus.METHOD_FAILURE, {
+                        status: 420,
+                        message: 'Can\'t delete user.'
+                    });
+                } else {
+                    res.json(HttpStatus.NO_CONTENT, {
+                        status: 204,
+                        message: 'member deleted'
+                    });
+                }
+            }
+        );
+    }   else    {
+        res.json(HttpStatus.FORBIDDEN , {
+            status: 403,
+            message: 'Forbidden'
+        });
+    }
+}
+
+function projectGetMembers(req, res)    {
+    var owner       = req.params.owner;
+    var project     = req.params.project;
+    var query       = 'select user_id from agile_api.project_members where project_id = ? and owner_id = ? allow filtering;';
+    var params      = [ project, owner ];
+
+    configDB.client.execute(query, params, {prepare: true}, function(err, result) {
+            if (err) {
+                res.json(HttpStatus.METHOD_FAILURE, {
+                    status: 420,
+                    message: 'Can\'t get user.'
+                });
+            } else {
+                var jsonResult = [];
+
+                for (var row in result.rows) {
+                    jsonResult.push({
+                        title : result.rows[row].user_id
+                    });
+                }
+                res.json(HttpStatus.ACCEPTED, {
+                    status: 200,
+                    members: jsonResult
+                });
+            }
+        }
+    );
+
+}
 
 module.exports = {
     projectInviteTarget     :   projectInviteTarget,
-    projectInviteAccept     :   projectInviteAccept
+    projectInviteAccept     :   projectInviteAccept,
+    projectRemoveTarget     :   projectRemoveTarget,
+    projectGetMembers       :   projectGetMembers
 };

@@ -68,15 +68,15 @@
         </md-toolbar>
         <md-content  ng-controller="LeftCtrl" md-theme="green">
             <button class="menu-item menu-title" onClick="parent.location='#'" ink-ripple >Home</button>
-            <button class="menu-item menu-title" onClick="parent.location='#/about'" ink-ripple>About</button>
-            <div ng-show="isLoggedIn">
+            <div ng-hide="isLoggedIn">
                 <button class="menu-item menu-title" onClick="parent.location='#/login'" ink-ripple>Login</button>
                 <button class="menu-item menu-title" onClick="parent.location='#/register'" ink-ripple>Register</button>
+            </div>
+            <div ng-show="isLoggedIn">
                 <button class="menu-item menu-title" onClick="parent.location='#/profile'" ink-ripple>Profile</button>
+                <button class="menu-item menu-title" onClick="parent.location='#/logout'" ink-ripple>Logout</button>
             </div>
-            <div ng-hide="isLoggedIn">
-                <button class="menu-item menu-title" ng-show="isLoggedIn" onClick="parent.location='#/logout'" ink-ripple>Logout</button>
-            </div>
+            <button class="menu-item menu-title" onClick="parent.location='#/about'" ink-ripple>About</button>
         </md-content>
     </md-sidenav>
     <md-content ng-view class="ng-cloak" id="container2" flex></md-content>

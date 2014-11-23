@@ -1,5 +1,7 @@
 angular.module('app.indexController', [])
     .controller('appController', function($scope, $http, $location, $timeout, $mdSidenav, $mdDialog, authService) {
+        $scope.isLoggedIn = false;
+
         var json_user = localStorage.getItem('user');
         if (json_user !== null) {
             $scope.sessionUser = JSON.parse(json_user);
@@ -7,35 +9,8 @@ angular.module('app.indexController', [])
 
         if ($scope.sessionUser != null && $scope.sessionUser.access_token != null)  {
             $scope.isLoggedIn = true;
-
-            $http({
-                url: backend + '/user/' + $scope.sessionUser.username + '/profile',
-                method: 'GET',
-                dataType: 'json',
-                data: '',
-                headers: {
-                    'Content-Type': 'application/json; charset=utf-8',
-                    'Authorization': 'Bearer ' + $scope.sessionUser.access_token
-                }
-
-            }).error(function(data, status, headers, config) {
-                console.log("service says boo");
-                false;
-
-            }).success(function (data, status, headers, config) {
-                if (status === 401) { // Unauthorized
-                    $scope.isLoggedIn = false;
-                } else if ($scope.sessionUser.access_token == data.access_token)  {
-                    $scope.isLoggedIn = true;
-                } else {
-                    $scope.isLoggedIn = false;
-                }
-
-                $scope.$apply();
-            });
-
         } else  {
-            console.log("boo");
+            $scope.isLoggedIn = false;
         }
 
         $scope.toggleRight = function() {
@@ -44,6 +19,21 @@ angular.module('app.indexController', [])
 
         $scope.toggleLeft = function() {
             $mdSidenav('left').toggle();
+        };
+
+        $scope.checkLoggedIn = function () {
+            var json_user = localStorage.getItem('user');
+            if (json_user !== null) {
+                $scope.sessionUser = JSON.parse(json_user);
+            }
+
+            if ($scope.sessionUser != null && $scope.sessionUser.access_token != null) {
+                $scope.isLoggedIn = true;
+            } else {
+                $scope.isLoggedIn = false;
+            }
+
+            return $scope.isLoggedIn;
         };
 
         console.log($scope.isLoggedIn);

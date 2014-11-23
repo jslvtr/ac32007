@@ -3,7 +3,12 @@
 <md-toolbar>
   <div class="md-toolbar-tools">
     <div ng-include="'partials/back.html'"></div>
-    <span class="md-flex"><h1>{{message}}</h1></span>
+      <h1 class="md-toolbar-tools">
+          <span flex>{{message}}</span>
+          <md-button ng-click="addProject($event)" class="md-fab md-primary" style="background-color: #03a9f4;" aria-label="add project">
+            <md-icon icon="assets/icons/ic_add_24px.svg"></md-icon>
+          </md-button>
+      </h1>
   </div>
 </md-toolbar>
 

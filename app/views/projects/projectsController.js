@@ -42,20 +42,30 @@ angular.module('app.projectsController', ['ngRoute', 'ngMaterial'])
         //    $scope.loaded = true;
         //});
 
-        $scope.deleteProject = function (project) {
-            var confirm = $mdDialog.confirm()
-                .title('Would you like to delete this project?')
-                .content("If you confirm, you'll be deleting the project with title `" + project.title + "`")
-                .ariaLabel('Confirm Delete Project')
-                .ok('Delete Project')
-                .cancel('cancel')
-                .targetEvent(ev);
+        $scope.deleteProject = function (project, ev) {
 
-            $mdDialog.show(confirm).then(function() {
-                // TODO: Delete Project
+            $mdDialog.show(
+                $mdDialog.alert()
+                    .title('This is an alert title')
+                    .content('You can specify some description text in here.')
+                    .ariaLabel('Password notification')
+                    .ok('Got it!')
+                    .targetEvent(ev)
+            );
 
-            }, function() {
-            });
+            //var confirm = $mdDialog.confirm()
+            //    .title('Would you like to delete this project?')
+            //    .content("If you confirm, you'll be deleting the project with title `" + project.title + "`")
+            //    .ariaLabel('Confirm Delete Project')
+            //    .ok('Delete Project')
+            //    .cancel('cancel')
+            //    .targetEvent(ev);
+            //
+            //$mdDialog.show(confirm).then(function() {
+            //    // TODO: Delete Project
+            //
+            //}, function() {
+            //});
         };
 
         $scope.addEndpoint = function (project) {

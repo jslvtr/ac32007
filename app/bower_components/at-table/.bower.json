@@ -39,6 +39,5 @@
   },
   "_source": "git://github.com/samu/angular-table.git",
   "_target": "~1.0.4",
-  "_originalSource": "at-table",
-  "_direct": true
+  "_originalSource": "at-table"
 }

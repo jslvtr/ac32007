@@ -1,4 +1,7 @@
 <html ng-app="app">
+<meta charset="utf-8">
+<meta name="format-detection" content="telephone=no">
+<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
 <meta http-equiv="Content-type" content="text/html; charset=utf-8">
 <head>
     <title>Agile API</title>
@@ -80,7 +83,7 @@
             <button class="menu-item menu-title" onClick="parent.location='#/about'" ink-ripple>About</button>
         </md-content>
     </md-sidenav>
-    <md-content ng-view class="ng-cloak" id="container2" flex></md-content>
+    <md-content ng-view class="ng-cloak" id="container2"  layout-fill flex></md-content>
     <div ng-include="'partials/rightsidebar.html'" ng-show="isLoggedIn"></div>
   </section>
   </body>

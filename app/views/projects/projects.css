@@ -1,3 +1,13 @@
+.no-projects-warning {
+    background-color: #ffc107 !important;
+    color: white;
+    text-align: center;
+}
+
+.endpoint div {
+    float: left;
+}
+
 .endpoint h3 {
     font-weight: bold;
 }
@@ -7,8 +17,10 @@
 }
 
 .endpoint_type {
-    min-width: 5em;
-    min-height: 5em;
+    min-width: 1em;
+    min-height: 1em;
+    max-width: 4em;
+    max-height: 4em;
     text-align: center;
     background-color: #607d8b !important;
     float: left;

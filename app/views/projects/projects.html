@@ -7,10 +7,26 @@
   </div>
 </md-toolbar>
 
-<md-card ng-repeat="project in projects">
-    <md-toolbar md-theme="indigo">
+<div ng-hide="loaded" layout="row" layout-sm="column" layout-align="space-around">
+    <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+</div>
+
+<md-card class="no-projects-warning" ng-show="projects.length === 0 && loaded">
+    <h1>This user has no projects.</h1>
+</md-card>
+
+<md-card ng-repeat="project in projects" ng-show="projects.length !== 0">
+    <md-toolbar md-theme=""  md-scroll-shrink>
         <h1 class="md-toolbar-tools">
-            <span>{{ project.title }}</span>
+            <span flex>{{ project.title }}</span>
+
+            <md-button  ng-click="deleteProject(project)" class="md-fab md-primary" style="background-color: #efefef;" aria-label="delete">
+                <md-icon icon="assets/icons/ic_delete_24px.svg"></md-icon>
+            </md-button>
+
+            <md-button class="md-fab md-primary" style="background-color: #efefef;" aria-label="add endpoint" ng-click="addEndpoint(project)">
+                <md-icon icon="assets/icons/ic_add_24px.svg"></md-icon>
+            </md-button>
         </h1>
     </md-toolbar>
 
@@ -22,14 +38,13 @@
                         <md-button class="md-fab md-primary md-tile-left endpoint_type" aria-label="endpoint" ng-class="'endpoint_type_' + endpoint.type.toLowerCase()">
                             {{ endpoint.type }}
                         </md-button>
-                        <!--<div class="md-tile-left endpoint_type" ng-class="'endpoint_type_' + endpoint.type.toLowerCase()">-->
-                            <!--<h1>{{ endpoint.type }}</h1>-->
-                        <!--</div>-->
-                        <h3>{{ endpoint.title }}</h3>
-                        <h4>{{ endpoint.url }}</h4>
-                        <p>
-                            {{ endpoint.description }}
-                        </p>
+                        <div>
+                            <h3>{{ endpoint.title }}</h3>
+                            <h4>{{ endpoint.url }}</h4>
+                            <p>
+                                {{ endpoint.description }}
+                            </p>
+                        </div>
                     </div>
                 </md-item-content>
                 <md-divider ng-if="!$last"></md-divider>

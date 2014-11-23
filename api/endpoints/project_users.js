@@ -12,7 +12,7 @@ var transporter = nodemailer.createTransport({
 });
 
 function projectInviteTarget (req, res) {
-    //console.log("inviting user " + req.params.user + " to project " + req.params.project + " owned by " + req.params.owner);
+
     var owner       = req.params.owner;
     var project     = req.params.project;
     var user        = req.params.user;
@@ -69,8 +69,6 @@ function projectInviteTarget (req, res) {
                     };
 
 
-
-                    // send mail with defined transport object
                     transporter.sendMail(mailOptions, function(error, info){
                         if(error){
                             console.log(error);
@@ -97,28 +95,6 @@ function projectInviteTarget (req, res) {
             message: 'Forbidden'
         });
     }
-    /*
-    var mailOptions = {
-        from: 'stuart <remonkou@gmail.com>', // sender address
-        to: 'yagocarballo@gmail.com', // list of receivers
-        subject: 'Hello Yago ✔', // Subject line
-        text: 'This as a message send from nodejs', // plaintext body
-        html: '<b>This as a message send from nodejs ✔</b>' // html body
-    };
-
-
-
-// send mail with defined transport object
-    transporter.sendMail(mailOptions, function(error, info){
-        if(error){
-            console.log(error);
-        }else{
-            console.log('Message sent: ' + info.response);
-            res.json(info.response);
-        }
-    });
-
-     */
 }
 
 function projectInviteAccept(req, res)  {

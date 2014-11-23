@@ -1,0 +1,100 @@
+<md-toolbar>
+    <div class="md-toolbar-tools">
+      <div ng-include="'partials/back.html'"></div>
+      <span class="md-flex"><h1>{{title}}</h1></span>
+    </div>
+
+  </md-toolbar>
+
+
+
+<div md-show="isLoggedIn">
+<md-card md-hide="subject == 'undefined'" class="md-padding" >
+  <md-content >
+    <h1>{{output.length}} Results for {{subject}}</h1>
+
+    <md-button class="md-fab md-primary" ng-hide="subject == 'countries'" md-theme="green" ng-controller="listDialog"  ng-click="dialogAdd($event, subject)" aria-label="Profile">
+      <md-icon icon="" style="width: 24px; height: 24px;" >add</md-icon>
+    </md-button>
+  </md-content>
+
+  <md-content class="md-padding">
+    <div ng-show="subject == 'camera'">
+    <table at-table at-list="output" class="table table-striped">
+      <thead></thead>
+      <tbody>
+        <tr>
+          <td at-implicit at-attribute="brand" at-sortable at-initial-sorting="asc"></td>
+          <td at-implicit at-attribute="model_name" ></td>
+          <td at-implicit at-attribute="battery_type" at-sortable ></td>
+          <td at-implicit at-attribute="megapixels" at-sortable ></td>
+          <td at-implicit at-attribute="can_do_video" at-sortable ></td>
+          <td at-implicit at-attribute="has_flash" at-sortable ></td>
+          <td at-implicit at-attribute="resolution" at-sortable ></td>
+          <td at-implicit at-attribute="type_id" at-sortable ></td>
+          <td at-implicit at-attribute="storage_id" at-sortable ></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+              <div ng-show="subject == 'type' || subject == 'countries' || subject == 'storage' || subject == 'hobby' || subject == 'lens'">
+                <table at-table at-list="output" class="table table-striped">
+                  <thead></thead>
+                  <tbody>
+                    <tr>
+                      <td at-implicit at-attribute="name" at-sortable at-initial-sorting="asc"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div ng-show="subject == 'profession'">
+                <table at-table at-list="output" class="table table-striped">
+                  <thead></thead>
+                  <tbody>
+                    <tr>
+                      <td at-implicit at-attribute="title" at-sortable at-initial-sorting="asc"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div ng-show="subject == 'sale'">
+                <table at-table at-list="output" class="table table-striped">
+                  <thead></thead>
+                  <tbody>
+                    <tr>
+                      <td at-implicit at-attribute="camera_id" at-sortable at-initial-sorting="asc"></td>
+                      <td at-implicit at-attribute="store_id" at-sortable at-initial-sorting="asc"></td>
+                      <td at-implicit at-attribute="date_purchased" at-sortable at-initial-sorting="asc"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div ng-show="subject == 'customer'">
+                <table at-table at-list="output" class="table table-striped">
+                  <thead></thead>
+                  <tbody>
+                    <tr>
+                      <td at-implicit at-attribute="first_name" at-sortable at-initial-sorting="asc"></td>
+                      <td at-implicit at-attribute="last_name" at-sortable at-initial-sorting="asc"></td>
+                      <td at-implicit at-attribute="date_of_birth" at-sortable at-initial-sorting="asc"></td>
+                      <td at-implicit at-attribute="gender" at-sortable at-initial-sorting="asc"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+
+
+              <md-button ng-hide="subject" class="md-raised md-warn" aria-label="oh" ng-click="dialogBasic($event, out)">Delete</md-button>
+            </md-card>
+          </div>
+        </md-item-content>
+      </md-item>
+    </md-list>
+  </md-content>
+</md-card>
+</div>

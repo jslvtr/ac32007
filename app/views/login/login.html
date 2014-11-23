@@ -1,0 +1,19 @@
+
+<md-toolbar>
+    <div class="md-toolbar-tools">
+      <div ng-include="'partials/back.html'"></div>
+      <span class="md-flex"><h1>{{message}}</h1></span>
+    </div>
+  </md-toolbar>
+  <md-card>
+    <h2 style="text-align:center">Please enter your login details</h2>
+    <section layout="horizontal" layout-sm="horizontal" layout-align="center center">
+        <md-content >
+        <form class="login-form" name="loginform" ng-submit="submit()" >
+          <md-text-float label="username" ng-model="login.username" placeholder="username" required autofocus></md-text-float>
+          <md-text-float label="password" ng-model="login.password" type="password" placeholder="password" required></md-text-float>
+          <md-button class="md-raised md-primary" aria-label="login button" type="submit">Login</md-button>
+        </form>
+      </section>
+      <br>
+  </md-card>

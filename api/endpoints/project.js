@@ -1,4 +1,3 @@
-//var bodyparser = require('body-parser');
 var configDB = require('../config/database.js');
 var HttpStatus = require('http-status-codes');
 

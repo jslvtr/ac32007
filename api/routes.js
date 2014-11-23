@@ -1,7 +1,8 @@
-var apiRoutes        = require('./endpoints/api.js');
-var authRoutes       = require('./endpoints/auth.js');
-var userRoutes       = require('./endpoints/user.js');
-var projectRoutes    = require ('./endpoints/project.js');
+var apiRoutes           = require('./endpoints/api.js');
+var authRoutes          = require('./endpoints/auth.js');
+var userRoutes          = require('./endpoints/user.js');
+var projectRoutes       = require('./endpoints/project.js');
+var projectUserRoutes   = require('./endpoints/project_users.js');
 
 module.exports = function(app, passport) {
 
@@ -64,5 +65,25 @@ module.exports = function(app, passport) {
     app.get('/user/:user/project/:id',                          //Return project data
         passport.authenticate('bearer', { session: false }),
         projectRoutes.projectGetID
+    );
+
+
+    /*
+                Project Users
+
+            Handling of users of projects
+            Includes:
+                - Inviting of users
+                - Gettings users of defined project
+     */
+    /*
+    app.get('/user/:user/project/:id/invite/:invite',                          //Display the invite acceptance page to confirm invite
+        passport.authenticate('bearer', { session: false }),
+        projectRoutes.projectGetID
+    );
+    */
+    app.post('/user/:owner/project/:project/invite/:user',                          //Invite a user
+        passport.authenticate('bearer', { session: false }),
+        projectUserRoutes.projectInviteTarget
     );
 };

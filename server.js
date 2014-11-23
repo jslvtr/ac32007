@@ -28,6 +28,13 @@ app.use(bodyParser.json()); // for parsing application/json
 //app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 //app.use(multer); // for parsing multipart/form-data
 
+// Cors headers
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
 // routes
 require('./api/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 

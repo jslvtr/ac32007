@@ -13,6 +13,10 @@ angular.module('app.indexController', [])
             $scope.isLoggedIn = false;
         }
 
+        $scope.$on('logged-in', function(event, isLoggedIn) {
+            $scope.isLoggedIn = isLoggedIn;
+        });
+
         $scope.toggleRight = function() {
             $mdSidenav('right').toggle();
         };

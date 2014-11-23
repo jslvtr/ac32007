@@ -38,7 +38,7 @@ angular.module('app.loginController', [])
             $scope.user = data.user.user;
 
             localStorage.setItem('user', JSON.stringify(data.user));
-            $rootScope.isLoggedIn = true;
+            $rootScope.$broadcast('logged-in', true);
             $location.path("/profile");
 
           } else {

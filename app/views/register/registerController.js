@@ -1,6 +1,6 @@
 'use strict';
 angular.module('app.registerController', ['ngRoute', 'ngCookies'])
-    .controller('registerController', function($scope, $http, $location){
+    .controller('registerController', function($scope, $http, $location, $rootScope){
         $scope.message="Register";
         $scope.submit = function(){
             var password    = $scope.form.password;
@@ -36,6 +36,7 @@ angular.module('app.registerController', ['ngRoute', 'ngCookies'])
                 if(status === 201){
                     $scope.registerSuccess = status;
                     localStorage.setItem('user', JSON.stringify(data.user));
+                    $rootScope.$broadcast('logged-in', true);
                     $location.path("/profile");
 
                 } else if(status === 204){

@@ -13,6 +13,9 @@ angular.module('app.logoutController', [])
         localStorage.clear();
         toastService.displayToast("You have logged out");
 
+        $rootScope.$broadcast('logged-in', false);
+        $rootScope.isLoggedIn = false;
+
         if(!$rootScope.$$phase) {
           $rootScope.$apply();
           $scope.$apply();
@@ -21,6 +24,8 @@ angular.module('app.logoutController', [])
         $location.path("/");
 
       } else { //Looks like the user was not even logged in, better let them know
+        $rootScope.$broadcast('logged-in', false);
+        $rootScope.isLoggedIn = false;
         $location.path("/");
         toastService.displayToast("You are already logged out");
       }

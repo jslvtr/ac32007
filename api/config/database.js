@@ -32,6 +32,11 @@ function db_schema (delete_all) {
 
         );
     }
+    var projectTable = 'CREATE TABLE if not exists agile_api.projects ('
+        +   'title varchar,'
+        +   'description varchar,'
+        +   'owner varchar,'
+        +   'PRIMARY KEY (title, owner));';
 
     // Creates the KeySpace
     client.execute(

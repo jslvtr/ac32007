@@ -49,7 +49,6 @@ module.exports = function(app, passport) {
         passport.authenticate('bearer', { session: false }),
         projectRoutes.projectGet
     );
-
     app.post('/project',                                        //Creates a new project with that user as the creator
         passport.authenticate('bearer', { session: false }),
         projectRoutes.projectAdd

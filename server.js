@@ -23,6 +23,8 @@ passport.use(new FacebookStrategy(configAuth.facebook, configPassport.facebookHa
 // set up our express application
 app.use(morgan('dev')); // log every request to the console
 app.use(passport.initialize());
+app.set('views', __dirname + '/views');
+app.engine('html', require('ejs').renderFile);
 
 app.use(bodyParser.json()); // for parsing application/json
 //app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded

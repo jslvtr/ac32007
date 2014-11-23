@@ -86,4 +86,8 @@ module.exports = function(app, passport) {
         passport.authenticate('bearer', { session: false }),
         projectUserRoutes.projectInviteTarget
     );
+
+    app.get('/user/:owner/project/:project/invite/:user/accept/:secret',
+        projectUserRoutes.projectInviteAccept
+    );
 };

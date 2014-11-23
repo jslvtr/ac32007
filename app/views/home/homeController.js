@@ -1,19 +1,21 @@
 angular.module('app.homeController', [])
+    .controller('homeController', function($scope, $http) {
+        $scope.title = "Home";
 
+        $http({
+            url: backend + '/',
+            method: 'GET',
+            dataType: 'json',
+            data: '',
+            headers: {}
 
-.controller('homeController', function($scope, $http) {
-  $scope.title = "Home";
-  $.ajax({
-          type: "get",
-          url: backend + "/",
-          //beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
-          }).done(function(data){
-            //something
-          }).fail(function(data){
+        }).error(function(data, status, headers, config) {
             console.log("service says boo");
             false;
-          }).success(function(data){
-  			$scope.data = data;
-                $scope.online = true;
-          });
-});
+
+        }).success(function (data, status, headers, config) {
+            $scope.data = data;
+            $scope.online = true;
+        });
+    }
+);

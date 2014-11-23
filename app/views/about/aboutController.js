@@ -7,9 +7,7 @@ angular.module('app.aboutController', [])
         method: 'GET',
         dataType: 'json',
         data: '',
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8'
-        }
+        headers: {}
 
       }).error(function(data, status, headers, config) {
         console.log("failed to get about data");

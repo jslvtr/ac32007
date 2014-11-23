@@ -78,6 +78,15 @@ function projectGetID  (req, res)  {
         });
     }
 }
+
+/*
+            projectUpdate
+
+        Updates the description of the project
+        Gets the title and owner from url and description from header
+        TODO Change the project name, limited to access by owner
+
+ */
 function projectUpdate  (req, res)  {
 
     //Gets the information from the uri
@@ -117,6 +126,12 @@ function projectUpdate  (req, res)  {
     }
 }
 
+/*
+        projectDelete
+
+    Delete the project from the users project list
+
+ */
 
 function projectDelete  (req, res)  {
 
@@ -153,7 +168,13 @@ function projectDelete  (req, res)  {
 
 
 }
+/*
+        projectAdd
 
+        Adds a new project for that user
+
+
+ */
 
 function projectAdd (req, res)  {
     var title       = req.body.title;

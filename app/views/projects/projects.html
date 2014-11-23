@@ -16,15 +16,15 @@
 </md-card>
 
 <md-card ng-repeat="project in projects" ng-show="projects.length !== 0">
-    <md-toolbar md-theme=""  md-scroll-shrink>
+    <md-toolbar md-theme="">
         <h1 class="md-toolbar-tools">
             <span flex>{{ project.title }}</span>
 
-            <md-button  ng-click="deleteProject(project, $event)" class="md-fab md-primary" style="background-color: #efefef;" aria-label="delete">
+            <md-button  ng-click="deleteProject(project, $index, $event)" class="md-fab md-primary" style="background-color: #efefef;" aria-label="delete">
                 <md-icon icon="assets/icons/ic_delete_24px.svg"></md-icon>
             </md-button>
 
-            <md-button class="md-fab md-primary" style="background-color: #efefef;" aria-label="add endpoint" ng-click="addEndpoint(project)">
+            <md-button ng-click="addEndpoint(project, $index, $event)" class="md-fab md-primary" style="background-color: #efefef;" aria-label="add endpoint">
                 <md-icon icon="assets/icons/ic_add_24px.svg"></md-icon>
             </md-button>
         </h1>
@@ -52,3 +52,6 @@
         </md-list>
     </md-content>
 </md-card>
+
+<br />
+<br />

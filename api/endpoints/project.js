@@ -10,6 +10,49 @@ var HttpStatus = require('http-status-codes');
 
 
  */
+
+function projectGet  (req, res)  {
+
+    //Gets the information from the uri
+    var owner = req.params.user;
+    console.log("owner: " + owner);
+    var query = 'select title, description from agile_api.projects where owner = ? allow filtering;';
+    var params = [ owner ];
+
+
+    configDB.client.execute(query, params, {prepare: true}, function(err, result) {
+            if (err) {
+                res.json(HttpStatus.METHOD_FAILURE, {
+                    status: 420,
+                    message: 'Can\'t find project.'
+                });
+            }   else if (result.rows["0"]!= null) {
+                var jsonResult = [];
+
+                for (var row in result.rows) {
+                    jsonResult.push({
+                                title : result.rows[row].title,
+                                description : result.rows[row].description,
+                                owner :   result.rows[row].owner
+                    });
+                }
+                res.json(HttpStatus.ACCEPTED, {
+                    status: 200,
+                    projects: jsonResult
+                });
+
+            }   else {
+                res.json(HttpStatus.NOT_FOUND , {
+                    status: 404,
+                    project : "Project not found"
+                });
+            }
+        }
+    );
+
+}
+
+
 function projectGetID  (req, res)  {
 
     //Gets the information from the uri
@@ -162,5 +205,6 @@ module.exports = {
     projectAdd      :   projectAdd,
     projectDelete   :   projectDelete,
     projectUpdate   :   projectUpdate,
-    projectGetID    :   projectGetID
+    projectGetID    :   projectGetID,
+    projectGet      :   projectGet
 };

@@ -45,12 +45,16 @@ module.exports = function(app, passport) {
 
     */
 
-//app.get('/project', projectRoutes.projectGet);                //Gets all projects of that user
+    app.get('/user/:user/project',                              //Gets all projects of that user
+        passport.authenticate('bearer', { session: false }),
+        projectRoutes.projectGet
+    );
+
     app.post('/project',                                        //Creates a new project with that user as the creator
         passport.authenticate('bearer', { session: false }),
         projectRoutes.projectAdd
     );
-    app.put('/user/:user/project/:id',                                     //Updates project data
+    app.put('/user/:user/project/:id',                          //Updates project data
         passport.authenticate('bearer', { session: false }),
         projectRoutes.projectUpdate
     );

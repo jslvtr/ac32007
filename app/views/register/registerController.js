@@ -1,43 +1,49 @@
 'use strict';
-
 angular.module('app.registerController', ['ngRoute', 'ngCookies'])
+    .controller('registerController', function($scope, $http, $location){
+        $scope.message="Register";
+        $scope.submit = function(){
+            var password    = $scope.form.password;
+            var hash        = CryptoJS.SHA512(password).toString();
 
+            $http({
+                url: backend + '/auth/register',
+                method: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({
+                    full_name: $scope.form.full_name,
+                    email    : $scope.form.email,
+                    username : $scope.form.username,
+                    password : hash
+                }),
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8'
+                }
 
-.controller('registerController', function($scope, $cookies, $location){
- $scope.message="Register";
- $scope.submit = function(){
-     console.log($scope.form);
-     var password = $scope.form.password;
+            }).error(function(data, status, headers, config) {
+                if(status === 403) {
+                    $scope.registerError = status;
 
-   var hash = CryptoJS.SHA512(password).toString();
-   $.ajax({
-     type:"POST",
-     url: backend+"/register",
-     //beforeSend: function (xhr) {xhr.setRequestHeader ("Authorization", $cookies.monster_cookie)},
-     data: JSON.stringify({username: $scope.form.username, password: hash}),
-     success: console.log(JSON.stringify({username: $scope.form.username, password: hash})),//$scope.status = data.status,
-     dataType: "JSON"
+                }  else if (data.status === 409){
+                    $scope.formError = status + " - Username already exists.";
+                }
 
-   }).done(function(data){
-        console.log("done");
-     //$scope.status=data.status;
-     //$scope.message=data.message;
+                //console.log("oh it failed " + data.status);
+                $scope.registerStatus = status;
+                console.log("error");
 
-   }).error(function(data){
-     //console.log("oh it failed " + data.status);
-     $scope.registerStatus = data.status;
-       console.log("error");
-     }).success(function(data){
-     if(data.status == "200"){
-       $scope.registerSuccess = data.status;
-         $scope.$apply(function() { $location.path("/login"); });
-     } else if(data.status == "403") {
-       $scope.registerError = data.status;
-     }  else if (data.status == "409"){
-        $scope.formError = data.status + " - Username already exists.";
-     }
-     $scope.$apply();
-    console.log(data.status);
-   });
- }
-});
+            }).success(function (data, status, headers, config) {
+                if(status === 201){
+                    $scope.registerSuccess = status;
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    $location.path("/profile");
+
+                } else if(status === 204){
+                    $scope.formError = status + " - Username already exists.";
+                }
+
+                console.log(status);
+            });
+        }
+    }
+);

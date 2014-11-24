@@ -37,20 +37,20 @@
             <h2 class="md-toolbar-tools md-toolbar-tools-bottom">
                 <span flex></span>
 
-                <md-button  ng-click="displayMembers(project, $index, $event)" class="md-fab md-primary" style="background-color: #efefef;" aria-label="members">
-                    <md-icon icon="assets/icons/ic_account_child_24px.svg"></md-icon>
-                </md-button>
-
-                <md-button  ng-click="editProject(project, $index, $event)" class="md-fab md-primary" style="background-color: #efefef;" aria-label="edit">
+                <md-button  ng-click="editProject(project, $index, $event)" ng-show="showSection($index) === 'endpoints'" class="md-fab md-primary" style="background-color: #efefef;" aria-label="edit">
                     <md-icon icon="assets/icons/ic_launch_24px.svg"></md-icon>
                 </md-button>
 
-                <md-button  ng-click="deleteProject(project, $index, $event)" class="md-fab md-primary" style="background-color: #efefef;" aria-label="delete">
+                <md-button  ng-click="deleteProject(project, $index, $event)" ng-show="showSection($index) === 'endpoints'" class="md-fab md-primary" style="background-color: #efefef;" aria-label="delete">
                     <md-icon icon="assets/icons/ic_delete_24px.svg"></md-icon>
                 </md-button>
 
-                <md-button ng-click="addEndpoint(project, $index, $event)" class="md-fab md-primary" style="background-color: #efefef;" aria-label="add endpoint">
+                <md-button ng-click="addEndpoint(project, $index, $event)" ng-show="showSection($index) === 'endpoints'" class="md-fab md-primary" style="background-color: #efefef;" aria-label="add endpoint">
                     <md-icon icon="assets/icons/ic_add_24px.svg"></md-icon>
+                </md-button>
+
+                <md-button  ng-click="displayMembers(project, $index, $event)" class="md-fab md-primary" style="background-color: #efefef;" aria-label="members">
+                    <md-icon icon="assets/icons/ic_account_child_24px.svg"></md-icon>
                 </md-button>
             </h2>
         </md-toolbar>
@@ -78,6 +78,7 @@
                     <md-divider ng-if="!$last"></md-divider>
                 </md-item>
             </md-list>
+            <br />
         </md-content>
 
         <md-content class="animate-switch" ng-switch-when="members">
@@ -97,6 +98,19 @@
                     <md-divider ng-if="!$last"></md-divider>
                 </md-item>
             </md-list>
+
+            <md-card layout="row" layout-align="center" class="md-whiteframe-z2">
+                <span flex></span>
+                <span flex></span>
+                <span flex></span>
+                <md-text-float class="invite-box" label="Invite user" ng-model="newMember"> </md-text-float>
+                <span flex></span>
+                <md-button class="md-primary" md-theme="cyan">Invite</md-button>
+                <span flex></span>
+                <span flex></span>
+                <span flex></span>
+            </md-card>
+            <br />
         </md-content>
     </md-card>
     <br />

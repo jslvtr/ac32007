@@ -53,8 +53,8 @@ function projectGetID  (req, res)  {
                         message: 'Can\'t create project.'
                     });
                 }   else if (result.rows["0"]!= null) {
-                    res.json(HttpStatus.CREATED, {
-                        status: 201,
+                    res.json(HttpStatus.ACCEPTED, {
+                        status: 200,
                         project : {
                             title : result.rows[0].title,
                             description : result.rows[0].description,
@@ -203,7 +203,7 @@ function projectAdd (req, res)  {
                     });
                 } else {
                     res.json(HttpStatus.NO_CONTENT, {
-                        status: 204,
+                        status: 409,
                         message: 'Project already exists.'
                     });
                 }

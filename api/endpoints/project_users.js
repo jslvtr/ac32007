@@ -1,4 +1,5 @@
 var configDB = require('../config/database.js');
+var configEmail = require('../config/email.js');
 var HttpStatus = require('http-status-codes');
 var nodemailer = require('nodemailer');
 var hat      = require('hat');
@@ -6,8 +7,8 @@ var hat      = require('hat');
 var transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
-        user: 'remonkou@gmail.com',
-        pass: '********'
+        user: configEmail.email,
+        pass: configEmail.password
     }
 });
 

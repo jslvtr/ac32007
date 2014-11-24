@@ -29,7 +29,7 @@
         <h1>This user has no projects.</h1>
     </md-card>
 
-    <md-card ng-repeat="project in projects | orderBy:title" ng-show="projects.length !== 0" ng-switch on="showSection($index)">
+    <md-card ng-repeat="project in projects" ng-show="projects.length !== 0" ng-switch on="showSection($index)">
         <md-toolbar md-theme="" class="md-medium-tall">
             <h1 class="md-toolbar-tools">
                 <span flex>{{ project.title }}</span>
@@ -37,8 +37,12 @@
             <h2 class="md-toolbar-tools md-toolbar-tools-bottom">
                 <span flex></span>
 
-                <md-button  ng-click="displayMembers(project, $index, $event)" class="md-fab md-primary" style="background-color: #efefef;" aria-label="delete">
+                <md-button  ng-click="displayMembers(project, $index, $event)" class="md-fab md-primary" style="background-color: #efefef;" aria-label="members">
                     <md-icon icon="assets/icons/ic_account_child_24px.svg"></md-icon>
+                </md-button>
+
+                <md-button  ng-click="editProject(project, $index, $event)" class="md-fab md-primary" style="background-color: #efefef;" aria-label="edit">
+                    <md-icon icon="assets/icons/ic_launch_24px.svg"></md-icon>
                 </md-button>
 
                 <md-button  ng-click="deleteProject(project, $index, $event)" class="md-fab md-primary" style="background-color: #efefef;" aria-label="delete">

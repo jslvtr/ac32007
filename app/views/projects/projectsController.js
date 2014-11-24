@@ -90,16 +90,46 @@ angular.module('app.projectsController', ['ngRoute', 'ngMaterial', 'ngAnimate'])
         };
 
         $scope.addProject = function (ev) {
+            $scope.index = -1;
+            $scope.action = 'add';
+            $scope.title = '';
+            $scope.description = '';
+
             $mdDialog.show({
                 controller: DialogController,
                 templateUrl: 'views/projects/addProjectDialog.html',
-                targetEvent: ev
+                targetEvent: ev,
+                bindToController : true,
+                locals: {
+                    parentScope : $scope
+                }
             })
             .then(function(answer) {
-                $scope.alert = 'You said the information was "' + answer + '".';
+                console.log(answer);
             }, function() {
-                $scope.alert = 'You cancelled the dialog.';
             });
+        };
+
+        $scope.editProject = function (project, index, ev) {
+            $scope.index = index;
+            $scope.action = 'edit';
+            $scope.title = project.title;
+            $scope.description = project.description;
+
+            $mdDialog.show({
+                controller: DialogController,
+                templateUrl: 'views/projects/addProjectDialog.html',
+                targetEvent: ev,
+                bindToController : true,
+                locals: {
+                    parentScope : $scope
+                }
+            })
+                .then(function(answer) {
+                    $scope.alert = 'You said the information was "' + answer + '".';
+                }, function() {
+                    $scope.alert = 'You cancelled the dialog.';
+                });
         };
 
         $scope.openEndpoint = function (event, index, endpoint) {
@@ -213,9 +243,16 @@ function refreshProjects ($scope, $http, toastService) {
     });
 }
 
-function DialogController($rootScope, $scope, $http, $mdDialog, toastService) {
-    $scope.title = '';
-    $scope.description = '';
+function DialogController($rootScope, $scope, $http, $mdDialog, toastService, parentScope) {
+    $scope.index = parentScope.index;
+    $scope.action = parentScope.action;
+    $scope.title = parentScope.title;
+    $scope.description = parentScope.description;
+
+    var url = '/project';
+    if ($scope.action == 'edit') {
+        url = '/user/' + parentScope.sessionUser.username + '/project/' + $scope.title;
+    }
 
     $scope.hide = function () {
         $mdDialog.hide();
@@ -226,29 +263,23 @@ function DialogController($rootScope, $scope, $http, $mdDialog, toastService) {
     };
 
     $scope.submitProject = function () {
-        var json_user = localStorage.getItem('user');
-        $scope.sessionUser = null;
-        if (json_user) {
-            $scope.sessionUser  = JSON.parse(json_user);
-        }
-
         $http({
-            url: backend + '/project',
-            method: 'POST',
+            url: backend + url,
+            method: ($scope.action == 'add') ? 'POST' : 'PUT',
             dataType: 'json',
             data: JSON.stringify({
                 title : $scope.title,
                 description : $scope.description,
-                owner : $scope.sessionUser.username
+                owner : parentScope.sessionUser.username
             }),
             headers: {
                 'Content-Type' : 'application/json; charset=utf-8',
-                'Authorization' : 'Bearer ' + $scope.sessionUser.access_token
+                'Authorization' : 'Bearer ' + parentScope.sessionUser.access_token
             }
 
         }).error(function(data, status, headers, config) {
             if (status === 409) {
-                toastService.displayToast("Can't create project");
+                toastService.displayToast("Can't "+$scope.action+" project");
             } else {
                 toastService.displayToast("Unknown Error");
                 console.error(data);
@@ -259,17 +290,16 @@ function DialogController($rootScope, $scope, $http, $mdDialog, toastService) {
 
         }).success(function (data, status, headers, config) {
             if (status === 201) {
-                var json_projects = localStorage.getItem('projects');
-                if (json_projects) {
-                    $scope.projects  = JSON.parse(json_projects);
+                if ($scope.action == 'add') {
+                    parentScope.projects.splice(parentScope.projects.length, 0, data.project);
+                    localStorage.setItem('projects', JSON.stringify(parentScope.projects));
+                } else {
+                    parentScope.projects[$scope.index].title = $scope.title;
+                    parentScope.projects[$scope.index].description = $scope.description;
                 }
 
-                $scope.projects.splice($scope.projects.length, 0, data.project);
-                localStorage.setItem('projects', JSON.stringify($scope.projects));
-                $rootScope.$broadcast('updated-projects', $scope.projects);
-
             } else {
-                toastService.displayToast("Error creating a project.");
+                toastService.displayToast("Error "+$scope.action+"ing a project.");
                 console.error(status + ' - ' + data);
             }
 

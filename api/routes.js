@@ -101,7 +101,7 @@ module.exports = function(app, passport) {
         projectUserRoutes.projectGetMembers
     );
 
-    app.post('/user/:owner/project/:project/endpoints',
+    app.post('/user/:owner/project/:project/endpoint',
         passport.authenticate('bearer', { session: false }),
         endpointRoutes.endpointAdd
     )

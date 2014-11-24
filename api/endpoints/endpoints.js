@@ -17,33 +17,44 @@ function endpointAdd(req, res)  {
             if (err) {
                 res.json(HttpStatus.METHOD_FAILURE, {
                     status: 420,
-                    message: 'Can\'t find user.'
+                    message: 'Cant find user.'
                 });
             } else {
                 if (result.rows[0].user_id == sessionUser.username)  {
-                    var query       = 'insert into agile_api.projects (title, description, owner) values (?, ?, ?) IF NOT EXISTS;';
-                    var params      = [ title, description, owner ];
+                    var token_id = hat();
+                    var title = req.body.title;
+                    var description = req.body.description;
+                    var url = req.body.urlpath;
+                    var headers = Array.prototype.slice.call(req.body.headers);
+                    //headers.push(req.body.headers);
+                    //headers = JSON.stringify(headers);
+
+                    var url_params = Array.prototype.slice.call(req.body.url_params);
+                    var method_type = req.body.method_type;
+                    var body = JSON.stringify(req.body.body);
+                    var body_type = req.body.body_type;
+
+                    console.log("before prep");
+                    var query       = 'insert into agile_api.endpoints (project_id, owner_id, token_id, title, description, url, headers, url_params, method_type, body, body_type) values (?,?,?,?,?,?,?, ?, ?, ?, ?) IF NOT EXISTS;';
+                    var params      = [ project, owner, token_id, title, description, url, headers, url_params, method_type, body, body_type ];
 
                     configDB.client.execute(query, params, {prepare: true}, function(err, result) {
                             if (err) {
                                 res.json(HttpStatus.METHOD_FAILURE, {
                                     status: 420,
-                                    message: 'Can\'t create project.'
+                                    message: 'Cant create endpoint.'
                                 });
+                                console.log(err);
                             } else if (result.rows["0"]["[applied]"] === true) {
                                 res.json(HttpStatus.CREATED, {
                                     status: 201,
-                                    message: 'Project registered',
-                                    project : {
-                                        title : title,
-                                        description : description,
-                                        owner :   owner
-                                    }
+                                    message: 'endpoint created',
+                                    error:err
                                 });
                             } else {
                                 res.json(HttpStatus.NO_CONTENT, {
                                     status: 204,
-                                    message: 'Project already exists.'
+                                    message: 'endpoint already exists.'
                                 });
                             }
                         }

@@ -82,3 +82,27 @@
 .endpoint_type_propfind {
     background-color: #607d8b !important;
 }
+
+
+/* Animation flip */
+.animate-switch-container {
+}
+
+.animate-switch {
+}
+
+.animate-switch.ng-animate {
+    -webkit-transform: rotateY(-180deg);
+    -moz-transform: rotateY(-180deg);
+    -o-transform: rotateY(-180deg);
+    -ms-transform: rotateY(-180deg);
+    transform: rotateY(-180deg);
+    z-index: 0;
+}
+
+.animate-switch.ng-leave.ng-leave-active,
+.animate-switch.ng-enter {
+}
+.animate-switch.ng-leave,
+.animate-switch.ng-enter.ng-enter-active {
+}

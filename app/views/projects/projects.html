@@ -1,62 +1,100 @@
 <link rel="stylesheet" href="views/projects/projects.css" type="text/css" />
 
-<md-toolbar>
-  <div class="md-toolbar-tools">
+<md-toolbar class="md-medium-tall app-toolbar md-whiteframe-z1" style="z-index: 3;">
+    <div class="md-toolbar-tools">
     <div ng-include="'partials/back.html'"></div>
       <h1 class="md-toolbar-tools">
           <span flex>{{message}}</span>
-          <md-button ng-click="addProject($event)" class="md-fab md-primary" style="background-color: #03a9f4;" aria-label="add project">
-            <md-icon icon="assets/icons/ic_add_24px.svg"></md-icon>
-          </md-button>
       </h1>
-  </div>
+    </div>
+    <span flex></span>
+    <h2 class="md-toolbar-tools md-toolbar-tools-bottom">
+        <span flex></span>
+        <md-button ng-click="addProject($event)" class="md-fab md-primary" style="background-color: #8bc34a;" aria-label="add project">
+            <md-icon icon="assets/icons/ic_add_24px.svg"></md-icon>
+        </md-button>
+    </h2>
 </md-toolbar>
 
-<div ng-hide="loaded" layout="row" layout-sm="column" layout-align="space-around">
-    <md-progress-circular md-mode="indeterminate"></md-progress-circular>
-</div>
+<md-content>
+    <md-card ng-hide="loaded">
+        <div layout="row" layout-sm="column" layout-align="space-around">
+            <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+        </div>
+        <br />
+        <h2 style="text-align: center;">... Loading ...</h2>
+    </md-card>
 
-<md-card class="no-projects-warning" ng-show="projects.length === 0 && loaded">
-    <h1>This user has no projects.</h1>
-</md-card>
+    <md-card class="no-projects-warning" ng-show="projects.length === 0 && loaded">
+        <h1>This user has no projects.</h1>
+    </md-card>
 
-<md-card ng-repeat="project in projects" ng-show="projects.length !== 0">
-    <md-toolbar md-theme="">
-        <h1 class="md-toolbar-tools">
-            <span flex>{{ project.title }}</span>
+    <md-card ng-repeat="project in projects | orderBy:title" ng-show="projects.length !== 0" ng-switch on="showSection($index)">
+        <md-toolbar md-theme="" class="md-medium-tall">
+            <h1 class="md-toolbar-tools">
+                <span flex>{{ project.title }}</span>
+            </h1>
+            <h2 class="md-toolbar-tools md-toolbar-tools-bottom">
+                <span flex></span>
 
-            <md-button  ng-click="deleteProject(project, $index, $event)" class="md-fab md-primary" style="background-color: #efefef;" aria-label="delete">
-                <md-icon icon="assets/icons/ic_delete_24px.svg"></md-icon>
-            </md-button>
+                <md-button  ng-click="displayMembers(project, $index, $event)" class="md-fab md-primary" style="background-color: #efefef;" aria-label="delete">
+                    <md-icon icon="assets/icons/ic_account_child_24px.svg"></md-icon>
+                </md-button>
 
-            <md-button ng-click="addEndpoint(project, $index, $event)" class="md-fab md-primary" style="background-color: #efefef;" aria-label="add endpoint">
-                <md-icon icon="assets/icons/ic_add_24px.svg"></md-icon>
-            </md-button>
-        </h1>
-    </md-toolbar>
+                <md-button  ng-click="deleteProject(project, $index, $event)" class="md-fab md-primary" style="background-color: #efefef;" aria-label="delete">
+                    <md-icon icon="assets/icons/ic_delete_24px.svg"></md-icon>
+                </md-button>
 
-    <md-content>
-        <md-list>
-            <md-item ng-repeat="endpoint in project.endpoints">
-                <md-item-content class="endpoint">
-                    <div class="md-tile-content">
-                        <md-button class="md-fab md-primary md-tile-left endpoint_type" aria-label="endpoint" ng-class="'endpoint_type_' + endpoint.type.toLowerCase()">
-                            {{ endpoint.type }}
-                        </md-button>
-                        <div>
-                            <h3>{{ endpoint.title }}</h3>
-                            <h4>{{ endpoint.url }}</h4>
-                            <p>
-                                {{ endpoint.description }}
-                            </p>
+                <md-button ng-click="addEndpoint(project, $index, $event)" class="md-fab md-primary" style="background-color: #efefef;" aria-label="add endpoint">
+                    <md-icon icon="assets/icons/ic_add_24px.svg"></md-icon>
+                </md-button>
+            </h2>
+        </md-toolbar>
+
+        <md-content class="animate-switch" ng-switch-default>
+            <md-card class="no-projects-warning" ng-show="!project.endpoints || project.members.endpoints === 0">
+                <h1>This user has no endpoints.</h1>
+            </md-card>
+            <md-list>
+                <md-item ng-repeat="endpoint in project.endpoints" ng-click="openEndpoint($event, $index, endpoint)">
+                    <md-item-content class="endpoint">
+                        <div class="md-tile-content">
+                            <md-button class="md-fab md-primary md-tile-left endpoint_type" aria-label="endpoint" ng-class="'endpoint_type_' + endpoint.type.toLowerCase()">
+                                {{ endpoint.type }}
+                            </md-button>
+                            <div>
+                                <h3>{{ endpoint.title }}</h3>
+                                <h4>{{ endpoint.url }}</h4>
+                                <p>
+                                    {{ endpoint.description }}
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                </md-item-content>
-                <md-divider ng-if="!$last"></md-divider>
-            </md-item>
-        </md-list>
-    </md-content>
-</md-card>
+                    </md-item-content>
+                    <md-divider ng-if="!$last"></md-divider>
+                </md-item>
+            </md-list>
+        </md-content>
 
-<br />
-<br />
+        <md-content class="animate-switch" ng-switch-when="members">
+            <md-card class="no-projects-warning" ng-show="!project.members || project.members.length === 0">
+                <h1>This user has no members.</h1>
+            </md-card>
+            <md-list>
+                <md-item ng-repeat="member in project.members">
+                    <md-item-content class="endpoint">
+                        <div class="md-tile-content">
+                            <div>
+                                <h3>{{ member.username }}</h3>
+                                <h4>{{ member.email }}</h4>
+                            </div>
+                        </div>
+                    </md-item-content>
+                    <md-divider ng-if="!$last"></md-divider>
+                </md-item>
+            </md-list>
+        </md-content>
+    </md-card>
+    <br />
+    <br />
+</md-content>

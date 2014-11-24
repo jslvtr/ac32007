@@ -41,4 +41,11 @@ angular
 
 
 
-  ]);
+  ])
+  .directive('ngClick',function(){
+    return {
+      link: function(){
+      },
+      restrict: 'A'
+    }
+  });

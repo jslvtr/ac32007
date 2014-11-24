@@ -65,8 +65,7 @@
 
     <link rel="stylesheet" type="text/css" href="css/style.css">
   </head>
-  <body ng-controller="appController">
-  <section layout="horizontal" style="height:100%" >
+  <body ng-controller="appController" layout="row">
     <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" is-locked-open="$media('md')" md-theme="light-blue-dark">
         <md-toolbar class="md-theme-indigo" >
             <h1 class="md-toolbar-tools">Agile API</h1>
@@ -84,8 +83,8 @@
             <button class="menu-item menu-title" onClick="parent.location='#/about'" ink-ripple>About</button>
         </md-content>
     </md-sidenav>
-    <md-content ng-view class="ng-cloak" id="container2"  layout-fill flex></md-content>
+    <div layout="column" layout-fill tabindex="-1" role="main" id="container2" class="ng-cloak" ng-view>
+    </div>
     <div ng-include="'partials/rightsidebar.html'" ng-show="isLoggedIn"></div>
-  </section>
   </body>
 </html>

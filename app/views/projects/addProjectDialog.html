@@ -1,0 +1,22 @@
+<link rel="stylesheet" type="text/css" href="views/projects/addProjectDialog.css" />
+
+<md-dialog class="add-project-dialog" aria-label="Add New Project">
+    <md-toolbar>
+        <h1 class="md-toolbar-tools">
+            <span flex>Add Project</span>
+        </h1>
+    </md-toolbar>
+    <md-content>
+        <md-text-float type="text" label="Project title" ng-model="title"></md-text-float>
+        <md-text-float type="text" label="Description" ng-model="description"></md-text-float>
+    </md-content>
+    <div class="md-actions" layout="row">
+        <span flex></span>
+        <md-button ng-click="hide()">
+            Cancel
+        </md-button>
+        <md-button ng-click="submitProject()" class="md-primary">
+            Add Project
+        </md-button>
+    </div>
+</md-dialog>

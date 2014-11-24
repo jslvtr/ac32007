@@ -69,7 +69,191 @@ function endpointAdd(req, res)  {
 
 }
 
+function endpointGetAll(req, res)   {
+    var project = req.params.project;
+    var owner = req.params.owner;
+    var sessionUser = req.user;
+
+    //Check if the user is a member of the project
+    var query = 'select user_id from agile_api.project_members where user_id = ?';
+    var params = [ sessionUser.username ];
+
+
+    configDB.client.execute(query, params, {prepare: true}, function(err, result) {
+            if (err) {
+                res.json(HttpStatus.METHOD_FAILURE, {
+                    status: 420,
+                    message: 'Cant find user.'
+                });
+            } else {
+                if (result.rows[0].user_id == sessionUser.username)  {
+                    var query       = 'select * from agile_api.endpoints where project_id = ? and owner_id=? allow filtering;';
+                    var params      = [ project, owner];
+
+                    configDB.client.execute(query, params, {prepare: true}, function(err, result) {
+                        if (err) {
+                            res.json(HttpStatus.METHOD_FAILURE, {
+                                status: 420,
+                                message: 'Can\'t find project.'
+                            });
+                            console.log(err);
+                        }   else if (result.rows != null) {
+                            var jsonResult = [];
+
+                            for (var row in result.rows) {
+                                jsonResult.push({
+                                    token_id : result.rows[row].token_id,
+                                    body : result.rows[row].body,
+                                    body_type : result.rows[row].body_type,
+                                    description : result.rows[row].description,
+                                    headers : result.rows[row].headers,
+                                    method_type : result.rows[row].method_type,
+                                    owner_id : result.rows[row].owner_id,
+                                    project_id : result.rows[row].project_id,
+                                    title : result.rows[row].title,
+                                    url : result.rows[row].url,
+                                    url_params : result.rows[row].url_params
+                                });
+                            }
+                            res.json(HttpStatus.ACCEPTED, {
+                                status: 200,
+                                projects: jsonResult
+                            });
+
+                        }   else {
+                            res.json(HttpStatus.NOT_FOUND , {
+                                status: 404,
+                                project : "Project not found"
+                            });
+                        }
+                    });
+                }   else    {
+                    res.json({message:"couldn't find you"});
+                }
+            }
+        }
+    );
+}
+
+function endpointGet(req, res)  {
+    var project = req.params.project;
+    var owner = req.params.owner;
+    var token_id = req.params.id;
+    var sessionUser = req.user;
+
+    //Check if the user is a member of the project
+    var query = 'select user_id from agile_api.project_members where user_id = ?';
+    var params = [ sessionUser.username ];
+
+
+    configDB.client.execute(query, params, {prepare: true}, function(err, result) {
+            if (err) {
+                res.json(HttpStatus.METHOD_FAILURE, {
+                    status: 420,
+                    message: 'Cant find user.'
+                });
+            } else {
+                if (result.rows[0].user_id == sessionUser.username)  {
+                    var query       = 'select * from agile_api.endpoints where token_id=? allow filtering;';
+                    var params      = [ token_id ];
+
+                    configDB.client.execute(query, params, {prepare: true}, function(err, result) {
+                        if (err) {
+                            res.json(HttpStatus.METHOD_FAILURE, {
+                                status: 420,
+                                message: 'Can\'t find project.'
+                            });
+                            console.log(err);
+                        }   else if (result.rows != null) {
+                            var jsonResult = [];
+
+                            for (var row in result.rows) {
+                                jsonResult.push({
+                                    token_id : result.rows[row].token_id,
+                                    body : result.rows[row].body,
+                                    body_type : result.rows[row].body_type,
+                                    description : result.rows[row].description,
+                                    headers : result.rows[row].headers,
+                                    method_type : result.rows[row].method_type,
+                                    owner_id : result.rows[row].owner_id,
+                                    project_id : result.rows[row].project_id,
+                                    title : result.rows[row].title,
+                                    url : result.rows[row].url,
+                                    url_params : result.rows[row].url_params
+                                });
+                            }
+                            res.json(HttpStatus.ACCEPTED, {
+                                status: 200,
+                                projects: jsonResult
+                            });
+
+                        }   else {
+                            res.json(HttpStatus.NOT_FOUND , {
+                                status: 404,
+                                project : "Project not found"
+                            });
+                        }
+                    });
+                }   else    {
+                    res.json({message:"couldn't find you"});
+                }
+            }
+        }
+    );
+}
+
+function endpointUpdate(req, res)   {
+
+}
+
+function endpointDel(req, res)  {
+    var project = req.params.project;
+    var owner = req.params.owner;
+    var token_id = req.params.id;
+    var sessionUser = req.user;
+
+    //Check if the user is a member of the project
+    var query = 'select user_id from agile_api.project_members where user_id = ?';
+    var params = [ sessionUser.username ];
+
+
+    configDB.client.execute(query, params, {prepare: true}, function(err, result) {
+            if (err) {
+                res.json(HttpStatus.METHOD_FAILURE, {
+                    status: 420,
+                    message: 'Cant find user.'
+                });
+            } else {
+                if (result.rows[0].user_id == sessionUser.username)  {
+                    var query       = 'delete from agile_api.endpoints where token_id=?';
+                    var params      = [ token_id ];
+
+                    configDB.client.execute(query, params, {prepare: true}, function(err, result) {
+                            if (err) {
+                                res.json(HttpStatus.METHOD_FAILURE, {
+                                    status: 420,
+                                    message: 'Can\'t delete endpoint.'
+                                });
+                            } else {
+                                res.json(HttpStatus.NO_CONTENT, {
+                                    status: 204,
+                                    message: 'Endpoint deleted'
+                                });
+                            }
+                        }
+                    );
+                }   else    {
+                    res.json({message:"couldn't find you"});
+                }
+            }
+        }
+    );
+}
 
 module.exports = {
-    endpointAdd     :   endpointAdd
+    endpointAdd     :   endpointAdd,
+    endpointGetAll  :   endpointGetAll,
+    endpointGet     :   endpointGet,
+    endpointUpdate  :   endpointUpdate,
+    endpointDel     :   endpointDel
 };

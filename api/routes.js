@@ -105,4 +105,19 @@ module.exports = function(app, passport) {
         passport.authenticate('bearer', { session: false }),
         endpointRoutes.endpointAdd
     )
+
+    app.get('/user/:owner/project/:project/endpoint/:id',
+        passport.authenticate('bearer', { session: false }),
+        endpointRoutes.endpointGet
+    )
+
+    app.put('/user/:owner/project/:project/endpoint/:id',
+        passport.authenticate('bearer', { session: false }),
+        endpointRoutes.endpointUpdate
+    )
+
+    app.delete('/user/:owner/project/:project/endpoint/:id',
+        passport.authenticate('bearer', { session: false }),
+        endpointRoutes.endpointDel
+    )
 };

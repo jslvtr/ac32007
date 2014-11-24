@@ -25,20 +25,17 @@ function endpointAdd(req, res)  {
                     var title = req.body.title;
                     var description = req.body.description;
                     var url = req.body.urlpath;
-                    var headers = Array.prototype.slice.call(req.body.headers);
-                    //headers.push(req.body.headers);
-                    //headers = JSON.stringify(headers);
-
-                    var url_params = Array.prototype.slice.call(req.body.url_params);
+                    var headers_content = req.body.headers;
+                    var url_params = req.body.url_params;
                     var method_type = req.body.method_type;
                     var body = JSON.stringify(req.body.body);
                     var body_type = req.body.body_type;
 
                     console.log("before prep");
                     var query       = 'insert into agile_api.endpoints (project_id, owner_id, token_id, title, description, url, headers, url_params, method_type, body, body_type, category_id) values (?,?,?,?,?,?,?,?, ?, ?, ?, ?) IF NOT EXISTS;';
-                    var params      = [ project, owner, token_id, title, description, url, headers, url_params, method_type, body, body_type, 'main' ];
+                    var params      = [ project, owner, token_id, title, description, url, headers_content, url_params, method_type, body, body_type, 'main' ];
 
-                    configDB.client.execute(query, params, {prepare: true}, function(err, result) {
+                    configDB.client.execute(query, params, {prepare : true, hints: ['String']}, function(err, result) {
                             if (err) {
                                 res.json(HttpStatus.METHOD_FAILURE, {
                                     status: 420,
@@ -49,7 +46,6 @@ function endpointAdd(req, res)  {
                                 res.json(HttpStatus.CREATED, {
                                     status: 201,
                                     message: 'endpoint created',
-                                    error:err
                                 });
                             } else {
                                 res.json(HttpStatus.NO_CONTENT, {
@@ -205,7 +201,7 @@ function endpointGet(req, res)  {
 }
 
 function endpointUpdate(req, res)   {
-
+    //project_id, owner_id, token_id, title, description, url, headers, url_params, method_type, body, body_type, category_id
 }
 
 function endpointDel(req, res)  {

@@ -23,7 +23,7 @@ function projectGet  (req, res)  {
                     owner :   result.rows[row].owner
                 });
             }
-            res.json(HttpStatus.ACCEPTED, {
+            res.json(HttpStatus.OK, {
                 status: 200,
                 projects: jsonResult
             });
@@ -39,7 +39,7 @@ function projectGet  (req, res)  {
 
 function projectGetID  (req, res)  {
     //Gets the information from the uri
-    var title       = req.params.id;
+    var title       = decodeURIComponent(req.params.id);
     var owner       = req.params.user;
     var sessionUser = req.user;
 
@@ -53,8 +53,8 @@ function projectGetID  (req, res)  {
                         message: 'Can\'t create project.'
                     });
                 }   else if (result.rows["0"]!= null) {
-                    res.json(HttpStatus.CREATED, {
-                        status: 201,
+                    res.json(HttpStatus.OK, {
+                        status: 200,
                         project : {
                             title : result.rows[0].title,
                             description : result.rows[0].description,
@@ -89,7 +89,7 @@ function projectGetID  (req, res)  {
 function projectUpdate  (req, res)  {
 
     //Gets the information from the uri
-    var title       = req.params.id;
+    var title       = decodeURIComponent(req.params.id);
     var owner       = req.params.user;
     var description = req.body.description;
     var sessionUser = req.user;
@@ -106,7 +106,7 @@ function projectUpdate  (req, res)  {
                 });
 
             } else {
-                res.json(HttpStatus.CREATED, {
+                res.json(HttpStatus.ACCEPTED, {
                     status: 202,
                     message: 'Project updated',
                     project: {
@@ -135,7 +135,7 @@ function projectUpdate  (req, res)  {
 function projectDelete  (req, res)  {
 
     //Gets the information from the uri
-    var title = req.params.id.split('_').join(' ');
+    var title = decodeURIComponent(req.params.id);
     var owner = req.params.user;
     var sessionUser = req.user;
 
@@ -151,8 +151,9 @@ function projectDelete  (req, res)  {
                         message: 'Can\'t delete project.'
                     });
                 } else {
-                    res.json(HttpStatus.NO_CONTENT, {
-                        status: 204,
+                    // TODO: There is no check whether project is deleted or not.
+                    res.json(HttpStatus.ACCEPTED, {
+                        status: 202,
                         message: 'Project deleted'
                     });
                 }
@@ -202,8 +203,8 @@ function projectAdd (req, res)  {
                         }
                     });
                 } else {
-                    res.json(HttpStatus.NO_CONTENT, {
-                        status: 204,
+                    res.json(HttpStatus.CONFLICT, {
+                        status: 409,
                         message: 'Project already exists.'
                     });
                 }

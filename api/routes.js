@@ -101,9 +101,27 @@ module.exports = function(app, passport) {
         projectUserRoutes.projectGetMembers
     );
 
+
+
+
+    /*
+
+                    Endpoints
+
+            These routes handle endpoints in projects
+
+     */
+
+
+
     app.post('/user/:owner/project/:project/endpoint',
         passport.authenticate('bearer', { session: false }),
         endpointRoutes.endpointAdd
+    )
+
+    app.get('/user/:owner/project/:project/endpoint',
+        passport.authenticate('bearer', { session: false }),
+        endpointRoutes.endpointGetAll
     )
 
     app.get('/user/:owner/project/:project/endpoint/:id',
@@ -119,5 +137,15 @@ module.exports = function(app, passport) {
     app.delete('/user/:owner/project/:project/endpoint/:id',
         passport.authenticate('bearer', { session: false }),
         endpointRoutes.endpointDel
+    )
+
+    app.put('/user/:owner/project/:project/endpoint/:id/category/:category/add',
+        passport.authenticate('bearer', { session: false }),
+        endpointRoutes.endpointAddCategory
+    )
+
+    app.put('/user/:owner/project/:project/endpoint/:id/category/:category/remove',
+        passport.authenticate('bearer', { session: false }),
+        endpointRoutes.endpointRemoveCategory
     )
 };

@@ -35,8 +35,8 @@ function endpointAdd(req, res)  {
                     var body_type = req.body.body_type;
 
                     console.log("before prep");
-                    var query       = 'insert into agile_api.endpoints (project_id, owner_id, token_id, title, description, url, headers, url_params, method_type, body, body_type) values (?,?,?,?,?,?,?, ?, ?, ?, ?) IF NOT EXISTS;';
-                    var params      = [ project, owner, token_id, title, description, url, headers, url_params, method_type, body, body_type ];
+                    var query       = 'insert into agile_api.endpoints (project_id, owner_id, token_id, title, description, url, headers, url_params, method_type, body, body_type, category_id) values (?,?,?,?,?,?,?,?, ?, ?, ?, ?) IF NOT EXISTS;';
+                    var params      = [ project, owner, token_id, title, description, url, headers, url_params, method_type, body, body_type, 'main' ];
 
                     configDB.client.execute(query, params, {prepare: true}, function(err, result) {
                             if (err) {
@@ -112,7 +112,8 @@ function endpointGetAll(req, res)   {
                                     project_id : result.rows[row].project_id,
                                     title : result.rows[row].title,
                                     url : result.rows[row].url,
-                                    url_params : result.rows[row].url_params
+                                    url_params : result.rows[row].url_params,
+                                    category    : result.rows[row].category_id
                                 });
                             }
                             res.json(HttpStatus.ACCEPTED, {
@@ -179,7 +180,8 @@ function endpointGet(req, res)  {
                                     project_id : result.rows[row].project_id,
                                     title : result.rows[row].title,
                                     url : result.rows[row].url,
-                                    url_params : result.rows[row].url_params
+                                    url_params : result.rows[row].url_params,
+                                    category    : result.rows[row].category_id
                                 });
                             }
                             res.json(HttpStatus.ACCEPTED, {
@@ -250,10 +252,100 @@ function endpointDel(req, res)  {
     );
 }
 
+function endpointAddCategory (req, res) {
+    var project = req.params.project;
+    var owner = req.params.owner;
+    var category = req.params.category;
+    var token_id = req.params.id;
+    var sessionUser = req.user;
+
+    //Check if the user is a member of the project
+    var query = 'select user_id from agile_api.project_members where user_id = ?';
+    var params = [ sessionUser.username ];
+
+
+    configDB.client.execute(query, params, {prepare: true}, function(err, result) {
+            if (err) {
+                res.json(HttpStatus.METHOD_FAILURE, {
+                    status: 420,
+                    message: 'Cant find user.'
+                });
+            } else {
+                if (result.rows[0].user_id == sessionUser.username)  {
+                    var query       = 'update agile_api.endpoints set category_id = ? where token_id = ?;';
+                    var params      = [ category, token_id ];
+
+                    configDB.client.execute(query, params, {prepare: true}, function (err, result) {
+                        if (err) {
+                            res.json(HttpStatus.METHOD_FAILURE, {
+                                status: 420,
+                                message: 'Can\'t update endpoint.'
+                            });
+                        } else {
+                            res.json(HttpStatus.CREATED, {
+                                status: 202,
+                                message: 'Endpoint updated'
+                            });
+                        }
+                    });
+                }   else    {
+                    res.json({message:"Error with endpoint maybe it doesn't exist or something"});
+                }
+            }
+        }
+    );
+}
+
+function endpointRemoveCategory (req, res) {
+    var project = req.params.project;
+    var owner = req.params.owner;
+    var category = req.params.category;
+    var token_id = req.params.id;
+    var sessionUser = req.user;
+
+    //Check if the user is a member of the project
+    var query = 'select user_id from agile_api.project_members where user_id = ?';
+    var params = [ sessionUser.username ];
+
+
+    configDB.client.execute(query, params, {prepare: true}, function(err, result) {
+            if (err) {
+                res.json(HttpStatus.METHOD_FAILURE, {
+                    status: 420,
+                    message: 'Cant find user.'
+                });
+            } else {
+                if (result.rows[0].user_id == sessionUser.username)  {
+                    var query       = 'update agile_api.endpoints set category_id = ? where token_id = ?;';
+                    var params      = [ 'index', token_id ];
+
+                    configDB.client.execute(query, params, {prepare: true}, function (err, result) {
+                        if (err) {
+                            res.json(HttpStatus.METHOD_FAILURE, {
+                                status: 420,
+                                message: 'Can\'t update endpoint.'
+                            });
+                        } else {
+                            res.json(HttpStatus.CREATED, {
+                                status: 202,
+                                message: 'Endpoint updated'
+                            });
+                        }
+                    });
+                }   else    {
+                    res.json({message:"Error with endpoint maybe it doesn't exist or something"});
+                }
+            }
+        }
+    );
+}
+
 module.exports = {
-    endpointAdd     :   endpointAdd,
-    endpointGetAll  :   endpointGetAll,
-    endpointGet     :   endpointGet,
-    endpointUpdate  :   endpointUpdate,
-    endpointDel     :   endpointDel
+    endpointAdd             :   endpointAdd,
+    endpointGetAll          :   endpointGetAll,
+    endpointGet             :   endpointGet,
+    endpointUpdate          :   endpointUpdate,
+    endpointDel             :   endpointDel,
+    endpointAddCategory     :   endpointAddCategory,
+    endpointRemoveCategory  :   endpointRemoveCategory
 };

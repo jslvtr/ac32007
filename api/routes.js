@@ -3,6 +3,7 @@ var authRoutes          = require('./endpoints/auth.js');
 var userRoutes          = require('./endpoints/user.js');
 var projectRoutes       = require('./endpoints/project.js');
 var projectUserRoutes   = require('./endpoints/project_users.js');
+var endpointRoutes      = require('./endpoints/endpoints.js');
 
 module.exports = function(app, passport) {
 
@@ -99,4 +100,9 @@ module.exports = function(app, passport) {
     app.get('/user/:owner/project/:project/members',
         projectUserRoutes.projectGetMembers
     );
+
+    app.post('/user/:owner/project/:project/endpoints',
+        passport.authenticate('bearer', { session: false }),
+        endpointRoutes.endpointAdd
+    )
 };

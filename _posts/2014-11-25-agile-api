@@ -1,0 +1,47 @@
+---
+layout: post
+title:  "Cassandra and maps."
+date:   2014-11-25 15:21:00
+categories: agileapi priamubaio
+---
+
+#Cassandra and maps.
+
+##What is map
+map is a CQL data type which converted to its javascript type is object, which is what we need when handling with JSON data. This said the map data type is made that it has a JSON-style array of literials. you can find more about it here [http://www.datastax.com/documentation/cql/3.1/cql/cql_reference/cql_data_types_c.html](http://www.datastax.com/documentation/cql/3.1/cql/cql_reference/cql_data_types_c.html)
+
+
+Most of our backend works with JSON which is great, but when it came to designing the table which we were going to use for endpoints, we went for designing our own set and at first this was a great option since we had used it in the instagrim assignment. But when it came to implementing it server-side we came across many waves of errors. For example this was the most common error which occurred:
+
+```
+[TypeError: Target data type could not be guessed, you must specify a hint for value: { auth: 'i am admin' }]
+```
+
+Following the guides on the site we were left more confused as the documentation for NodeJS is not as detailed as other drivers such as for Java. But makes sense since its a relativity new driver.
+
+After giving it 10 minutes to look into other datatypes, we found one called maps. Which we were not too sure about using but once we dropped the table and created it again using maps, all of a sudden everything just worked. Below is the scheme for our endpoints table.
+
+```
+CREATE TABLE if not exists agile_api.endpoints (
+	project_id varchar,
+	owner_id varchar,
+	token_id varchar,
+	title text,
+	description text,
+	url text,
+	headers map<text, text>,
+	url_params map<text, text>,
+	method_type text,
+	category_id text,
+	body text,
+	body_type text,
+	PRIMARY KEY (token_id)
+);
+
+CREATE INDEX IF NOT EXISTS method_type ON agile_api.endpoints (method_type);
+CREATE INDEX IF NOT EXISTS project_id ON agile_api.endpoints (project_id);
+CREATE INDEX IF NOT EXISTS owner_id ON agile_api.endpoints (owner_id);
+CREATE INDEX IF NOT EXISTS category_id ON agile_api.endpoints (category_id);
+```
+
+What I really like about the map is that it keeps the json format which will make it even more easier for when it comes to sending that data out to the client.

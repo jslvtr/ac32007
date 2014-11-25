@@ -201,7 +201,68 @@ function endpointGet(req, res)  {
 }
 
 function endpointUpdate(req, res)   {
-    //project_id, owner_id, token_id, title, description, url, headers, url_params, method_type, body, body_type, category_id
+
+    var project = req.params.project;
+    var owner = req.params.owner;
+    var token_id = req.params.id;
+    var sessionUser = req.user;
+
+    //Check if the user is a member of the project
+    var query = 'select user_id from agile_api.project_members where user_id = ?';
+    var params = [ sessionUser.username ];
+
+
+    configDB.client.execute(query, params, {prepare: true}, function(err, result) {
+            if (err) {
+                res.json(HttpStatus.METHOD_FAILURE, {
+                    status: 420,
+                    message: 'Cant find user.'
+                });
+            } else {
+                if (result.rows[0].user_id == sessionUser.username)  {
+                    var title = req.body.title;
+                    var description = req.body.description;
+                    var url = req.body.urlpath;
+                    var headers_content = req.body.headers;
+                    var url_params = req.body.url_params;
+                    var method_type = req.body.method_type;
+                    var category = req.body.category;
+                    var body = JSON.stringify(req.body.body);
+                    var body_type = req.body.body_type;
+                                                            //project_id, owner_id, token_id, title, description, url, headers, url_params, method_type, body, body_type, category_id
+                    var query       = 'update agile_api.endpoints set title = ? , description = ? , url = ? , headers = ? , url_params = ? , method_type = ? , body = ? , body_type = ? , category_id = ? where token_id = ?;';
+                    var params      = [ title, description, url, headers_content, url_params, method_type, body, body_type, category, token_id ];
+
+                    configDB.client.execute(query, params, {prepare: true}, function(err, result) {
+                        if (err) {
+                            res.json(HttpStatus.METHOD_FAILURE, {
+                                status: 420,
+                                message: 'Can\'t find project.'
+                            });
+                            console.log(err);
+                        }   else     {
+                            var jsonResult = [];
+
+                            for (var row in result.rows) {
+                                jsonResult.push({
+                                    'one'   :   'to rule them all'
+                                });
+                            }
+                            res.json(HttpStatus.ACCEPTED, {
+                                status: 200,
+                                projects: jsonResult
+                            });
+
+                        }
+                    });
+                }   else    {
+                    res.json({message:"couldn't find you"});
+                }
+            }
+        }
+    );
+
+
 }
 
 function endpointDel(req, res)  {
@@ -248,100 +309,12 @@ function endpointDel(req, res)  {
     );
 }
 
-function endpointAddCategory (req, res) {
-    var project = req.params.project;
-    var owner = req.params.owner;
-    var category = req.params.category;
-    var token_id = req.params.id;
-    var sessionUser = req.user;
 
-    //Check if the user is a member of the project
-    var query = 'select user_id from agile_api.project_members where user_id = ?';
-    var params = [ sessionUser.username ];
-
-
-    configDB.client.execute(query, params, {prepare: true}, function(err, result) {
-            if (err) {
-                res.json(HttpStatus.METHOD_FAILURE, {
-                    status: 420,
-                    message: 'Cant find user.'
-                });
-            } else {
-                if (result.rows[0].user_id == sessionUser.username)  {
-                    var query       = 'update agile_api.endpoints set category_id = ? where token_id = ?;';
-                    var params      = [ category, token_id ];
-
-                    configDB.client.execute(query, params, {prepare: true}, function (err, result) {
-                        if (err) {
-                            res.json(HttpStatus.METHOD_FAILURE, {
-                                status: 420,
-                                message: 'Can\'t update endpoint.'
-                            });
-                        } else {
-                            res.json(HttpStatus.CREATED, {
-                                status: 202,
-                                message: 'Endpoint updated'
-                            });
-                        }
-                    });
-                }   else    {
-                    res.json({message:"Error with endpoint maybe it doesn't exist or something"});
-                }
-            }
-        }
-    );
-}
-
-function endpointRemoveCategory (req, res) {
-    var project = req.params.project;
-    var owner = req.params.owner;
-    var category = req.params.category;
-    var token_id = req.params.id;
-    var sessionUser = req.user;
-
-    //Check if the user is a member of the project
-    var query = 'select user_id from agile_api.project_members where user_id = ?';
-    var params = [ sessionUser.username ];
-
-
-    configDB.client.execute(query, params, {prepare: true}, function(err, result) {
-            if (err) {
-                res.json(HttpStatus.METHOD_FAILURE, {
-                    status: 420,
-                    message: 'Cant find user.'
-                });
-            } else {
-                if (result.rows[0].user_id == sessionUser.username)  {
-                    var query       = 'update agile_api.endpoints set category_id = ? where token_id = ?;';
-                    var params      = [ 'index', token_id ];
-
-                    configDB.client.execute(query, params, {prepare: true}, function (err, result) {
-                        if (err) {
-                            res.json(HttpStatus.METHOD_FAILURE, {
-                                status: 420,
-                                message: 'Can\'t update endpoint.'
-                            });
-                        } else {
-                            res.json(HttpStatus.CREATED, {
-                                status: 202,
-                                message: 'Endpoint updated'
-                            });
-                        }
-                    });
-                }   else    {
-                    res.json({message:"Error with endpoint maybe it doesn't exist or something"});
-                }
-            }
-        }
-    );
-}
 
 module.exports = {
     endpointAdd             :   endpointAdd,
     endpointGetAll          :   endpointGetAll,
     endpointGet             :   endpointGet,
     endpointUpdate          :   endpointUpdate,
-    endpointDel             :   endpointDel,
-    endpointAddCategory     :   endpointAddCategory,
-    endpointRemoveCategory  :   endpointRemoveCategory
+    endpointDel             :   endpointDel
 };

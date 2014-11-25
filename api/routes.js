@@ -1,9 +1,10 @@
-var apiRoutes           = require('./endpoints/api.js');
-var authRoutes          = require('./endpoints/auth.js');
-var userRoutes          = require('./endpoints/user.js');
-var projectRoutes       = require('./endpoints/project.js');
-var projectUserRoutes   = require('./endpoints/project_users.js');
-var endpointRoutes      = require('./endpoints/endpoints.js');
+var apiRoutes               = require('./endpoints/api.js');
+var authRoutes              = require('./endpoints/auth.js');
+var userRoutes              = require('./endpoints/user.js');
+var projectRoutes           = require('./endpoints/project.js');
+var projectUserRoutes       = require('./endpoints/project_users.js');
+var endpointRoutes          = require('./endpoints/endpoints.js');
+var endpointCategoryRoutes  = require('./endpoints/endpoint_categories.js');
 
 module.exports = function(app, passport) {
 
@@ -139,13 +140,22 @@ module.exports = function(app, passport) {
         endpointRoutes.endpointDel
     )
 
+
+    /*
+
+                endpointCategoryRoutes
+           Handles the handling of categories with endpoints
+
+     */
+
+
     app.put('/user/:owner/project/:project/endpoint/:id/category/:category/add',
         passport.authenticate('bearer', { session: false }),
-        endpointRoutes.endpointAddCategory
+        endpointCategoryRoutes.endpointAddCategory
     )
 
-    app.put('/user/:owner/project/:project/endpoint/:id/category/:category/remove',
+    app.delete('/user/:owner/project/:project/endpoint/:id/category/:category/remove',
         passport.authenticate('bearer', { session: false }),
-        endpointRoutes.endpointRemoveCategory
+        endpointCategoryRoutes.endpointRemoveCategory
     )
 };

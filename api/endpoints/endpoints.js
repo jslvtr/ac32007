@@ -45,7 +45,7 @@ function endpointAdd(req, res)  {
                             } else if (result.rows["0"]["[applied]"] === true) {
                                 res.json(HttpStatus.CREATED, {
                                     status: 201,
-                                    message: 'endpoint created',
+                                    message: 'endpoint created'
                                 });
                             } else {
                                 res.json(HttpStatus.NO_CONTENT, {

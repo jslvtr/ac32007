@@ -5,8 +5,8 @@ var client = null;
 
 var clientInfo = {
     //contactPoints: [ '127.0.0.1' ]
-    //contactPoints: ['cassandra.yagocarballo.me']
-    contactPoints: ['dr-hat.com']
+    contactPoints: ['cassandra.yagocarballo.me']
+    //contactPoints: ['dr-hat.com']
 };
 
 var creationQueries = [
@@ -55,13 +55,38 @@ var creationQueries = [
     +   'PRIMARY KEY (user_id, project_id, owner_id, secret));',
 
     // Creates an Index for the Owner ID
-    'CREATE INDEX IF NOT EXISTS owner_id ON agile_api.project_members (owner_id);'
+    'CREATE INDEX IF NOT EXISTS owner_id ON agile_api.project_members (owner_id);',
+
+    // Created Endpoints Table
+    'CREATE TABLE if not exists agile_api.endpoints ('
+    +   'project_id varchar,'
+    +   'owner_id varchar,'
+    +   'token_id varchar,'
+    +   'title text,'
+    +   'description text,'
+    +   'url text,'
+    +   'headers map<text, text>,'
+    +   'url_params map<text, text>,'
+    +   'method_type text,'
+    +   'category_id text,'
+    +   'body text,'
+    +   'body_type text,'
+    +   'PRIMARY KEY (token_id));',
+
+    // Created Endpoints Indexes
+    'CREATE INDEX IF NOT EXISTS method_type ON agile_api.endpoints (method_type);',
+    'CREATE INDEX IF NOT EXISTS project_id ON agile_api.endpoints (project_id);',
+    'CREATE INDEX IF NOT EXISTS owner_id_2 ON agile_api.endpoints (owner_id);',
+    'CREATE INDEX IF NOT EXISTS category_id ON agile_api.endpoints (category_id);'
 ];
 
 function createSchema (pos, errors) {
     if (pos < creationQueries.length) {
         client.execute(creationQueries[pos], function (err) {
-            if (err) { errors += 1; }
+            if (err) {
+                errors += 1;
+                console.warn('[DB Schema] Error on Query ' + pos + ' { ' + err + ' }');
+            }
             createSchema(pos + 1, errors);
         });
     } else {

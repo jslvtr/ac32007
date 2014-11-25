@@ -30,8 +30,6 @@ function endpointAdd(req, res)  {
                     var method_type = req.body.method_type;
                     var body = JSON.stringify(req.body.body);
                     var body_type = req.body.body_type;
-
-                    console.log("before prep");
                     var query       = 'insert into agile_api.endpoints (project_id, owner_id, token_id, title, description, url, headers, url_params, method_type, body, body_type, category_id) values (?,?,?,?,?,?,?,?, ?, ?, ?, ?) IF NOT EXISTS;';
                     var params      = [ project, owner, token_id, title, description, url, headers_content, url_params, method_type, body, body_type, 'main' ];
 
@@ -112,7 +110,7 @@ function endpointGetAll(req, res)   {
                                     category    : result.rows[row].category_id
                                 });
                             }
-                            res.json(HttpStatus.ACCEPTED, {
+                            res.json(HttpStatus.OK, {
                                 status: 200,
                                 projects: jsonResult
                             });
@@ -180,7 +178,7 @@ function endpointGet(req, res)  {
                                     category    : result.rows[row].category_id
                                 });
                             }
-                            res.json(HttpStatus.ACCEPTED, {
+                            res.json(HttpStatus.OK, {
                                 status: 200,
                                 projects: jsonResult
                             });
@@ -248,10 +246,7 @@ function endpointUpdate(req, res)   {
                                     'one'   :   'to rule them all'
                                 });
                             }
-                            res.json(HttpStatus.ACCEPTED, {
-                                status: 200,
-                                projects: jsonResult
-                            });
+                            res.json(HttpStatus.RESET_CONTENT);
 
                         }
                     });

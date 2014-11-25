@@ -1,8 +1,10 @@
-var apiRoutes           = require('./endpoints/api.js');
-var authRoutes          = require('./endpoints/auth.js');
-var userRoutes          = require('./endpoints/user.js');
-var projectRoutes       = require('./endpoints/project.js');
-var projectUserRoutes   = require('./endpoints/project_users.js');
+var apiRoutes               = require('./endpoints/api.js');
+var authRoutes              = require('./endpoints/auth.js');
+var userRoutes              = require('./endpoints/user.js');
+var projectRoutes           = require('./endpoints/project.js');
+var projectUserRoutes       = require('./endpoints/project_users.js');
+var endpointRoutes          = require('./endpoints/endpoints.js');
+var endpointCategoryRoutes  = require('./endpoints/endpoint_categories.js');
 
 module.exports = function(app, passport) {
 
@@ -99,4 +101,61 @@ module.exports = function(app, passport) {
     app.get('/user/:owner/project/:project/members',
         projectUserRoutes.projectGetMembers
     );
+
+
+
+
+    /*
+
+                    Endpoints
+
+            These routes handle endpoints in projects
+
+     */
+
+
+
+    app.post('/user/:owner/project/:project/endpoint',
+        passport.authenticate('bearer', { session: false }),
+        endpointRoutes.endpointAdd
+    )
+
+    app.get('/user/:owner/project/:project/endpoint',
+        passport.authenticate('bearer', { session: false }),
+        endpointRoutes.endpointGetAll
+    )
+
+    app.get('/user/:owner/project/:project/endpoint/:id',
+        passport.authenticate('bearer', { session: false }),
+        endpointRoutes.endpointGet
+    )
+
+    app.put('/user/:owner/project/:project/endpoint/:id',
+        passport.authenticate('bearer', { session: false }),
+        endpointRoutes.endpointUpdate
+    )
+
+    app.delete('/user/:owner/project/:project/endpoint/:id',
+        passport.authenticate('bearer', { session: false }),
+        endpointRoutes.endpointDel
+    )
+
+
+    /*
+
+                endpointCategoryRoutes
+           Handles the handling of categories with endpoints
+
+     */
+
+
+    app.put('/user/:owner/project/:project/endpoint/:id/category/:category/add',
+        passport.authenticate('bearer', { session: false }),
+        endpointCategoryRoutes.endpointAddCategory
+    )
+
+    app.delete('/user/:owner/project/:project/endpoint/:id/category/:category/remove',
+        passport.authenticate('bearer', { session: false }),
+        endpointCategoryRoutes.endpointRemoveCategory
+    )
 };

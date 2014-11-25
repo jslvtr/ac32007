@@ -1,5 +1,5 @@
-var email       = 'GEZ US AN EMAIL';
-var password    = 'onomnomnom password pls';
+var email       = 'agilapi@gmail.com';
+var password    = 'DundeeUni';
 
 module.exports = {
     email       :   email,

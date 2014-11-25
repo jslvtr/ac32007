@@ -6,19 +6,91 @@ var client = null;
 var clientInfo = {
     //contactPoints: [ '127.0.0.1' ]
     contactPoints: ['cassandra.yagocarballo.me']
+    //contactPoints: ['dr-hat.com']
 };
 
-function InitClient () {
-    client = new cassandra.Client(clientInfo);
-    return client;
-}
+var creationQueries = [
+    // Drops the Keyspace
+    'DROP KEYSPACE IF EXISTS agile_api;',
 
-function db_schema_error_handling (err, message, callback) {
-    if (err) {
-        console.error(err);
+    // Creates the Keyspace
+    "create keyspace if not exists agile_api  WITH replication = {\'class\':\'SimpleStrategy\', \'replication_factor\':1};",
+
+    // Creates the Users table
+    'CREATE TABLE if not exists agile_api.users (' +
+    'full_name varchar,' +
+    'username varchar,' +
+    'email varchar,' +
+    'password varchar,' +
+    'access_token varchar,' +
+    'PRIMARY KEY (username)' +
+    ');',
+
+    // Creates an Index for the access_token in the User's Table
+    'CREATE INDEX IF NOT EXISTS access_token ON agile_api.users (access_token);',
+
+    // Creates the Projects Table
+    'CREATE TABLE if not exists agile_api.projects ('
+    +   'title varchar,'
+    +   'description varchar,'
+    +   'owner varchar,'
+    +   'PRIMARY KEY (title, owner));',
+
+    // Creates the Project Members Table
+    'CREATE TABLE if not exists agile_api.project_members ('
+    +   'project_id varchar,'
+    +   'user_id varchar,'
+    +   'owner_id varchar,'
+    +   'PRIMARY KEY (project_id, user_id, owner_id));',
+
+    // Creates an index for the User ID
+    'CREATE INDEX IF NOT EXISTS user_id ON agile_api.project_members (user_id);',
+
+    // Creates the Invites table
+    'CREATE TABLE if not exists agile_api.project_invite ('
+    +   'project_id varchar,'
+    +   'user_id varchar,'
+    +   'owner_id varchar,'
+    +   'secret varchar,'
+    +   'PRIMARY KEY (user_id, project_id, owner_id, secret));',
+
+    // Creates an Index for the Owner ID
+    'CREATE INDEX IF NOT EXISTS owner_id ON agile_api.project_members (owner_id);',
+
+    // Created Endpoints Table
+    'CREATE TABLE if not exists agile_api.endpoints ('
+    +   'project_id varchar,'
+    +   'owner_id varchar,'
+    +   'token_id varchar,'
+    +   'title text,'
+    +   'description text,'
+    +   'url text,'
+    +   'headers map<text, text>,'
+    +   'url_params map<text, text>,'
+    +   'method_type text,'
+    +   'category_id text,'
+    +   'body text,'
+    +   'body_type text,'
+    +   'PRIMARY KEY (token_id));',
+
+    // Created Endpoints Indexes
+    'CREATE INDEX IF NOT EXISTS method_type ON agile_api.endpoints (method_type);',
+    'CREATE INDEX IF NOT EXISTS project_id ON agile_api.endpoints (project_id);',
+    'CREATE INDEX IF NOT EXISTS owner_id_2 ON agile_api.endpoints (owner_id);',
+    'CREATE INDEX IF NOT EXISTS category_id ON agile_api.endpoints (category_id);'
+];
+
+function createSchema (pos, errors) {
+    if (pos < creationQueries.length) {
+        client.execute(creationQueries[pos], function (err) {
+            if (err) {
+                errors += 1;
+                console.warn('[DB Schema] Error on Query ' + pos + ' { ' + err + ' }');
+            }
+            createSchema(pos + 1, errors);
+        });
     } else {
-        console.log(message); // Comment this line to disable database creation logs
-        callback();
+        console.log('[DB Schema] Executed { ' + errors + ' Errors of ' + pos + ' Queries. }');
     }
 }
 
@@ -26,49 +98,15 @@ function db_schema (delete_all) {
     client = (client || InitClient());
 
     if (delete_all) {
-        client.execute(
-            'DROP KEYSPACE IF EXISTS agile_api;',
-            function (err) { db_schema_error_handling(err, '[Success] Keyspace `agile_api` dropped.', function () {}) }
-
-        );
+        createSchema(0, 0);
+    } else {
+        createSchema(1, 0);
     }
-    var projectTable = 'CREATE TABLE if not exists agile_api.projects ('
-        +   'title varchar,'
-        +   'description varchar,'
-        +   'owner varchar,'
-        +   'PRIMARY KEY (title, owner));';
+}
 
-    // Creates the KeySpace
-    client.execute(
-        'create keyspace if not exists agile_api  WITH replication = {\'class\':\'SimpleStrategy\', \'replication_factor\':1};',
-        function (err) {
-            db_schema_error_handling(err, '[Success] Keyspace `agile_api` created.', function () {
-                // Creates `users` table
-                client.execute(
-                    'CREATE TABLE if not exists agile_api.users (' +
-                    'full_name varchar,' +
-                    'username varchar,' +
-                    'email varchar,' +
-                    'password varchar,' +
-                    'access_token varchar,' +
-                    'PRIMARY KEY (username)' +
-                    ');',
-                    function (err) {
-                        db_schema_error_handling(err, '[Success] Table `users` created.', function () {
-                            // Creates an index for the `users` table
-                            client.execute(
-                                'CREATE INDEX IF NOT EXISTS access_token ON agile_api.users (access_token);',
-                                function (err) {
-                                    db_schema_error_handling(err, '[Success] Index `access_token` for table `user` created.', function () {
-                                    });
-                                }
-                            );
-                        });
-                    }
-                );
-            });
-        }
-    );
+function InitClient () {
+    client = new cassandra.Client(clientInfo);
+    return client;
 }
 
 module.exports = {

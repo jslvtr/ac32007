@@ -1,22 +1,22 @@
 <link rel="stylesheet" href="views/projects/projects.css" type="text/css" />
 
-<md-toolbar class="md-medium-tall app-toolbar md-whiteframe-z1" style="z-index: 3;">
-    <div class="md-toolbar-tools">
-    <div ng-include="'partials/back.html'"></div>
-      <h1 class="md-toolbar-tools">
-          <span flex>{{message}}</span>
-      </h1>
-    </div>
-    <span flex></span>
-    <h2 class="md-toolbar-tools md-toolbar-tools-bottom">
-        <span flex></span>
-        <md-button ng-click="addProject($event)" class="md-fab md-primary" style="background-color: #8bc34a;" aria-label="add project">
-            <md-icon icon="assets/icons/ic_add_24px.svg"></md-icon>
-        </md-button>
-    </h2>
-</md-toolbar>
+<!--<md-toolbar class="md-medium-tall app-toolbar md-whiteframe-z1" style="z-index: 3;">-->
+    <!--<div class="md-toolbar-tools">-->
+    <!--<div ng-include="'partials/back.html'"></div>-->
+      <!--<h1 class="md-toolbar-tools">-->
+          <!--<span flex>{{message}}</span>-->
+      <!--</h1>-->
+    <!--</div>-->
+    <!--<span flex></span>-->
+    <!--<h2 class="md-toolbar-tools md-toolbar-tools-bottom">-->
+        <!--<span flex></span>-->
+        <!--<md-button ng-click="addProject($event)" class="md-fab md-primary" style="background-color: #8bc34a;" aria-label="add project">-->
+            <!--<md-icon icon="assets/icons/ic_add_24px.svg"></md-icon>-->
+        <!--</md-button>-->
+    <!--</h2>-->
+<!--</md-toolbar>-->
 
-<md-content>
+<md-content style="margin-top: 2em;">
     <md-card ng-hide="loaded">
         <div layout="row" layout-sm="column" layout-align="space-around">
             <md-progress-circular md-mode="indeterminate"></md-progress-circular>
@@ -115,6 +115,12 @@
             <br />
         </md-content>
     </md-card>
+
+
+    <md-button ng-click="addProject($event)" class="md-fab md-primary" style="background-color: #8bc34a; position: fixed; bottom: 1.5em; right: 1.5em;" aria-label="add project">
+        <md-icon icon="assets/icons/ic_add_24px.svg"></md-icon>
+    </md-button>
+
     <br />
     <br />
 </md-content>

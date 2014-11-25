@@ -18,29 +18,35 @@ function endpointAddCategory (req, res) {
             if (err) {
                 res.json(HttpStatus.METHOD_FAILURE, {
                     status: 420,
-                    message: 'Cant find user.'
+                    message: 'Cant find endpoint.'
                 });
             } else {
-                if (result.rows[0].user_id == sessionUser.username)  {
-                    var query       = 'update agile_api.endpoints set category_id = ? where token_id = ?;';
-                    var params      = [ category, token_id ];
+                try {
+                    if (result.rows[0].user_id == sessionUser.username)  {
+                        var query       = 'update agile_api.endpoints set category_id = ? where token_id = ?;';
+                        var params      = [ category, token_id ];
 
-                    configDB.client.execute(query, params, {prepare: true}, function (err, result) {
-                        if (err) {
-                            res.json(HttpStatus.METHOD_FAILURE, {
-                                status: 420,
-                                message: 'Can\'t update endpoint.'
-                            });
-                        } else {
-                            res.json(HttpStatus.CREATED, {
-                                status: 202,
-                                message: 'Endpoint updated'
-                            });
-                        }
-                    });
-                }   else    {
-                    res.json({message:"Error with endpoint maybe it doesn't exist or something"});
+                        configDB.client.execute(query, params, {prepare: true}, function (err, result) {
+                            if (err) {
+                                res.json(HttpStatus.METHOD_FAILURE, {
+                                    status: 420,
+                                    message: 'Can\'t update endpoint.'
+                                });
+                            } else {
+                                res.json(HttpStatus.CREATED, {
+                                    status: 202,
+                                    message: 'Endpoint updated'
+                                });
+                            }
+                        });
+                    }   else    {
+                        res.json({message:"Error with endpoint maybe it doesn't exist or something"});
+                    }
+                }   catch (err) {
+                    console.log("Error has occured: " + err);
                 }
+
+
             }
         }
     );

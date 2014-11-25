@@ -43,6 +43,7 @@
     <script src="views/profile/profileController.js"></script>
     <script src="views/list/listController.js"></script>
     <script src="views/projects/projectsController.js"></script>
+    <script src="views/endpoints/endpointsController.js"></script>
 
     <script src="config.js"></script>
 
@@ -80,7 +81,20 @@
       <md-tabs md-selected="$root.selectedIndex" class="md-whiteframe-z1" ng-show="showTabs">
           <md-tab ng-repeat="tab in tabs" ng-click="$root.openTab($index)" aria-controls="{{ tab.name + '-content' }}">{{ tab.title }}</md-tab>
       </md-tabs>
+      <md-toolbar ng-hide="showTabs">
+          <div class="md-toolbar-tools">
+              <div ng-include="'partials/back.html'"></div>
+          </div>
+      </md-toolbar>
     </section>
+    <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" is-locked-open="$media('md')" md-theme="light-blue-dark" style="z-index: 10;">
+        <md-toolbar class="md-theme-indigo md-medium-tall" >
+            <h1 class="md-toolbar-tools" layout="center">Projects</h1>
+        </md-toolbar>
+        <md-content  ng-controller="LeftCtrl" md-theme="green">
+            <button class="menu-item menu-title" onClick="parent.location='#/'" ink-ripple>Back</button>
+        </md-content>
+    </md-sidenav>
     <section class="md-tabs-content" style="margin-top: 3em; overflow-y: auto;">
 
       <!--<md-tabs md-selected="tabs.selectedIndex">-->

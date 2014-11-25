@@ -1,5 +1,6 @@
 angular.module('app.loginController', [])
   .controller('loginController', function($scope, $http, $location, toastService, authService, $rootScope){
+      $rootScope.$broadcast('showTabs', true);
       $scope.message = 'Login';
       $scope.login = {};
       $scope.submit = function()  {

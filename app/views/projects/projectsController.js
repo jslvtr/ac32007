@@ -1,6 +1,7 @@
 'use strict';
 angular.module('app.projectsController', ['ngRoute', 'ngMaterial', 'ngAnimate'])
     .controller('projectsController', function ($scope, $http, $location, $rootScope, $mdDialog, toastService) {
+        $rootScope.$broadcast('showTabs', true);
         $scope.message = "Projects";
         $scope.loaded = false;
         $scope.projects = [];
@@ -319,7 +320,10 @@ function getProjects($scope, $http) {
             return 404;
         } else {
             return 409;
+            console.error(data);
         }
+
+        $scope.loaded = true;
 
     }).success(function (data, status, headers, config) {
         $scope.projects = data.projects;

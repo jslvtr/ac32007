@@ -1,6 +1,7 @@
 'use strict';
 angular.module('app.registerController', ['ngRoute', 'ngCookies'])
     .controller('registerController', function($scope, $http, $location, $rootScope){
+        $rootScope.$broadcast('showTabs', true);
         $scope.message="Register";
         $scope.submit = function(){
             var password    = $scope.form.password;

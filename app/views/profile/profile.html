@@ -14,7 +14,7 @@
     <div ng-show="profileMessage" style="text-align:center">
       <img src="assets/icons/person.svg" height="150px" />
       <h2>{{profileMessage}}</h2>
-        <p ng-repeat="project in projects"><a href="#">{{project.title}}</a></p>
+        <p ng-repeat="project in projects"><a href="{{ '#/user/null/project/' + project.title + '/endpoint/null' }}">{{project.title}}</a></p>
     </div>
   </md-card>
   <br />

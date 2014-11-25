@@ -31,6 +31,7 @@ angular
   'app.profileController',
   'app.listController',
   'app.projectsController',
+  'app.endpointsController',
 
   //Services
   'app.toast',

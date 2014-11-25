@@ -29,6 +29,10 @@ angular.module('app.indexController', [])
             loadTabs ($scope)
         });
 
+        $scope.$on('showTabs', function(event, showTabs) {
+            $scope.showTabs = showTabs;
+        });
+
         $scope.$root.openTab = function (index) {
             $scope.$root.selectedIndex = index;
             $timeout(function () {

@@ -54,7 +54,7 @@ angular.module('app.projectsController', ['ngRoute', 'ngMaterial', 'ngAnimate'])
                     $scope.loaded = true;
 
                 }).success(function (data, status, headers, config) {
-                    if (status === 204) {
+                    if (status === 202) {
                         $scope.projects.splice(index, 1);
                         localStorage.setItem('projects', JSON.stringify($scope.projects));
                         refreshProjects ($scope, $http, toastService);
@@ -289,7 +289,7 @@ function DialogController($rootScope, $scope, $http, $mdDialog, toastService, pa
             $mdDialog.hide();
 
         }).success(function (data, status, headers, config) {
-            if (status === 201) {
+            if (status === 201 || status === 202) {
                 if ($scope.action == 'add') {
                     parentScope.projects.splice(parentScope.projects.length, 0, data.project);
                     localStorage.setItem('projects', JSON.stringify(parentScope.projects));

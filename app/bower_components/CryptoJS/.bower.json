@@ -33,6 +33,5 @@
   },
   "_source": "git://github.com/karolmajta/crypto-js.git",
   "_target": "~3.1.12",
-  "_originalSource": "CryptoJS",
-  "_direct": true
+  "_originalSource": "CryptoJS"
 }

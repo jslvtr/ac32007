@@ -38,6 +38,5 @@
   },
   "_source": "git://github.com/chinmaymk/angular-charts.git",
   "_target": "~0.2.6",
-  "_originalSource": "angular-charts",
-  "_direct": true
+  "_originalSource": "angular-charts"
 }

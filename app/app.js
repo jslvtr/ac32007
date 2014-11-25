@@ -12,6 +12,7 @@ angular
   .module('app', [
   // Configuration
   'app.config',
+
   //dependencies
   'ngCookies',
   'ngMaterial',
@@ -29,6 +30,7 @@ angular
   'app.logoutController',
   'app.profileController',
   'app.listController',
+  'app.projectsController',
 
   //Services
   'app.toast',
@@ -39,4 +41,11 @@ angular
 
 
 
-  ]);
+  ])
+  .directive('ngClick',function(){
+    return {
+      link: function(){
+      },
+      restrict: 'A'
+    }
+  });

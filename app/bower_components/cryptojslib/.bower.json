@@ -17,6 +17,5 @@
   },
   "_source": "git://github.com/sytelus/CryptoJS.git",
   "_target": "~3.1.2",
-  "_originalSource": "cryptojslib",
-  "_direct": true
+  "_originalSource": "cryptojslib"
 }

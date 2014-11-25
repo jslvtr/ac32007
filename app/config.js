@@ -3,8 +3,8 @@
       Exclude http:// and do not add / at the end
 */
 
-var domain = 'https://agileapi.herokuapp.com';
-
+//var domain = 'https://agileapi.herokuapp.com';
+var domain = 'http://localhost:8080';
 
 
 /*

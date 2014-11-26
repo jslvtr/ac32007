@@ -151,7 +151,6 @@ function projectDelete  (req, res)  {
                         message: 'Can\'t delete project.'
                     });
                 } else {
-                    // TODO: There is no check whether project is deleted or not.
                     res.json(HttpStatus.ACCEPTED, {
                         status: 202,
                         message: 'Project deleted'
@@ -184,7 +183,7 @@ function projectAdd (req, res)  {
 
     if (sessionUser.username == owner)  {
         var query       = 'insert into agile_api.projects (title, description, owner) values (?, ?, ?) IF NOT EXISTS;';
-        var params      = [ title, description, owner ];
+        var params      = [ title, description, sessionUser.username ];
 
         configDB.client.execute(query, params, {prepare: true}, function(err, result) {
                 if (err) {
@@ -193,15 +192,34 @@ function projectAdd (req, res)  {
                         message: 'Can\'t create project.'
                     });
                 } else if (result.rows["0"]["[applied]"] === true) {
-                    res.json(HttpStatus.CREATED, {
-                        status: 201,
-                        message: 'Project registered',
-                        project : {
-                            title : title,
-                            description : description,
-                            owner :   owner
+                    var query = 'insert into agile_api.project_members (project_id, user_id, owner_id) values (?, ?, ?) if not exists;';
+                    var params = [ title, owner, owner ];
+
+                    configDB.client.execute(query, params, {prepare: true}, function(err, result) {
+                            if (err) {
+                                res.json(HttpStatus.METHOD_FAILURE, {
+                                    status: 420,
+                                    message: 'Can\'t create project member.'
+                                });
+                            } else if (result.rows["0"]["[applied]"] === true) {
+                                res.json(HttpStatus.CREATED, {
+                                    status: 201,
+                                    message: 'Project registered',
+                                    project : {
+                                        title : title,
+                                        description : description,
+                                        owner :   owner
+                                    }
+                                });
+                            } else {
+                                res.json(HttpStatus.NO_CONTENT, {
+                                    status: 204,
+                                    message: 'Project member already exists.'
+                                });
+                            }
                         }
-                    });
+                    );
+
                 } else {
                     res.json(HttpStatus.CONFLICT, {
                         status: 409,
@@ -213,7 +231,7 @@ function projectAdd (req, res)  {
     }   else    {
         res.json(HttpStatus.FORBIDDEN , {
             status: 403,
-            message: 'Forbidden'
+            message: 'Forbidden.'
         });
     }
 

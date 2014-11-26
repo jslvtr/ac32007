@@ -38,7 +38,7 @@ function query(req, res)    {
                     category    : result.rows[row].category_id
                 });
             }
-
+            var start = new Date();
             request(
                 { method: jsonResult[0].method_type
                     , uri: jsonResult[0].url
@@ -48,7 +48,32 @@ function query(req, res)    {
                 }
                 , function (error, response, body) {
                     // body is the decompressed response body
-                    res.json(response);
+                    var time = (new Date() - start);
+                    var timeNow = new Date;
+                    console.log(time);
+
+                    var query = 'insert into agile_api.endpoint_logs (token_id, req_method, res_time, time) values(?, ?, ?, dateof(now()));';
+
+                    var params = [ token_id, jsonResult[0].method_type, time ];
+
+                    configDB.client.execute(query, params, {prepare: true}, function(err, result) {
+                            if (err) {
+                                res.json(HttpStatus.METHOD_FAILURE, {
+                                    status: 420,
+                                    message: 'Can\'t create user.'
+                                });
+                                console.log(err);
+
+                            } else {
+                                res.json(HttpStatus.NO_CONTENT, {
+                                    status: 204,
+                                    message: 'User already exists.'
+                                });
+                                console.log(err);
+                            }
+                        }
+                    );
+
                     //console.log('the decoded data is: ' + body)
                 }
             ).on('data', function(data) {

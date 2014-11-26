@@ -1,4 +1,4 @@
-var email       = 'agilapi@gmail.com';
+var email       = 'agileapi@gmail.com';
 var password    = 'DundeeUni';
 
 module.exports = {

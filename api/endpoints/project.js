@@ -39,7 +39,7 @@ function projectGet  (req, res)  {
 
 function projectGetID  (req, res)  {
     //Gets the information from the uri
-    var title       = decodeURIComponent(req.params.id);
+    var title       = req.params.id;
     var owner       = req.params.user;
     var sessionUser = req.user;
 
@@ -176,7 +176,7 @@ function projectDelete  (req, res)  {
  */
 
 function projectAdd (req, res)  {
-    var title       = req.body.title;
+    var title       = req.body.title.split(' ').join('_');
     var description = req.body.description;
     var owner       = req.body.owner;
     var sessionUser = req.user;

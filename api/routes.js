@@ -170,8 +170,13 @@ module.exports = function(app, passport) {
      */
 
     app.post('/run/:id',
-        passport.authenticate('bearer', { session: false }),
+        passport.authenticate('bearer', { session: false }),        //queries using endpoint token
         queryRoutes.query
+    )
+
+    app.get('/run/logs/:id',                                            //gets logs for that endpoint token
+        passport.authenticate('bearer', { session: false }),
+        queryRoutes.getLogs
     )
 
 };

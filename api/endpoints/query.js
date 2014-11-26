@@ -97,7 +97,44 @@ function query(req, res)    {
     });
 }
 
+function getLogs(req, res)  {
+    var token_id = req.params.id;
+    var query       = 'select * from agile_api.endpoint_logs where token_id = ?;';
+    var params      = [ token_id ];
+
+    configDB.client.execute(query, params, {prepare: true}, function(err, result) {
+        if (err) {
+            res.json(HttpStatus.METHOD_FAILURE, {
+                status: 420,
+                message: 'Can\'t find project.'
+            });
+            console.log(err);
+        }   else     {
+            var jsonResult = [];
+            var avg_ms = 0;
+            for (var row in result.rows) {
+                jsonResult.push({
+                    time    :   result.rows[row].time,
+                    method  :   result.rows[row].req_method,
+                    response_time   :   result.rows[row].res_time
+                });
+                avg_ms = parseInt(result.rows[row].res_time, 10);
+            }
+
+
+            res.json(HttpStatus.ACCEPTED, {
+                status  :   200,
+                token   :   token_id,
+                avg_ms  :   avg_ms,
+                entries :   jsonResult.length,
+                message :   jsonResult
+            });
+
+        }
+    });
+}
 
 module.exports = {
-    query   :   query
+    query   :   query,
+    getLogs :   getLogs
 }

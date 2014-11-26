@@ -11,10 +11,17 @@
         #messages { lposition:absolute; ist-style-type: none; margin: 0; padding: 0; }
         #messages li { padding: 5px 10px; bottom:0; }
         #messages li:nth-child(odd) { background: #eee; }
+
+        #status {
+            position:fixed;
+            top:0;
+            right:0;
+        }
     </style>
 </head>
 <body>
 <ul id="messages"></ul>
+<div id="status"></div>
 <form action="">
     <input id="m" autocomplete="off" /><button>Send</button>
 </form>
@@ -27,12 +34,28 @@
         $('#m').val('');
         return false;
     });
+
+    $("#m").on("keyup", function (event) {
+        socket.emit("sender", {
+            name: "user"
+        });
+    });
+
+
     socket.on('chat message', function(msg){
         if (msg.length != 0)    {
             $('#messages').prepend($('<li>').text(msg));
         }
 
     });
+
+    socket.on("sender", function (data) {
+        $("#status").html(data.name + " is typing");
+        setTimeout(function () {
+            $("#status").html('');
+        }, 3000);
+    });
+
 </script>
 </body>
 </html>

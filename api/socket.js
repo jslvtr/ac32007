@@ -12,6 +12,16 @@ module.exports = function(app, io) {
         socket.on('chat message', function(msg){
             io.emit('chat message', msg);
         });
+
+
+        socket.on("sender", function (data) {
+            socket.emit("sender", data);
+            socket.broadcast.emit("sender", data); //Broadcast the user typing to all the other users over the network
+        });
+
+        socket.on('about', function(socket){
+            socket.broadcast.emit("sender", "about pages");
+        });
     });
 
 }

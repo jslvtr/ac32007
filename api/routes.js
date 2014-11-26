@@ -7,7 +7,8 @@ var endpointRoutes          = require('./endpoints/endpoints.js');
 var endpointCategoryRoutes  = require('./endpoints/endpoint_categories.js');
 var queryRoutes             = require('./endpoints/query.js');
 
-module.exports = function(app, passport) {
+module.exports = function(app, io, passport) {
+    require('./socket.js')(app, io); // load our routes and pass in our app and fully configured passport
 
     // Auth
     app.post('/auth/login', authRoutes.login);
@@ -29,7 +30,11 @@ module.exports = function(app, passport) {
     );
 
     // API
-    app.get('/', apiRoutes.about);
+    app.get('/', function(req, res){
+        res.sendfile('api/views/index.html');
+    });
+
+    app.get('/about', apiRoutes.about);
     app.get('/get', apiRoutes.methodGet);
     app.get('/do_dododo', apiRoutes.do_dododo);
 

@@ -79,11 +79,38 @@
     <md-card layout="column">
         <md-toolbar layout="row">
             <span flex></span>
+            <h3>URL Params</h3>
+            <span flex></span>
+        </md-toolbar>
+
+        <md-content class="endpoint-headers">
+            <div layout="row" layout-align="space-around center" ng-repeat="param in endpoint.url_params">
+                <md-text-float label="Key" ng-model="param.key"></md-text-float>
+                <md-text-float label="Value" ng-model="param.value"></md-text-float>
+            </div>
+            <div layout="row" layout-align="space-around center">
+                <md-text-float label="Key" ng-model="param.key"></md-text-float>
+                <md-text-float label="Value" ng-model="param.value"></md-text-float>
+            </div>
+        </md-content>
+    </md-card>
+
+    <md-card layout="column">
+        <md-toolbar layout="row">
+            <span flex></span>
             <h3>Body</h3>
             <span flex></span>
         </md-toolbar>
 
-        <textarea placeholder="Endpoint body" ng-model="endpoint.body" class="body-input"></textarea>
+        <div ui-ace="bodyOptions" ng-model="endpoint.body" class="body-input"></div>
+
+        <br />
+        <b style="text-align: center;">Body Type</b>
+        <md-radio-group ng-model="endpoint.body_type" layout="row" layout-align="center" ng-change="modeChanged()">
+            <md-radio-button value="json" aria-label="JSON">JSON</md-radio-button>
+            <md-radio-button value="raw"  aria-label="RAW"> RAW </md-radio-button>
+            <md-radio-button value="html" aria-label="HTML">HTML</md-radio-button>
+        </md-radio-group>
     </md-card>
 
     <br />

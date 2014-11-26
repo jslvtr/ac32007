@@ -20,6 +20,7 @@ angular
   'angular-table',
   'app.listDialog',
   'ngAnimate',
+  'ui.ace',
 
   //Controllers
   'app.indexController',

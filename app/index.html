@@ -54,7 +54,7 @@
     <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="bower_components/angular-material/angular-material.css">
     <link rel="stylesheet" type="text/css" href="bower_components/angular-material/themes/cyan-theme.css">
-    <link rel="stylesheet" type="text/css" href="bower_components/angular-material/themes/brown-theme.css">
+    <link rel="stylesheet" type="text/css" href="bower_components/angular-material/themes/blue-theme.css">
     <link rel="stylesheet" type="text/css" href="bower_components/angular-material/themes/light-blue-dark-theme.css">
     <link rel="stylesheet" type="text/css" href="bower_components/angular-material/themes/pink-theme.css">
     <link rel="stylesheet" type="text/css" href="bower_components/angular-material/themes/amber-theme.css">
@@ -68,7 +68,7 @@
   </head>
   <body ng-controller="appController" layout="column">
     <section class="md-header" style="z-index: 9;">
-      <md-toolbar>
+      <md-toolbar ng-class="showTabs?'':'md-whiteframe-z1'">
           <h1 class="md-toolbar-tools">
               <div ng-hide="showTabs" ng-include="'partials/back.html'"></div>
               <span ng-show="showTabs" flex></span>
@@ -85,20 +85,7 @@
           <md-tab ng-repeat="tab in tabs" ng-click="$root.openTab($index)" aria-controls="{{ tab.name + '-content' }}">{{ tab.title }}</md-tab>
       </md-tabs>
     </section>
-    <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" is-locked-open="$media('md')" md-theme="light-blue-dark" style="z-index: 10;">
-        <md-toolbar style="background-color: #ffffff; color: #000000;" layout="row">
-            <h1 class="md-toolbar-tools">
-                <md-button onClick="parent.location='#/'" aria-label="back button">
-                    <md-icon icon="assets/icons/ic_arrow_back_24px.svg" style="width: 24px; height: 24px;"></md-icon>
-                </md-button>
-                Projects
-            </h1>
-        </md-toolbar>
-        <md-content  ng-controller="LeftCtrl" md-theme="green">
-        </md-content>
-    </md-sidenav>
-    <section class="md-tabs-content" style="margin-top: 3em; overflow-y: auto;">
-
+    <section class="md-tabs-content top-bar-tabs-content" style="margin-top: 3em; overflow-y: auto;">
       <!--<md-tabs md-selected="tabs.selectedIndex">-->
           <!--<md-tab ng-hide="isLoggedIn" id="login_tab" onClick="parent.location='#/login'" aria-controls="login-content">Login</md-tab>-->
           <!--<md-tab ng-hide="isLoggedIn" id="register_tab" onClick="parent.location='#/register'" aria-controls="register-content">Register</md-tab>-->

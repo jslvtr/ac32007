@@ -1,0 +1,25 @@
+.top-bar-tabs-content {
+    margin-top: 2em !important;
+}
+
+.endpoint-headers md-input-group {
+    width: 45%;
+}
+
+.endpoint-details md-input-group {
+    width: 90%;
+}
+
+.endpoint-headers input, .endpoint-details input {
+    min-width: 100%;
+    width: 100%;
+    max-width: 100%;
+}
+
+.body-input {
+    width: 100%;
+    min-height: 10em;
+    height: 25em;
+    border: 1px solid rgb(218, 218, 218);
+    padding: 1em;
+}

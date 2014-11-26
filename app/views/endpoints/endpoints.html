@@ -1,3 +1,92 @@
-<md-content layout-fill style="margin-top: 2em;">
+<link rel="stylesheet" href="views/projects/projects.css" type="text/css" />
+<link rel="stylesheet" href="views/endpoints/endpoints.css" type="text/css" />
 
+<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" is-locked-open="$media('md')" md-theme="light-blue-dark" style="z-index: 10;">
+    <md-toolbar style="background-color: #ffffff; color: #000000;" layout="row">
+        <h1 class="md-toolbar-tools">
+            <md-button onClick="parent.location='#/'" aria-label="back button">
+                <md-icon icon="assets/icons/ic_arrow_back_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+            </md-button>
+            Projects
+        </h1>
+    </md-toolbar>
+    <md-content ng-controller="LeftCtrl" md-theme="blue">
+        <section>
+            <md-subheader style="text-align: center;" class="md-primary"><b>{{ project.title }}</b></md-subheader>
+            <md-list layout="column">
+                <md-item ng-repeat="endpoint in project.endpoints" ng-click="openEndpoint(endpoint, $index)">
+                    <md-item-content>
+                        <div class="md-tile-content" layout="row">
+                            <md-button class="md-fab md-primary md-tile-left endpoint_type" aria-label="endpoint" ng-class="'endpoint_type_' + endpoint.type.toLowerCase()">
+                                {{ endpoint.type }}
+                            </md-button>
+                            <div layout="column" style="margin-top: 0.9em; cursor: hand;">
+                                <h3>{{ endpoint.title }}</h3>
+                                <h4>{{ endpoint.url }}</h4>
+                            </div>
+                        </div>
+                    </md-item-content>
+                    <md-divider ng-if="!$last"></md-divider>
+                </md-item>
+            </md-list>
+        </section>
+    </md-content>
+</md-sidenav>
+
+<md-content layout-fill style="margin-top: 0em;">
+
+    <md-card layout="column">
+        <md-toolbar layout="row">
+            <span flex></span>
+            <h3>Endpoint</h3>
+            <span flex></span>
+        </md-toolbar>
+
+        <md-content class="endpoint-details">
+            <form style="padding: 20px;">
+                <div layout="row" layout-align="space-around center">
+                    <md-text-float label="Title" ng-model="endpoint.title"> </md-text-float>
+                </div>
+                <div layout="row" layout-align="space-around center">
+                    <md-text-float label="Description" ng-model="endpoint.description"> </md-text-float>
+                </div>
+                <div layout="row" layout-align="space-around center">
+                    <md-text-float label="URL" ng-model="endpoint.url"> </md-text-float>
+                </div>
+            </form>
+        </md-content>
+    </md-card>
+
+    <md-card layout="column">
+        <md-toolbar layout="row">
+            <span flex></span>
+            <h3>Headers</h3>
+            <span flex></span>
+        </md-toolbar>
+
+        <md-content class="endpoint-headers">
+            <div layout="row" layout-align="space-around center" ng-repeat="head in endpoint.heads">
+                <md-text-float label="Header" ng-model="head.head"></md-text-float>
+                <md-text-float label="Value" ng-model="head.value"></md-text-float>
+            </div>
+            <div layout="row" layout-align="space-around center">
+                <md-text-float label="Header" ng-model="head.head"></md-text-float>
+                <md-text-float label="Value" ng-model="head.value"></md-text-float>
+            </div>
+        </md-content>
+    </md-card>
+
+    <md-card layout="column">
+        <md-toolbar layout="row">
+            <span flex></span>
+            <h3>Body</h3>
+            <span flex></span>
+        </md-toolbar>
+
+        <textarea placeholder="Endpoint body" ng-model="endpoint.body" class="body-input"></textarea>
+    </md-card>
+
+    <br />
+    <br />
+    <br />
 </md-content>

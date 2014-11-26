@@ -1,11 +1,11 @@
 /**
  * Created by remon on 25/11/2014.
  */
-var configDB = require('../config/database.js');
-var HttpStatus = require('http-status-codes');
-var hat      = require('hat');
-var request = require('request');
-
+var configDB     = require('../config/database.js');
+var HttpStatus   = require('http-status-codes');
+var hat          = require('hat');
+var request      = require('request');
+var underscore   = require('underscore');
 function query(req, res)    {
 
     var token_id = req.params.id;
@@ -18,7 +18,7 @@ function query(req, res)    {
         if (err) {
             res.json(HttpStatus.METHOD_FAILURE, {
                 status: 420,
-                message: 'Can\'t find project.'
+                message: 'Can\'t find endpoint.'
             });
             console.log(err);
         }   else if (result.rows != null) {
@@ -39,20 +39,23 @@ function query(req, res)    {
                 });
             }
             var start = new Date();
+
+
+            console.log(JSON.stringify(headerArray));
+
             request(
                 { method: jsonResult[0].method_type
                     , uri: jsonResult[0].url
                     , body: jsonResult[0].body
-                    , headers: jsonResult[0].headers
+                    , headers: headerArray
                     , gzip: true
                 }
                 , function (error, response, body) {
                     // body is the decompressed response body
                     var time = (new Date() - start);
                     var timeNow = new Date;
-                    console.log(time);
 
-                    var query = 'insert into agile_api.endpoint_logs (token_id, req_method, res_time, time) values(?, ?, ?, dateof(now()));';
+                    var query = 'insert into agile_api.endpoint_logs (token_id, req_method, res_time, time) values(?, ?, ?, dateof(now())) if not exists;';
 
                     var params = [ token_id, jsonResult[0].method_type, time ];
 
@@ -60,16 +63,17 @@ function query(req, res)    {
                             if (err) {
                                 res.json(HttpStatus.METHOD_FAILURE, {
                                     status: 420,
-                                    message: 'Can\'t create user.'
+                                    message: 'Can\'t create log.'
                                 });
                                 console.log(err);
 
-                            } else {
-                                res.json(HttpStatus.CONFLICT, {
-                                    status: 409,
-                                    message: 'User already exists.'
-                                });
-                                console.log(err);
+                            }   else    {
+                                res.json(HttpStatus.ACCEPTED, {
+                                    status          :   response.statusCode,
+                                    response_time   :   time,
+                                    header          :   response.headers,
+                                    body            :   body
+                                })
                             }
                         }
                     );
@@ -79,6 +83,7 @@ function query(req, res)    {
             ).on('data', function(data) {
                     // decompressed data as it is received
                     //console.log('decoded chunk: ' + data)
+                    //res.send(data.body);
                 })
                 .on('response', function(response) {
                     // unmodified http.IncomingMessage object
@@ -91,7 +96,7 @@ function query(req, res)    {
         }   else {
             res.json(HttpStatus.NOT_FOUND , {
                 status: 404,
-                project : "Project not found"
+                project : "endpoint not found"
             });
         }
     });

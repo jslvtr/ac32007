@@ -1,6 +1,7 @@
-var configDB = require('../config/database.js');
-var HttpStatus = require('http-status-codes');
-var hat      = require('hat');
+var configDB    = require('../config/database.js');
+var HttpStatus  = require('http-status-codes');
+var hat         = require('hat');
+var parseMe       = require('../components/parse.js');
 
 function endpointAdd(req, res)  {
     ///user/:owner/project/:project/endpoints
@@ -30,6 +31,7 @@ function endpointAdd(req, res)  {
                     var method_type = req.body.method_type;
                     var body = JSON.stringify(req.body.body);
                     var body_type = req.body.body_type;
+
                     var query       = 'insert into agile_api.endpoints (project_id, owner_id, token_id, title, description, url, headers, url_params, method_type, body, body_type, category_id) values (?,?,?,?,?,?,?,?, ?, ?, ?, ?) IF NOT EXISTS;';
                     var params      = [ project, owner, token_id, title, description, url, headers_content, url_params, method_type, body, body_type, 'main' ];
 
@@ -42,8 +44,9 @@ function endpointAdd(req, res)  {
                                 console.log(err);
                             } else if (result.rows["0"]["[applied]"] === true) {
                                 res.json(HttpStatus.CREATED, {
-                                    status: 201,
-                                    message: 'endpoint created'
+                                    status  : 201,
+                                    message : 'endpoint created',
+                                    token   :   token_id
                                 });
                             } else {
                                 res.json(HttpStatus.NO_CONTENT, {
@@ -100,13 +103,13 @@ function endpointGetAll(req, res)   {
                                     body : result.rows[row].body,
                                     body_type : result.rows[row].body_type,
                                     description : result.rows[row].description,
-                                    headers : result.rows[row].headers,
+                                    headers : parseMe.toArrayFormat(result.rows[row].headers),
                                     method_type : result.rows[row].method_type,
                                     owner_id : result.rows[row].owner_id,
                                     project_id : result.rows[row].project_id,
                                     title : result.rows[row].title,
                                     url : result.rows[row].url,
-                                    url_params : result.rows[row].url_params,
+                                    url_params : parseMe.toArrayFormat(result.rows[row].url_params),
                                     category    : result.rows[row].category_id
                                 });
                             }
@@ -156,7 +159,7 @@ function endpointGet(req, res)  {
                         if (err) {
                             res.json(HttpStatus.METHOD_FAILURE, {
                                 status: 420,
-                                message: 'Can\'t find project.'
+                                message: 'Can\'t find Endpoint.'
                             });
                             console.log(err);
                         }   else if (result.rows != null) {
@@ -186,12 +189,12 @@ function endpointGet(req, res)  {
                         }   else {
                             res.json(HttpStatus.NOT_FOUND , {
                                 status: 404,
-                                project : "Project not found"
+                                project : "Endpoint not found"
                             });
                         }
                     });
                 }   else    {
-                    res.json({message:"couldn't find you"});
+                    res.json({message:"Couldn't find Endpoint"});
                 }
             }
         }
@@ -235,23 +238,15 @@ function endpointUpdate(req, res)   {
                         if (err) {
                             res.json(HttpStatus.METHOD_FAILURE, {
                                 status: 420,
-                                message: 'Can\'t find project.'
+                                message: 'Can\'t find Endpoint.'
                             });
-                            console.log(err);
                         }   else     {
-                            var jsonResult = [];
-
-                            for (var row in result.rows) {
-                                jsonResult.push({
-                                    'one'   :   'to rule them all'
-                                });
-                            }
                             res.json(HttpStatus.RESET_CONTENT);
 
                         }
                     });
                 }   else    {
-                    res.json({message:"couldn't find you"});
+                    res.json({message:"Couldn't find Endpoint"});
                 }
             }
         }

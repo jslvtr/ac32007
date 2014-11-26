@@ -15,7 +15,7 @@ var transporter = nodemailer.createTransport({
 function projectInviteTarget (req, res) {
 
     var owner       = req.params.owner;
-    var project     = req.params.project;
+    var project     = decodeURIComponent(req.params.project);
     var user        = req.params.user;
     var sessionUser = req.user;
 
@@ -39,8 +39,8 @@ function projectInviteTarget (req, res) {
                     email       =   result.rows[0].email;
                     full_name   =   result.rows[0].full_name;
                 } else {
-                    res.json(HttpStatus.NO_CONTENT, {
-                        status: 204,
+                    res.json(HttpStatus.CONFLICT, {
+                        status: 409,
                         message: 'invite already exists.'
                     });
                 }
@@ -74,7 +74,7 @@ function projectInviteTarget (req, res) {
                         if(error){
                             console.log(error);
                         }else{
-                            res.json({
+                            res.json(HttpStatus.OK, {
                                 status  :   200,
                                 message :   "Email sent"
                             });
@@ -82,8 +82,8 @@ function projectInviteTarget (req, res) {
                     });
 
                 } else {
-                    res.json(HttpStatus.NO_CONTENT, {
-                        status: 204,
+                    res.json(HttpStatus.CONFLICT, {
+                        status: 409,
                         message: 'Project already exists.'
                     });
                 }
@@ -100,7 +100,7 @@ function projectInviteTarget (req, res) {
 
 function projectInviteAccept(req, res)  {
     var owner       = req.params.owner;
-    var project     = req.params.project;
+    var project     = decodeURIComponent(req.params.project);
     var user        = req.params.user;
     var secret      = req.params.secret;
 
@@ -140,8 +140,8 @@ function projectInviteAccept(req, res)  {
                                     }
                                 );
                             } else {
-                                res.json(HttpStatus.NO_CONTENT, {
-                                    status: 204,
+                                res.json(HttpStatus.CONFLICT, {
+                                    status: 409,
                                     message: 'Project member already exists.'
                                 });
                             }
@@ -149,14 +149,15 @@ function projectInviteAccept(req, res)  {
                     );
 
                 }   else    {
-                    res.json(HttpStatus.NO_CONTENT, {
+                    res.json(HttpStatus.CONFLICT, {
+                        status: 409,
                         message :   'Invalid invite'
                     });
                 }
             } else {
-                res.json(HttpStatus.NO_CONTENT, {
-                    status: 204,
-                    message: 'invite already exists.'
+                res.json(HttpStatus.CONFLICT, {
+                    status: 409,
+                    message: 'Invite already exists.'
                 });
             }
         }
@@ -168,7 +169,7 @@ function projectInviteAccept(req, res)  {
 
 function projectRemoveTarget(req, res)  {
     var owner       = req.params.owner;
-    var project     = req.params.project;
+    var project     = decodeURIComponent(req.params.project);
     var user        = req.params.user;
     var sessionUser = req.user;
 
@@ -183,8 +184,8 @@ function projectRemoveTarget(req, res)  {
                         message: 'Can\'t delete user.'
                     });
                 } else {
-                    res.json(HttpStatus.NO_CONTENT, {
-                        status: 204,
+                    res.json(HttpStatus.ACCEPTED, {
+                        status: 202,
                         message: 'member deleted'
                     });
                 }
@@ -200,27 +201,31 @@ function projectRemoveTarget(req, res)  {
 
 function projectGetMembers(req, res)    {
     var owner       = req.params.owner;
-    var project     = req.params.project;
-    var query       = 'select user_id from agile_api.project_members where project_id = ? and owner_id = ? allow filtering;';
+    var project     = decodeURIComponent(req.params.project);
+    var query       = 'select * from agile_api.project_members where project_id = ? and owner_id = ? allow filtering;';
+    console.log('select user_id from agile_api.project_members where project_id = \'' + project + '\' and owner_id = \'' + owner + '\' allow filtering;');
     var params      = [ project, owner ];
 
     configDB.client.execute(query, params, {prepare: true}, function(err, result) {
             if (err) {
-                res.json(HttpStatus.METHOD_FAILURE, {
-                    status: 420,
+                res.json(HttpStatus.INTERNAL_SERVER_ERROR, {
+                    status: 500,
                     message: 'Can\'t get user.'
                 });
             } else {
-                var jsonResult = [];
+                var members = [];
 
-                for (var row in result.rows) {
-                    jsonResult.push({
-                        title : result.rows[row].user_id
+                result.rows.forEach(function (row) {
+                    members.push({
+                        username: row.user_id
                     });
-                }
-                res.json(HttpStatus.ACCEPTED, {
-                    status: 200,
-                    members: jsonResult
+
+                    res.json(HttpStatus.OK, {
+                        status: 200,
+                        members: members,
+                        owner: row.owner_id,
+                        project_name: row.project_id
+                    });
                 });
             }
         }

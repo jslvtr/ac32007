@@ -122,7 +122,7 @@ function getLogs(req, res)  {
             }
 
 
-            res.json(HttpStatus.ACCEPTED, {
+            res.json(HttpStatus.OK, {
                 status  :   200,
                 token   :   token_id,
                 avg_ms  :   avg_ms,

@@ -151,7 +151,6 @@ function projectDelete  (req, res)  {
                         message: 'Can\'t delete project.'
                     });
                 } else {
-                    // TODO: There is no check whether project is deleted or not.
                     res.json(HttpStatus.ACCEPTED, {
                         status: 202,
                         message: 'Project deleted'

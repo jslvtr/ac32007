@@ -5,6 +5,7 @@ var projectRoutes           = require('./endpoints/project.js');
 var projectUserRoutes       = require('./endpoints/project_users.js');
 var endpointRoutes          = require('./endpoints/endpoints.js');
 var endpointCategoryRoutes  = require('./endpoints/endpoint_categories.js');
+var queryRoutes             = require('./endpoints/query.js');
 
 module.exports = function(app, passport) {
 
@@ -158,4 +159,24 @@ module.exports = function(app, passport) {
         passport.authenticate('bearer', { session: false }),
         endpointCategoryRoutes.endpointRemoveCategory
     )
+
+
+
+    /*
+
+                    Querying
+        Handling of doing querying with endpoints
+
+     */
+
+    app.post('/run/:id',
+        passport.authenticate('bearer', { session: false }),        //queries using endpoint token
+        queryRoutes.query
+    )
+
+    app.get('/run/logs/:id',                                            //gets logs for that endpoint token
+        passport.authenticate('bearer', { session: false }),
+        queryRoutes.getLogs
+    )
+
 };

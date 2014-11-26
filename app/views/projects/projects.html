@@ -57,7 +57,7 @@
 
         <md-content class="animate-switch" ng-switch-default>
             <md-card class="no-projects-warning" ng-show="!project.endpoints || project.members.endpoints === 0">
-                <h1>This user has no endpoints.</h1>
+                <h1>This project has no endpoints.</h1>
             </md-card>
             <md-list>
                 <md-item ng-repeat="endpoint in project.endpoints" ng-click="openEndpoint($event, $index, endpoint)">
@@ -83,7 +83,7 @@
 
         <md-content class="animate-switch" ng-switch-when="members">
             <md-card class="no-projects-warning" ng-show="!project.members || project.members.length === 0">
-                <h1>This user has no members.</h1>
+                <h1>This project has no members.</h1>
             </md-card>
             <md-list>
                 <md-item ng-repeat="member in project.members">

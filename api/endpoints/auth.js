@@ -151,8 +151,8 @@ function logout (req, res){
                 });
 
             } else {
-                res.json(HttpStatus.RESET_CONTENT, {
-                    status: 205,
+                res.json(HttpStatus.OK, {
+                    status: 200,
                     message: 'Logged Out.'
                 });
             }

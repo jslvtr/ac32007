@@ -4,7 +4,7 @@ var HttpStatus = require('http-status-codes');
 function projectGet  (req, res)  {
     //Gets the information from the uri
     var owner   = req.params.user;
-    var query   = 'select title, description from agile_api.projects where owner = ? allow filtering;';
+    var query   = 'select title, description, owner from agile_api.projects where owner = ? allow filtering;';
     var params  = [ owner ];
 
     configDB.client.execute(query, params, {prepare: true}, function(err, result) {

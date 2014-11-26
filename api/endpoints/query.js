@@ -65,8 +65,8 @@ function query(req, res)    {
                                 console.log(err);
 
                             } else {
-                                res.json(HttpStatus.NO_CONTENT, {
-                                    status: 204,
+                                res.json(HttpStatus.CONFLICT, {
+                                    status: 409,
                                     message: 'User already exists.'
                                 });
                                 console.log(err);

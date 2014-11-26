@@ -70,29 +70,31 @@
     <section class="md-header" style="z-index: 9;">
       <md-toolbar>
           <h1 class="md-toolbar-tools">
-              <span flex></span>
+              <div ng-hide="showTabs" ng-include="'partials/back.html'"></div>
+              <span ng-show="showTabs" flex></span>
               <b>Agile API</b>
               <span flex></span>
               <div ng-show="isLoggedIn">
-                  <md-button class="md-raised md-warn" onClick="parent.location='#/logout'" aria-label="logout">Logout</md-button>
+                  <md-button onClick="parent.location='#/logout'" aria-label="logout">
+                      <md-icon icon="assets/icons/ic_input_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+                  </md-button>
               </div>
           </h1>
       </md-toolbar>
       <md-tabs md-selected="$root.selectedIndex" class="md-whiteframe-z1" ng-show="showTabs">
           <md-tab ng-repeat="tab in tabs" ng-click="$root.openTab($index)" aria-controls="{{ tab.name + '-content' }}">{{ tab.title }}</md-tab>
       </md-tabs>
-      <md-toolbar ng-hide="showTabs">
-          <div class="md-toolbar-tools">
-              <div ng-include="'partials/back.html'"></div>
-          </div>
-      </md-toolbar>
     </section>
     <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" is-locked-open="$media('md')" md-theme="light-blue-dark" style="z-index: 10;">
-        <md-toolbar class="md-theme-indigo md-medium-tall" >
-            <h1 class="md-toolbar-tools" layout="center">Projects</h1>
+        <md-toolbar style="background-color: #ffffff; color: #000000;" layout="row">
+            <h1 class="md-toolbar-tools">
+                <md-button onClick="parent.location='#/'" aria-label="back button">
+                    <md-icon icon="assets/icons/ic_arrow_back_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+                </md-button>
+                Projects
+            </h1>
         </md-toolbar>
         <md-content  ng-controller="LeftCtrl" md-theme="green">
-            <button class="menu-item menu-title" onClick="parent.location='#/'" ink-ripple>Back</button>
         </md-content>
     </md-sidenav>
     <section class="md-tabs-content" style="margin-top: 3em; overflow-y: auto;">

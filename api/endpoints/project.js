@@ -212,8 +212,8 @@ function projectAdd (req, res)  {
                                     }
                                 });
                             } else {
-                                res.json(HttpStatus.NO_CONTENT, {
-                                    status: 204,
+                                res.json(HttpStatus.CONFLICT, {
+                                    status: 409,
                                     message: 'Project member already exists.'
                                 });
                             }

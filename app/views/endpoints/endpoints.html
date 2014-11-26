@@ -18,7 +18,7 @@
                     <md-item-content>
                         <div class="md-tile-content" layout="row">
                             <md-button class="md-fab md-primary md-tile-left endpoint_type" aria-label="endpoint" ng-class="'endpoint_type_' + endpoint.type.toLowerCase()">
-                                {{ endpoint.type }}
+                                {{ endpoint.method_type }}
                             </md-button>
                             <div layout="column" style="margin-top: 0.9em; cursor: hand;">
                                 <h3>{{ endpoint.title }}</h3>
@@ -53,6 +53,30 @@
                 <div layout="row" layout-align="space-around center">
                     <md-text-float label="URL" ng-model="endpoint.url"> </md-text-float>
                 </div>
+                <br />
+                <span layout="row" layout-align="center"><b>Method Type</b></span>
+                <md-radio-group ng-model="endpoint.method_type" layout="row" layout-align="center" ng-change="modeChanged()">
+                    <span layout="column">
+                        <md-radio-button value="GET" aria-label="Get">Get</md-radio-button>
+                        <md-radio-button value="POST" aria-label="Post">Post</md-radio-button>
+                        <md-radio-button value="PUT" aria-label="Put">Put</md-radio-button>
+                        <md-radio-button value="PATCH"  aria-label="Patch">Patch</md-radio-button>
+                        <md-radio-button value="DELETE" aria-label="Delete">Delete</md-radio-button>
+                    </span>
+                    <span layout="column">
+                        <md-radio-button value="COPY" aria-label="Copy">Copy</md-radio-button>
+                        <md-radio-button value="HEAD" aria-label="Head">Head</md-radio-button>
+                        <md-radio-button value="OPTIONS"  aria-label="Options">Options</md-radio-button>
+                        <md-radio-button value="LINK" aria-label="Link">Link</md-radio-button>
+                        <md-radio-button value="UNLINK" aria-label="Unlink">Unlink</md-radio-button>
+                    </span>
+                    <span layout="column">
+                        <md-radio-button value="PURGE" aria-label="Purge">Purge</md-radio-button>
+                        <md-radio-button value="LOCK"  aria-label="Lock">Lock</md-radio-button>
+                        <md-radio-button value="UNLOCK" aria-label="Unlock">Unlock</md-radio-button>
+                        <md-radio-button value="PROFIND" aria-label="Profind">Profind</md-radio-button>
+                    </span>
+                </md-radio-group>
             </form>
         </md-content>
     </md-card>
@@ -65,9 +89,9 @@
         </md-toolbar>
 
         <md-content class="endpoint-headers">
-            <div layout="row" layout-align="space-around center" ng-repeat="head in endpoint.heads">
-                <md-text-float label="Header" ng-model="head.head"></md-text-float>
-                <md-text-float label="Value" ng-model="head.value"></md-text-float>
+            <div layout="row" layout-align="space-around center" ng-repeat="(key, value) in endpoint.headers">
+                <md-text-float label="Header" ng-model="key"></md-text-float>
+                <md-text-float label="Value" ng-model="value"></md-text-float>
             </div>
             <div layout="row" layout-align="space-around center">
                 <md-text-float label="Header" ng-model="head.head"></md-text-float>
@@ -108,8 +132,9 @@
         <b style="text-align: center;">Body Type</b>
         <md-radio-group ng-model="endpoint.body_type" layout="row" layout-align="center" ng-change="modeChanged()">
             <md-radio-button value="json" aria-label="JSON">JSON</md-radio-button>
-            <md-radio-button value="raw"  aria-label="RAW"> RAW </md-radio-button>
+            <md-radio-button value="text" aria-label="Text">Text</md-radio-button>
             <md-radio-button value="html" aria-label="HTML">HTML</md-radio-button>
+            <md-radio-button value="xml"  aria-label="XML">XML</md-radio-button>
         </md-radio-group>
     </md-card>
 

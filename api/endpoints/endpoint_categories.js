@@ -2,12 +2,13 @@ var configDB = require('../config/database.js');
 var HttpStatus = require('http-status-codes');
 var hat      = require('hat');
 
-function endpointAddCategory (req, res) {
+function endpointAddCategory (req, res, io) {
     var project = req.params.project;
     var owner = req.params.owner;
     var category = req.params.category;
     var token_id = req.params.id;
     var sessionUser = req.user;
+    var room = '#' + project + '-' + owner;
 
     //Check if the user is a member of the project
     var query = 'select user_id from agile_api.project_members where user_id = ?';
@@ -33,6 +34,7 @@ function endpointAddCategory (req, res) {
                                     message: 'Can\'t update endpoint.'
                                 });
                             } else {
+                                io.emit(room, sessionUser.access_token, project, owner, null, 'Endpoint ' + project + 's category has been changed to ' + category + 'by ' + sessionUser.username);
                                 res.json(HttpStatus.CREATED, {
                                     status: 202,
                                     message: 'Endpoint updated'
@@ -52,12 +54,13 @@ function endpointAddCategory (req, res) {
     );
 }
 
-function endpointRemoveCategory (req, res) {
+function endpointRemoveCategory (req, res, io) {
     var project = req.params.project;
     var owner = req.params.owner;
     var category = req.params.category;
     var token_id = req.params.id;
     var sessionUser = req.user;
+    var room = '#' + project + '-' + owner;
 
     //Check if the user is a member of the project
     var query = 'select user_id from agile_api.project_members where user_id = ?';
@@ -82,6 +85,7 @@ function endpointRemoveCategory (req, res) {
                                 message: 'Can\'t update endpoint.'
                             });
                         } else {
+                            io.emit(room, sessionUser.access_token, project, owner, null, 'Endpoint ' + project + 's category has been removed by ' + sessionUser.username);
                             res.json(HttpStatus.CREATED, {
                                 status: 202,
                                 message: 'Endpoint updated'

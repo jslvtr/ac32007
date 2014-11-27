@@ -28,7 +28,7 @@ function on (io, socket, access_token, title, owner, error, message) {
 
     findByToken(access_token, function (err, sessionUser) {
         if (sessionUser) {
-            io.emit(room, access_token, title, owner, err, 'Welcome ' + sessionUser.username);
+            //io.emit(room, access_token, title, owner, err, 'Welcome ' + sessionUser.username);
 
         } else {
             io.emit('project', access_token, title, owner, err, 'Go Away!!');

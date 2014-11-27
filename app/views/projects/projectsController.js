@@ -91,7 +91,7 @@ angular.module('app.projectsController', ['ngRoute', 'ngMaterial', 'ngAnimate'])
             }
         };
 
-        $scope.removeMember = function(project, $index, ev) {
+        $scope.removeMember = function (project, $index, ev) {
             var index = $index;
 
             if (project.members[$index].username == project.owner) {
@@ -144,7 +144,7 @@ angular.module('app.projectsController', ['ngRoute', 'ngMaterial', 'ngAnimate'])
             }
         }
 
-        $scope.inviteMember = function(project, newMember, ev) {
+        $scope.inviteMember = function (project, newMember, ev) {
             $http({
                 url: backend + '/user/' + project.owner + '/project/' + project.title + '/invite/' + newMember,
                 method: 'POST',
@@ -224,86 +224,7 @@ angular.module('app.projectsController', ['ngRoute', 'ngMaterial', 'ngAnimate'])
         $scope.openEndpoint = function (event, index, endpoint) {
 
         };
-
-        //Sample Data
-//        $scope.projects = [
-//            {
-//                title : 'Sample Project',
-//                description : 'Sed posuere consectetur est at lobortis. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.',
-//                members : [
-//                    {
-//                        username : 'johndoe',
-//                        email : 'johndoe@gmail.com'
-//                    },
-//                    {
-//                        username : 'johndoe',
-//                        email : 'johndoe@gmail.com'
-//                    },
-//                    {
-//                        username : 'johndoe',
-//                        email : 'johndoe@gmail.com'
-//                    }
-//                ],
-//                endpoints : [
-//                    {
-//                        type : 'GET',
-//                        title : 'Fetch Users',
-//                        description : 'Euismod Pharetra Risus Tortor.',
-//                        url : 'https://api.demo.com/users'
-//                    },
-//                    {
-//                        type : 'GET',
-//                        title : 'Fetch Users',
-//                        description : 'Euismod Pharetra Risus Tortor.',
-//                        url : 'https://api.demo.com/users'
-//                    },
-//                    {
-//                        type : 'GET',
-//                        title : 'Fetch Users',
-//                        description : 'Euismod Pharetra Risus Tortor.',
-//                        url : 'https://api.demo.com/users'
-//                    },
-//                    {
-//                        type : 'GET',
-//                        title : 'Fetch Users',
-//                        description : 'Euismod Pharetra Risus Tortor.',
-//                        url : 'https://api.demo.com/users'
-//                    }
-//                ]
-//            },
-//            {
-//                title : 'Sample Project',
-//                description : 'Sed posuere consectetur est at lobortis. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.',
-//                endpoints : [
-//                    {
-//                        type : 'GET',
-//                        title : 'Fetch Users',
-//                        description : 'Euismod Pharetra Risus Tortor.',
-//                        url : 'https://api.demo.com/users'
-//                    },
-//                    {
-//                        type : 'GET',
-//                        title : 'Fetch Users',
-//                        description : 'Euismod Pharetra Risus Tortor.',
-//                        url : 'https://api.demo.com/users'
-//                    },
-//                    {
-//                        type : 'GET',
-//                        title : 'Fetch Users',
-//                        description : 'Euismod Pharetra Risus Tortor.',
-//                        url : 'https://api.demo.com/users'
-//                    },
-//                    {
-//                        type : 'GET',
-//                        title : 'Fetch Users',
-//                        description : 'Euismod Pharetra Risus Tortor.',
-//                        url : 'https://api.demo.com/users'
-//                    }
-//                ]
-//            }
-//        ];
-    }
-);
+    });
 
 function getProjects($scope, $http) {
     $http({

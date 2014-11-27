@@ -160,6 +160,31 @@ function logout (req, res){
     );
 }
 
+function deleteUser (req, res){
+    var query = 'delete from agile_api.users where username = ?;';
+    var sessionUser = req.user;
+    var params = [ req.user.username ];
+
+    if (sessionUser.username == req.user.username) {
+
+        configDB.client.execute(query, params, {prepare: true}, function (err, result) {
+                if (err) {
+                    res.json(HttpStatus.METHOD_FAILURE, {
+                        status: 420,
+                        message: 'Can\'t log out.'
+                    });
+
+                } else {
+                    res.json(HttpStatus.ACCEPTED, {
+                        status: 202,
+                        message: 'User marked for deletion.'
+                    });
+                }
+            }
+        );
+    }
+}
+
 function facebook (req, res){
     res.json(HttpStatus.NOT_IMPLEMENTED, {
         status : 200,
@@ -172,5 +197,6 @@ module.exports = {
     login       : login,
     register    : register,
     logout      : logout,
-    facebook    : facebook
+    facebook    : facebook,
+    deleteUser  : deleteUser
 };

@@ -90,13 +90,15 @@ angular.module('app.projectsController', ['ngRoute', 'ngMaterial', 'ngAnimate'])
             }
         };
 
-        $scope.removeMember = function(project, memberToRemove, ev) {
-            if (memberToRemove == project.owner) {
+        $scope.removeMember = function(project, $index, ev) {
+            var index = $index;
+
+            if (project.members[$index].username == project.owner) {
                 toastService.displayToast("This member is the owner. Delete the project instead!");
             } else {
                 var confirm = $mdDialog.confirm()
                     .title('Would you like to remove this member?')
-                    .content("If you confirm, you'll be removing " + memberToRemove + " from `" + project.title + "`")
+                    .content("If you confirm, you'll be removing " + project.members[$index].username + " from `" + project.title + "`")
                     .ariaLabel('Confirm Remove Member')
                     .ok('Remove Member')
                     .cancel('cancel')
@@ -104,7 +106,7 @@ angular.module('app.projectsController', ['ngRoute', 'ngMaterial', 'ngAnimate'])
 
                 $mdDialog.show(confirm).then(function () {
                     $http({
-                        url: backend + '/user/' + project.owner + '/project/' + project.title + '/remove/' + memberToRemove,
+                        url: backend + '/user/' + project.owner + '/project/' + project.title + '/remove/' + project.members[$index].username,
                         method: 'DELETE',
                         dataType: 'json',
                         data: '',
@@ -126,11 +128,7 @@ angular.module('app.projectsController', ['ngRoute', 'ngMaterial', 'ngAnimate'])
                         if (status === 202) {
                             for (var i = 0; i < $scope.projects.length; i++) {
                                 if ($scope.projects[i].title == project.title) {
-                                    for (var j = 0; j < $scope.projects[i].members.length; j++) {
-                                        if ($scope.projects[i].members[j].username == memberToRemove) {
-                                            $scope.projects[i].members = $scope.projects[i].members.splice(j, 1);
-                                        }
-                                    }
+                                    $scope.projects[i].members.splice(index, 1);
                                 }
                             }
                             localStorage.setItem('projects', JSON.stringify($scope.projects));

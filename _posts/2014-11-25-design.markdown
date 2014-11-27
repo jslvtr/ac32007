@@ -1,0 +1,8 @@
+---
+layout: post
+title:  "Cassandra and maps."
+date:   2014-11-27 20:21:00
+categories: agileapi priamubaio
+---
+
+#Design

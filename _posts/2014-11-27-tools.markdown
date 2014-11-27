@@ -1,0 +1,19 @@
+---
+layout: post
+title:  "Tools"
+date:   2014-11-27 15:25:00
+categories: agileapi priamubaio
+---
+
+#Tools
+
+For our project we wanted to experiment with new technologies but also stick with technologies which we are all used to. The tools that used in our project are:
+
+- **NodeJS**
+  - Used for the API
+- **AngularJS**
+  - Client side web app
+
+#So why did we choose them?
+##NodeJS
+The original idea that we had was that we could build a desktop application similar [Atom](https://atom.io/)

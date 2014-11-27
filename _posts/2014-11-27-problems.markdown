@@ -1,0 +1,14 @@
+---
+layout: post
+title:  "Some of the problems"
+date:   2014-11-27 15:25:00
+categories: agileapi priamubaio
+---
+
+
+#Problems
+
+One of the main issues that we have noticed when developing our application for Cassandra is NodeJS drivers lack of support for UDT (User defined types), this is due to it not being able to serialze the data [source](http://stackoverflow.com/questions/26732120/using-user-defined-types-in-cassandra-with-nodejs). We got around this by using the map type instead and parsing data into key, value types manually which isn't the best way to be doing it.
+
+One of the other big main problems which we were aware of at the start but it kept at it was CORS (Cross-origin resource sharing), you can find out more about CORS by reading this [article](http://www.html5rocks.com/en/tutorials/cors/) by HTML5rocks.
+We were able to enable our server to be able to do requests but this could have been avoided.

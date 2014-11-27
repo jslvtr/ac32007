@@ -47,13 +47,13 @@ angular
 
   ])
   .factory('agileSocket', function (socketFactory) {
-      var myIoSocket = io.connect(backend + '/activity/server');
+      var myIoSocket = io.connect(backend + '/');
 
       var agileSocket = socketFactory({
         ioSocket: myIoSocket
       });
 
-      agileSocket.forward('error');
+      agileSocket.forward('project');
 
       return agileSocket;
 

@@ -7,6 +7,15 @@ var flash               = require('connect-flash');
 var bodyParser          = require('body-parser');
 var FacebookStrategy    = require('passport-facebook');
 
+// Socket.io
+var http                = require('http').Server(app);
+var Server              = require('socket.io');
+var io                  = new Server(http);
+
+io.serveClient(false);
+io.path('/activity/server');
+//io.namespace('/activity/server');
+
 var morgan       = require('morgan');
 
 var configDB = require('./api/config/database');
@@ -39,10 +48,14 @@ app.use(function(req, res, next) {
 });
 
 // routes
-require('./api/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
+require('./api/routes.js')(app, io, passport); // load our routes and pass in our app and fully configured passport
 
 
 
 // Launch
-app.listen(port);
-console.log('Server listening on localhost: ' + port);
+//app.listen(port);
+//console.log('Server listening on localhost: ' + port);
+
+http.listen(port, function () {
+    console.log('Server listening on localhost: ' + port);
+});

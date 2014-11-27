@@ -26,6 +26,7 @@
     "passport-twitter": "~1.0.2",
     "request": "^2.48.0",
     "require": "^2.4.17",
+    "socket.io": "^1.2.1",
     "underscore": "^1.7.0"
   }
 }

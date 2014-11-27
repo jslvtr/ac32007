@@ -139,9 +139,11 @@ angular.module('app.endpointsController', [])
 
         // Sockets
 
-        $scope.$on('socket:error', function (ev, data) {
-            console.log('Yay!! we got Errors!! --> ' + data);
+        $scope.$on('socket:project' + $scope.room, function (ev, data) {
+            console.log('[' + $scope.room + '] > ' + data);
         });
+
+        //agileSocket.emit('project', $scope.sessionUser.access_token, project_title, project_owner, null, 'Am I allowed???');
     }
 );
 

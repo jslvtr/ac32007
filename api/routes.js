@@ -7,7 +7,19 @@ var endpointRoutes          = require('./endpoints/endpoints.js');
 var endpointCategoryRoutes  = require('./endpoints/endpoint_categories.js');
 var queryRoutes             = require('./endpoints/query.js');
 
-module.exports = function(app, passport) {
+var projectsRoom             = require('./sockets/projects.js');
+
+module.exports = function(app, io, passport) {
+
+    // Socket
+    io.on('connection', function (socket) {
+        console.log('Connected: ' + socket.id + ', From Address: '+socket.conn.remoteAddress);
+        io.emit('project', 'Hello!!');
+
+        //io.on('project', function (access_token, title, owner, error, message) {
+        //    projectsRoom.on(io, access_token, title, owner, error, message);
+        //});
+    });
 
     // Auth
     app.post('/auth/login', authRoutes.login);

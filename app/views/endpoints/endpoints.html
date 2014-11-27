@@ -40,6 +40,9 @@
             <span flex></span>
             <h3>Endpoint</h3>
             <span flex></span>
+            <md-button ng-click="resetContent()" aria-label="new endpoint">
+                <md-icon icon="assets/icons/ic_refresh_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+            </md-button>
         </md-toolbar>
 
         <md-content class="endpoint-details">
@@ -151,10 +154,31 @@
             <span flex></span>
         </md-toolbar>
         <br />
+        <b ng-show="output.content">Headers</b>
+        <pre ng-show="output.headers">{{ output.headers }}</pre>
+        <br />
+        <b ng-show="output.content">Body</b>
+        <div ng-show="output.content" ui-ace="outputOptions" ng-model="output.content" class="body-input"></div>
+        <br />
+        <b ng-show="output.content && output.type === 'html'">Preview</b>
+        <div ng-show="output.content && output.type === 'html'" ng-bind-html="output.content"></div>
+        <br />
     </md-card>
 
-    <md-button ng-click="saveEndpoint($event)" class="md-fab md-primary" style="background-color: #8bc34a; position: fixed; bottom: 1.5em; right: 1.5em;" aria-label="add endpoint">
+    <md-button ng-click="runEndpoint($event)" ng-show="showActions" class="md-fab md-primary" style="background-color: #ff9800; position: fixed; bottom: 16.5em; right: 1.5em;" aria-label="delete endpoint">
+        <md-icon icon="assets/icons/ic_play_arrow_24px.svg"></md-icon>
+    </md-button>
+
+    <md-button ng-click="deleteEndpoint($event)" ng-show="showActions" class="md-fab md-primary" style="background-color: #e51c23; position: fixed; bottom: 11.5em; right: 1.5em;" aria-label="delete endpoint">
+        <md-icon icon="assets/icons/ic_delete_24px.svg"></md-icon>
+    </md-button>
+
+    <md-button ng-click="saveEndpoint($event)" ng-show="showActions" class="md-fab md-primary" style="background-color: #8bc34a; position: fixed; bottom: 6.5em; right: 1.5em;" aria-label="add endpoint">
         <md-icon icon="assets/icons/ic_add_24px.svg"></md-icon>
+    </md-button>
+
+    <md-button ng-click="showActions = !showActions" class="md-fab md-primary" style="background-color: #00bcd4; position: fixed; bottom: 1.5em; right: 1.5em;" aria-label="add endpoint">
+        <md-icon icon="assets/icons/ic_more_vert_24px.svg"></md-icon>
     </md-button>
 
     <br />

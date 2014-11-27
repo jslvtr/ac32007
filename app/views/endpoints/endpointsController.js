@@ -2,6 +2,13 @@ angular.module('app.endpointsController', [])
     .controller('endpointsController', function($rootScope, $scope, $http, $timeout, $mdSidenav, $location, $routeParams, toastService) {
         $rootScope.$broadcast('showTabs', false);
         $scope.title = "Endpoint";
+        $scope.showActions = false;
+
+        $scope.output = {
+            type : 'text',
+            content : '',
+            headers : ''
+        };
 
         $scope.header = {
             key : '',
@@ -33,6 +40,10 @@ angular.module('app.endpointsController', [])
         var project_owner   = $routeParams.owner;
         var project_title   = $routeParams.title;
         var endpoint_token  = $routeParams.endpoint;
+
+        $scope.resetContent = function () {
+            $location.path('/user/'+project_owner+'/project/'+project_title+'/endpoint/null');
+        };
 
         var json_user = localStorage.getItem('user');
         $scope.sessionUser = null;
@@ -66,6 +77,18 @@ angular.module('app.endpointsController', [])
                 $scope.endpoint.project_id = project_title;
                 createEndpoint($scope, $http, $location, toastService);
             }
+
+            $scope.showActions = false;
+        };
+
+        $scope.deleteEndpoint = function (event) {
+            deleteEndpoint($scope, $http, $location, toastService);
+            $scope.showActions = false;
+        };
+
+        $scope.runEndpoint = function (event) {
+            runEndpoint($scope, $http, $location, toastService);
+            $scope.showActions = false;
         };
 
         $scope.addNewURLParam = function () {
@@ -92,63 +115,23 @@ angular.module('app.endpointsController', [])
             }
         };
 
-        //$scope.endpoint = {
-        //    method_type : 'GET',
-        //    title : 'Fetch Users',
-        //    description : 'Euismod Pharetra Risus Tortor.',
-        //    url : 'https://api.demo.com/users',
-        //    headers : [
-        //        {
-        //            head : 'Content-Type',
-        //            value : 'application/json; charset=utf-8'
-        //        },
-        //        {
-        //            head : 'Authorization',
-        //            value : 'Bearer 87932ee1248c284fa36476bbc82ed9f7'
-        //        }
-        //    ],
-        //    url_params : [],
-        //    body : "",
-        //    body_type : 'json'
-        //};
-        //
-        //$scope.project = {
-        //    title : 'Sample Project',
-        //    description : 'Sed posuere consectetur est at lobortis. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.',
-        //    endpoints : [
-        //        {
-        //            type : 'GET',
-        //            title : 'Fetch Users',
-        //            description : 'Euismod Pharetra Risus Tortor.',
-        //            url : 'https://api.demo.com/users'
-        //        },
-        //        {
-        //            type : 'GET',
-        //            title : 'Fetch Users',
-        //            description : 'Euismod Pharetra Risus Tortor.',
-        //            url : 'https://api.demo.com/users'
-        //        },
-        //        {
-        //            type : 'GET',
-        //            title : 'Fetch Users',
-        //            description : 'Euismod Pharetra Risus Tortor.',
-        //            url : 'https://api.demo.com/users'
-        //        },
-        //        {
-        //            type : 'GET',
-        //            title : 'Fetch Users',
-        //            description : 'Euismod Pharetra Risus Tortor.',
-        //            url : 'https://api.demo.com/users'
-        //        }
-        //    ]
-        //};
-
         $scope.bodyOptions = {
             mode: $scope.endpoint.body_type.toLowerCase(),
             onLoad: function (_ace) {
                 // HACK to have the ace instance in the scope...
                 $scope.modeChanged = function () {
                     _ace.getSession().setMode("ace/mode/" + $scope.endpoint.body_type.toLowerCase());
+                };
+
+            }
+        };
+
+        $scope.outputOptions = {
+            mode: $scope.output.type.toLowerCase(),
+            onLoad: function (_ace) {
+                // HACK to have the ace instance in the scope...
+                $scope.outputModeChanged = function () {
+                    _ace.getSession().setMode("ace/mode/" + $scope.output.type.toLowerCase());
                 };
 
             }
@@ -279,6 +262,88 @@ function updateEndpoint ($scope, $http, $location, toastService) {
         }
         //$scope.endpoint = data.endpoint;
         //$scope.endpoint.method_type = $scope.endpoint.method_type.toUpperCase();
+        $scope.loaded = true;
+    });
+}
+
+function deleteEndpoint ($scope, $http, $location, toastService) {
+    var owner = $scope.endpoint.owner_id;
+    var project = $scope.endpoint.project_id;
+    var token = $scope.endpoint.token_id;
+
+    $http({
+        url: backend + '/user/' + owner + '/project/' + project + '/endpoint/' + token,
+        method: 'DELETE',
+        dataType: 'json',
+        data: '',
+        headers: {
+            'Authorization' : 'Bearer ' + $scope.sessionUser.access_token
+        }
+
+    }).error(function(data, status, headers, config) {
+        if (status === 404) {
+            toastService.displayToast("That endpoint doesn't exist");
+        } else {
+            toastService.displayToast("Failed to delete that endpoint");
+            console.error(data);
+        }
+
+        $scope.loaded = true;
+
+    }).success(function (data, status, headers, config) {
+        if (status === 204) {
+            //toastService.displayToast("Endpoint Updated.");
+            $location.path('/user/' + owner + '/project/' + project + '/endpoint/null');
+        }
+        //$scope.endpoint = data.endpoint;
+        //$scope.endpoint.method_type = $scope.endpoint.method_type.toUpperCase();
+        $scope.loaded = true;
+    });
+}
+
+function runEndpoint ($scope, $http, $location, toastService) {
+    var owner = $scope.endpoint.owner_id;
+    var project = $scope.endpoint.project_id;
+    var token = $scope.endpoint.token_id;
+
+    $http({
+        url: backend + '/run/' + token,
+        method: 'POST',
+        dataType: 'json',
+        data: '',
+        headers: {
+            'Authorization' : 'Bearer ' + $scope.sessionUser.access_token
+        }
+
+    }).error(function(data, status, headers, config) {
+        if (status === 404) {
+            toastService.displayToast("That endpoint doesn't exist");
+        } else {
+            toastService.displayToast("Failed to run that endpoint");
+            console.error(data);
+        }
+
+        $scope.loaded = true;
+
+    }).success(function (data, status, headers, config) {
+        if (status === 202) {
+            $scope.output.content = data.body;
+            $scope.output.headers = JSON.stringify(data.header, undefined, 2);
+
+            if (data.header['content-type']) {
+                var results = data.header['content-type'].match('text/(\\S+);');
+                if (results.length > 0) {
+                    $scope.output.type = results[1].toLowerCase();
+
+                    if ($scope.output.type === 'json') {
+                        $scope.output.content = JSON.stringify($scope.output.content, undefined, 2);
+                    }
+
+                    $scope.outputModeChanged();
+                }
+            }
+        }
+
         $scope.loaded = true;
     });
 }

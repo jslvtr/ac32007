@@ -40,14 +40,11 @@ function query(req, res)    {
             }
             var start = new Date();
 
-
-            console.log(JSON.stringify(headerArray));
-
             request(
                 { method: jsonResult[0].method_type
                     , uri: jsonResult[0].url
                     , body: jsonResult[0].body
-                    , headers: headerArray
+                    , headers: jsonResult[0].headers
                     , gzip: true
                 }
                 , function (error, response, body) {
@@ -68,12 +65,22 @@ function query(req, res)    {
                                 console.log(err);
 
                             }   else    {
-                                res.json(HttpStatus.ACCEPTED, {
-                                    status          :   response.statusCode,
-                                    response_time   :   time,
-                                    header          :   response.headers,
-                                    body            :   body
-                                })
+                                if (!error) {
+                                    res.json(HttpStatus.ACCEPTED, {
+                                        status          :   response.statusCode,
+                                        response_time   :   time,
+                                        header          :   response.headers,
+                                        body            :   body
+                                    });
+
+                                } else {
+                                    res.json(HttpStatus.ACCEPTED, {
+                                        error           :   error.message,
+                                        response_time   :   time,
+                                        header          :   '',
+                                        body            :   ''
+                                    });
+                                }
                             }
                         }
                     );

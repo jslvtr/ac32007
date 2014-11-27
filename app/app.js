@@ -21,6 +21,7 @@ angular
   'app.listDialog',
   'ngAnimate',
   'ui.ace',
+  'ngSanitize',
 
   //Controllers
   'app.indexController',

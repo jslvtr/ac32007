@@ -80,6 +80,9 @@
               <b>Agile API</b>
               <span flex></span>
               <div ng-show="isLoggedIn">
+                  <md-button ng-click="toggleRight()" aria-label="activity">
+                      <md-icon icon="assets/icons/ic_notifications_none_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+                  </md-button>
                   <md-button onClick="parent.location='#/logout'" aria-label="logout">
                       <md-icon icon="assets/icons/ic_input_24px.svg" style="width: 24px; height: 24px;"></md-icon>
                   </md-button>
@@ -91,37 +94,7 @@
       </md-tabs>
     </section>
     <section class="md-tabs-content top-bar-tabs-content" style="margin-top: 3em; overflow-y: auto;">
-      <!--<md-tabs md-selected="tabs.selectedIndex">-->
-          <!--<md-tab ng-hide="isLoggedIn" id="login_tab" onClick="parent.location='#/login'" aria-controls="login-content">Login</md-tab>-->
-          <!--<md-tab ng-hide="isLoggedIn" id="register_tab" onClick="parent.location='#/register'" aria-controls="register-content">Register</md-tab>-->
-          <!--<md-tab ng-show="isLoggedIn" id="profile_tab" onClick="parent.location='#/profile'" aria-controls="profile-content">Profile</md-tab>-->
-          <!--<md-tab ng-show="isLoggedIn" id="project_tab" onClick="parent.location='#/project'" aria-controls="project-content">Project</md-tab>-->
-          <!--<md-tab id="about_tab" onClick="parent.location='#/about'" aria-controls="about-content">About</md-tab>-->
-      <!--</md-tabs>-->
-
       <div role="tabpanel" aria-labelledby="content" md-swipe-left="next()" md-swipe-right="previous()" ng-view></div>
-      <!--<div layout="column" role="main" ng-view></div>-->
     </section>
-    <!--<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" is-locked-open="$media('md')" md-theme="light-blue-dark">-->
-        <!--<md-toolbar class="md-theme-indigo" >-->
-            <!--<h1 class="md-toolbar-tools">Agile API</h1>-->
-        <!--</md-toolbar>-->
-        <!--<md-content  ng-controller="LeftCtrl" md-theme="green">-->
-            <!--<button class="menu-item menu-title" onClick="parent.location='#'" ink-ripple >Home</button>-->
-            <!--<div ng-hide="isLoggedIn">-->
-                <!--<button class="menu-item menu-title" onClick="parent.location='#/login'" ink-ripple>Login</button>-->
-                <!--<button class="menu-item menu-title" onClick="parent.location='#/register'" ink-ripple>Register</button>-->
-            <!--</div>-->
-            <!--<div ng-show="isLoggedIn">-->
-                <!--<button class="menu-item menu-title" onClick="parent.location='#/profile'" ink-ripple>Profile</button>-->
-                <!--<button class="menu-item menu-title" onClick="parent.location='#/projects'" ink-ripple>Projects</button>-->
-                <!--<button class="menu-item menu-title" onClick="parent.location='#/logout'" ink-ripple>Logout</button>-->
-            <!--</div>-->
-            <!--<button class="menu-item menu-title" onClick="parent.location='#/about'" ink-ripple>About</button>-->
-        <!--</md-content>-->
-    <!--</md-sidenav>-->
-    <!--<div layout="column" layout-fill tabindex="-1" role="main" id="container2" class="ng-cloak" ng-view>-->
-    <!--</div>-->
-    <!--<div ng-include="'partials/rightsidebar.html'" ng-show="isLoggedIn"></div>-->
   </body>
 </html>

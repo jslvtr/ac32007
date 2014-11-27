@@ -1,5 +1,5 @@
 angular.module('app.endpointsController', [])
-    .controller('endpointsController', function($rootScope, $scope, $http, $timeout, $mdSidenav, $location, $routeParams, toastService) {
+    .controller('endpointsController', function($rootScope, $scope, $http, $timeout, $mdSidenav, $location, $routeParams, toastService, agileSocket) {
         $rootScope.$broadcast('showTabs', false);
         $scope.title = "Endpoint";
         $scope.showActions = false;
@@ -136,6 +136,12 @@ angular.module('app.endpointsController', [])
 
             }
         };
+
+        // Sockets
+
+        $scope.$on('socket:error', function (ev, data) {
+
+        });
     }
 );
 

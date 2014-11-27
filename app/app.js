@@ -22,6 +22,7 @@ angular
   'ngAnimate',
   'ui.ace',
   'ngSanitize',
+  'btford.socket-io',
 
   //Controllers
   'app.indexController',
@@ -45,10 +46,18 @@ angular
 
 
   ])
-  .directive('ngClick',function(){
-    return {
-      link: function(){
-      },
-      restrict: 'A'
-    }
+  .factory('agileSocket', function (socketFactory) {
+      var myIoSocket = io.connect(backend + '/activity/server');
+
+      var agileSocket = socketFactory({
+        ioSocket: myIoSocket
+      });
+
+      agileSocket.forward('error');
+
+      return agileSocket;
+
+      //var agileSocket = socketFactory();
+      //agileSocket.forward('error');
+      //return agileSocket;
   });

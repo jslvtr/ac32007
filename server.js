@@ -13,8 +13,6 @@ var Server              = require('socket.io');
 var io                  = new Server(http);
 
 io.serveClient(false);
-io.path('/activity/server');
-//io.namespace('/activity/server');
 
 var morgan       = require('morgan');
 

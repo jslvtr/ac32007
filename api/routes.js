@@ -14,7 +14,9 @@ module.exports = function(app, io, passport) {
     // Socket
     io.on('connection', function (socket) {
         console.log('Connected: ' + socket.id + ', From Address: '+socket.conn.remoteAddress);
-        io.emit('project', 'Hello!!');
+        //socket.broadcast.emit('project', 'Hello!!');
+
+        io.emit('project', 'Muahahahahahaha, you looser!!!');
 
         //io.on('project', function (access_token, title, owner, error, message) {
         //    projectsRoom.on(io, access_token, title, owner, error, message);

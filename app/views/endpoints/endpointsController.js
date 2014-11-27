@@ -45,7 +45,8 @@ angular.module('app.endpointsController', [])
         var endpoint_token  = $routeParams.endpoint;
 
         $scope.room = '#' + project_title + '-' + project_owner;
-        agileSocket.forward($scope.room);
+        agileSocket.openRoom($scope.room, agileSocket);
+        //agileSocket.forward($scope.room);
 
         $scope.resetContent = function () {
             $location.path('/user/'+project_owner+'/project/'+project_title+'/endpoint/null');

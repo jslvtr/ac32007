@@ -8,14 +8,19 @@ var endpointCategoryRoutes  = require('./endpoints/endpoint_categories.js');
 var queryRoutes             = require('./endpoints/query.js');
 
 var projectsRoom             = require('./sockets/projects.js');
+var listeningForProject     = false;
 
 module.exports = function(app, io, passport) {
 
     // Socket
     io.on('connection', function (socket) {
-        socket.on('project', function (data) {
-            projectsRoom.on(io, socket, data.access_token, data.project, data.owner, data.error, data.message);
-        });
+        //if (!listeningForProject) {
+            socket.on('project', function (data) {
+                projectsRoom.on(io, socket, data.access_token, data.project, data.owner, data.error, data.message);
+            });
+
+            //listeningForProject = true;
+        //}
     });
 
     // Auth

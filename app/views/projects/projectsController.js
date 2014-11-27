@@ -79,7 +79,7 @@ angular.module('app.projectsController', ['ngRoute', 'ngMaterial', 'ngAnimate'])
         };
 
         $scope.addEndpoint = function (project, index, ev) {
-
+            $location.path('/user/' + project.owner + '/project/' + project.title + '/endpoint/null');
         };
 
         $scope.displayMembers = function (project, index, ev) {
@@ -142,7 +142,7 @@ angular.module('app.projectsController', ['ngRoute', 'ngMaterial', 'ngAnimate'])
                 }, function () {
                 });
             }
-        }
+        };
 
         $scope.inviteMember = function (project, newMember, ev) {
             $http({
@@ -173,7 +173,7 @@ angular.module('app.projectsController', ['ngRoute', 'ngMaterial', 'ngAnimate'])
                     console.error(data);
                 }
             });
-        }
+        };
 
 
         $scope.addProject = function (ev) {
@@ -222,7 +222,7 @@ angular.module('app.projectsController', ['ngRoute', 'ngMaterial', 'ngAnimate'])
         };
 
         $scope.openEndpoint = function (event, index, endpoint) {
-
+            $location.path('/user/' + endpoint.owner_id + '/project/' + endpoint.project_id + '/endpoint/' + endpoint.token_id);
         };
     });
 

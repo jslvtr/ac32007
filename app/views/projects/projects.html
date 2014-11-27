@@ -58,7 +58,7 @@
                 <h1>This project has no endpoints.</h1>
             </md-card>
             <md-list>
-                <md-item ng-repeat="endpoint in project.endpoints" ng-click="openEndpoint($event, $index, endpoint)">
+                <md-item ng-repeat="endpoint in project.endpoints" ng-click="openEndpoint($event, $index, endpoint)" style="cursor: hand;">
                     <md-item-content class="endpoint">
                         <div class="md-tile-content">
                             <md-button class="md-fab md-primary md-tile-left endpoint_type" aria-label="endpoint" ng-class="'endpoint_type_' + endpoint.method_type.toLowerCase()">

@@ -12,10 +12,12 @@ var domain = 'https://agileapi.herokuapp.com';
 */
 
 var backend = domain;
+var socketsBackend = backend + ':443';
 angular.module('app.config', [])
 
     .factory('Configuration', function() {
         return {
-            backend: backend
+            backend: backend,
+            socketsBackend: socketsBackend
         }
     });

@@ -47,7 +47,7 @@ angular
 
   ])
   .factory('agileSocket', function (socketFactory) {
-      var myIoSocket = io.connect(backend + '/');
+      var myIoSocket = io.connect(socketsBackend);
 
       var openedRooms = [];
 

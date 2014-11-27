@@ -140,7 +140,7 @@ angular.module('app.endpointsController', [])
         // Sockets
 
         $scope.$on('socket:error', function (ev, data) {
-
+            console.log('Yay!! we got Errors!! --> ' + data);
         });
     }
 );

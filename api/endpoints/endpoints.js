@@ -230,7 +230,7 @@ function endpointUpdate(req, res)   {
                     var body = ''+req.body.body;
                     var body_type = req.body.body_type;
                     var category = req.body.category;
-                    
+
                                                             //project_id, owner_id, token_id, title, description, url, headers, url_params, method_type, body, body_type, category_id
                     var query       = 'update agile_api.endpoints set title = ? , description = ? , url = ? , headers = ? , url_params = ? , method_type = ? , body = ? , body_type = ? , category_id = ? where token_id = ?;';
                     var params      = [ title, description, url, headers_content, url_params, method_type, body, body_type, category, token_id ];

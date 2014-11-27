@@ -30,29 +30,27 @@
     </md-card>
 
     <md-card ng-repeat="project in projects" ng-show="projects.length !== 0" ng-switch on="showSection($index)">
-        <md-toolbar md-theme="" class="md-medium-tall">
+        <md-toolbar md-theme="" class="">
             <h1 class="md-toolbar-tools">
                 <span flex>{{ project.title }}</span>
-            </h1>
-            <h2 class="md-toolbar-tools md-toolbar-tools-bottom">
                 <span flex></span>
 
-                <md-button  ng-click="editProject(project, $index, $event)" ng-show="showSection($index) === 'endpoints'" class="md-fab md-primary" style="background-color: #efefef;" aria-label="edit">
+                <md-button  ng-click="editProject(project, $index, $event)" ng-show="showSection($index) === 'endpoints'" class="" style="" aria-label="edit">
                     <md-icon icon="assets/icons/ic_launch_24px.svg"></md-icon>
                 </md-button>
 
-                <md-button  ng-click="deleteProject(project, $index, $event)" ng-show="showSection($index) === 'endpoints'" class="md-fab md-primary" style="background-color: #efefef;" aria-label="delete">
+                <md-button  ng-click="deleteProject(project, $index, $event)" ng-show="showSection($index) === 'endpoints'" class="" style="" aria-label="delete">
                     <md-icon icon="assets/icons/ic_delete_24px.svg"></md-icon>
                 </md-button>
 
-                <md-button ng-click="addEndpoint(project, $index, $event)" ng-show="showSection($index) === 'endpoints'" class="md-fab md-primary" style="background-color: #efefef;" aria-label="add endpoint">
+                <md-button ng-click="addEndpoint(project, $index, $event)" ng-show="showSection($index) === 'endpoints'" class="" style="" aria-label="add endpoint">
                     <md-icon icon="assets/icons/ic_add_24px.svg"></md-icon>
                 </md-button>
 
-                <md-button  ng-click="displayMembers(project, $index, $event)" class="md-fab md-primary" style="background-color: #efefef;" aria-label="members">
+                <md-button  ng-click="displayMembers(project, $index, $event)" class="" style="" aria-label="members">
                     <md-icon icon="assets/icons/ic_account_child_24px.svg"></md-icon>
                 </md-button>
-            </h2>
+            </h1>
         </md-toolbar>
 
         <md-content class="animate-switch" ng-switch-default>

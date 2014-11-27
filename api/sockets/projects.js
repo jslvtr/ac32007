@@ -31,8 +31,8 @@ function findByToken(token, fn) {
 function on (io, socket, access_token, title, owner, error, message) {
     var room = '#' + title + '-' + owner;
 
-    inRoom(room, function (listening) {
-        if (!listening) {
+    //inRoom(room, function (listening) {
+    //    if (!listening) {
             console.log('listening on room '+room);
             openedRooms.push(room);
 
@@ -41,8 +41,8 @@ function on (io, socket, access_token, title, owner, error, message) {
                     io.emit(room, data.access_token, data.project, data.owner, data.error, data.chat);
                 }
             });
-        }
-    });
+        //}
+    //});
 
     findByToken(access_token, function (err, sessionUser) {
         if (sessionUser) {

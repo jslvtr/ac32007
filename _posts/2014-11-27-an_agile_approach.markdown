@@ -1,0 +1,34 @@
+---
+layout: post
+title:  “AgileAPI: an Agile approach“
+date:   2014-11-27 22:21:00
+categories: agileapi priamubaio agile
+---
+
+# AgileAPI: an Agile approach
+
+We all know sometimes at University, teamwork and collaboration aren’t the best. However, this was not the problem with AgileAPI. The process we went through while developing was fantastic, and it really allowed us to be brilliantly productive.
+
+Although we didn’t manage to do Scrum properly, lacking a Scrum Master and a Project Owner, we still had an Agile approach that included various sprints, creation of user stories and acceptance criteria, and (close to) daily stand-ups.
+
+## Problems we faced
+
+We had some problems, but as I said they were unrelated to process. Many of the problems we had were technical problems that we were not familiar with:
+
+* When developing with JavaScript and doing cross-domain requests, there is a big problem with a need for CORS (Cross-origin resource sharing); and the `Access-Control-Allow-Origin` header.
+* Cassandra with JavaScript doesn’t have support for user-defined types (`frozentypes`), or maybe we didn’t know how to use them.
+* Angular Materials Design is still in Beta phase, so there were some things that didn’t work as expected / didn’t look right, so many changes had to be made in order to make things look good.
+
+## What we did
+
+The first thing we did when we got together was to get a Trello board set up and start writing User Stories. These are essentially features that as a stakeholder in our program you could want.
+
+We had some User Stories for our Users and for Project Owners, which are the two main stakeholders for now.
+
+**After that**, we created Acceptance Criteria for each User Story and also estimated, in Story Points, the size of each story. Something we noticed as we estimated is that, while a User Story felt really big to begin with, as we planned it and thought about what it would be like to implement it, it would start feeling smaller and smaller. This was very motivational for the team.
+
+**Then** we defined our sprints, or rather our timescale, and when we wanted to have certain user stories done.
+
+**Finally**, we got to it! We used [Slack](http://slack.com), which is a great collaboration tool, and GitHub to host our code. Our Git workflow was the [Gitflow](http://nvie.com/posts/a-successful-git-branching-model/) workflow, which meant that each one of us was working on a separate branch, and then we did pull-requests to merge them back to the `develop` branch. This kept merge conflicts away and the spirits high!
+
+**Now**, it’s all about the presentation, and getting our project out there!

@@ -5,11 +5,10 @@ date:   2014-11-25 15:21:00
 categories: agileapi priamubaio
 ---
 
-#Cassandra and maps.
+# Cassandra and maps.
 
-##What is map
-map is a CQL data type which converted to its javascript type is object, which is what we need when handling with JSON data. This said the map data type is made that it has a JSON-style array of literials. you can find more about it here [http://www.datastax.com/documentation/cql/3.1/cql/cql_reference/cql_data_types_c.html](http://www.datastax.com/documentation/cql/3.1/cql/cql_reference/cql_data_types_c.html)
-
+## What is map
+`map` is a CQL data type which converted to its JavaScript type is object, which is what we need when handling with JSON data. This said the map data type is made that it has a JSON-style array of literals. you can find more about it here [http://www.datastax.com/documentation/cql/3.1/cql/cql_reference/cql_data_types_c.html](http://www.datastax.com/documentation/cql/3.1/cql/cql_reference/cql_data_types_c.html).
 
 Most of our backend works with JSON which is great, but when it came to designing the table which we were going to use for endpoints, we went for designing our own set and at first this was a great option since we had used it in the instagrim assignment. But when it came to implementing it server-side we came across many waves of errors. For example this was the most common error which occurred:
 
@@ -44,4 +43,4 @@ CREATE INDEX IF NOT EXISTS owner_id ON agile_api.endpoints (owner_id);
 CREATE INDEX IF NOT EXISTS category_id ON agile_api.endpoints (category_id);
 ```
 
-What I really like about the map is that it keeps the json format which will make it even more easier for when it comes to sending that data out to the client.
+What I really like about the map is that it keeps the JSON format which will make it even more easier for when it comes to sending that data out to the client.

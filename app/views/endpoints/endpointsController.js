@@ -1,5 +1,5 @@
 angular.module('app.endpointsController', [])
-    .controller('endpointsController', function($rootScope, $scope, $http, $timeout, $mdSidenav, $location, $routeParams, toastService) {
+    .controller('endpointsController', function($rootScope, $scope, $http, $timeout, $mdSidenav, $location, $routeParams, toastService, agileSocket) {
         $rootScope.$broadcast('showTabs', false);
         $scope.title = "Endpoint";
         $scope.showActions = false;
@@ -40,6 +40,9 @@ angular.module('app.endpointsController', [])
         var project_owner   = $routeParams.owner;
         var project_title   = $routeParams.title;
         var endpoint_token  = $routeParams.endpoint;
+
+        $scope.room = '#' + project_title + '-' + project_owner;
+        agileSocket.forward($scope.room);
 
         $scope.resetContent = function () {
             $location.path('/user/'+project_owner+'/project/'+project_title+'/endpoint/null');
@@ -136,6 +139,24 @@ angular.module('app.endpointsController', [])
 
             }
         };
+
+        // Sockets
+
+        $scope.$on('socket:' + $scope.room, function (ev, access_token, title, owner, error, message) {
+            console.log('['+$scope.room+'] > ' + message);
+        });
+
+        $scope.$on('socket:project', function (ev, access_token, title, owner, error, message) {
+            console.log('['+$scope.room+'] > ' + message);
+        });
+
+        agileSocket.emit('project', {
+            access_token    : $scope.sessionUser.access_token,
+            project         : project_title,
+            owner           : project_owner,
+            error           : null,
+            message         : 'Am I allowed???'
+        });
     }
 );
 

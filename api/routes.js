@@ -7,7 +7,16 @@ var endpointRoutes          = require('./endpoints/endpoints.js');
 var endpointCategoryRoutes  = require('./endpoints/endpoint_categories.js');
 var queryRoutes             = require('./endpoints/query.js');
 
-module.exports = function(app, passport) {
+var projectsRoom             = require('./sockets/projects.js');
+
+module.exports = function(app, io, passport) {
+
+    // Socket
+    io.on('connection', function (socket) {
+        socket.on('project', function (data) {
+            projectsRoom.on(io, socket, data.access_token, data.project, data.owner, data.error, data.message);
+        });
+    });
 
     // Auth
     app.post('/auth/login', authRoutes.login);
@@ -122,7 +131,9 @@ module.exports = function(app, passport) {
 
     app.post('/user/:owner/project/:project/endpoint',
         passport.authenticate('bearer', { session: false }),
-        endpointRoutes.endpointAdd
+        function (req, res) {
+            endpointRoutes.endpointAdd(req, res, io);
+        }
     )
 
     app.get('/user/:owner/project/:project/endpoint',

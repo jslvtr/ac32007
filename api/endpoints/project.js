@@ -198,7 +198,7 @@ function deleteAllProjectMembers(title, owner, callback) {
 
  */
 
-function projectAdd(req, res) {
+function projectAdd(req, res, io) {
     var title = req.body.title.split(' ').join('_');
     var description = req.body.description;
     var owner = req.body.owner;
@@ -244,6 +244,8 @@ function projectAdd(req, res) {
                     );
 
                 } else {
+                    io.emit(room, sessionUser.access_token, title, owner, 'Can\'t create project member.', null);
+
                     res.json(HttpStatus.CONFLICT, {
                         status: 409,
                         message: 'Project already exists.'

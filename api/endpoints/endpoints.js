@@ -3,11 +3,13 @@ var HttpStatus  = require('http-status-codes');
 var hat         = require('hat');
 var parseMe       = require('../components/parse.js');
 
-function endpointAdd(req, res)  {
+function endpointAdd(req, res, io)  {
     ///user/:owner/project/:project/endpoints
     var project = req.params.project;
     var owner = req.params.owner;
     var sessionUser = req.user;
+
+    var room = '#' + project + '-' + owner;
 
     //Check if the user is a member of the project
     var query = 'select user_id from agile_api.project_members where user_id = ?';
@@ -37,18 +39,24 @@ function endpointAdd(req, res)  {
 
                     configDB.client.execute(query, params, {prepare : true, hints: ['String']}, function(err, result) {
                             if (err) {
+                                io.emit(room, sessionUser.access_token, title, owner, 'Cant create endpoint.', null);
+
                                 res.json(HttpStatus.METHOD_FAILURE, {
                                     status: 420,
                                     message: 'Cant create endpoint.'
                                 });
                                 console.log(err);
                             } else if (result.rows["0"]["[applied]"] === true) {
+                                io.emit(room, sessionUser.access_token, title, owner, null, 'Project ' + title + ' was added.');
+
                                 res.json(HttpStatus.CREATED, {
                                     status  : 201,
                                     message : 'endpoint created',
                                     token   :   token_id
                                 });
                             } else {
+                                io.emit(room, sessionUser.access_token, title, owner, 'endpoint already exists.', null);
+
                                 res.json(HttpStatus.NO_CONTENT, {
                                     status: 204,
                                     message: 'endpoint already exists.'

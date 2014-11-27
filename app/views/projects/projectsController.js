@@ -241,13 +241,13 @@ function getProjects($scope, $http) {
             return 404;
         } else {
             return 409;
-            console.error(data);
         }
-
-        $scope.loaded = true;
 
     }).success(function (data, status, headers, config) {
         $scope.projects = data.projects;
+        $scope.projects.forEach(function (proj) {
+            getProjectEndpoints($scope, $http, proj)
+        });
     });
 }
 
@@ -277,6 +277,39 @@ function getProjectUsers($scope, $http, project) {
                     $scope.projects[j].members = data.members.slice();
                     // localStorage.setItem()
                     // Need to add projectUsers to $project
+                    // Are lists/dictionaries immutable in JavaScript?
+                }
+            }
+        }
+    });
+}
+
+function getProjectEndpoints($scope, $http, project) {
+    $http({
+        // /user/:owner/project/:project/members
+        url: backend + '/user/' + project.owner + '/project/' + project.title + '/endpoint',
+        method: 'GET',
+        dataType: 'json',
+        data: '',
+        headers: {
+            'Authorization': 'Bearer ' + $scope.sessionUser.access_token
+        }
+
+    }).error(function (data, status, headers, config) {
+        if (status === 404) {
+            return 404;
+        } else {
+            return 409;
+        }
+
+    }).success(function (data, status, headers, config) {
+        // Not sure if data.users is what we want to return here.
+        for (var j = 0; j < $scope.projects.length; j++) {
+            if ($scope.projects[j].title == project.title) {
+                if (data.endpoints) {
+                    $scope.projects[j].endpoints = data.endpoints.slice();
+                    // localStorage.setItem()
+                    // Need to add endpoints to $project
                     // Are lists/dictionaries immutable in JavaScript?
                 }
             }

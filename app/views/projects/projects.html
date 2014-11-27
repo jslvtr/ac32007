@@ -61,8 +61,8 @@
                 <md-item ng-repeat="endpoint in project.endpoints" ng-click="openEndpoint($event, $index, endpoint)">
                     <md-item-content class="endpoint">
                         <div class="md-tile-content">
-                            <md-button class="md-fab md-primary md-tile-left endpoint_type" aria-label="endpoint" ng-class="'endpoint_type_' + endpoint.type.toLowerCase()">
-                                {{ endpoint.type }}
+                            <md-button class="md-fab md-primary md-tile-left endpoint_type" aria-label="endpoint" ng-class="'endpoint_type_' + endpoint.method_type.toLowerCase()">
+                                {{ endpoint.method_type }}
                             </md-button>
                             <div>
                                 <h3>{{ endpoint.title }}</h3>

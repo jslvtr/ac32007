@@ -41,7 +41,7 @@ var creationQueries = [
     +   'project_id varchar,'
     +   'user_id varchar,'
     +   'owner_id varchar,'
-    +   'PRIMARY KEY (project_id, user_id, owner_id));',
+    +   'PRIMARY KEY (project_id, owner_id, user_id));',
 
     // Creates an index for the User ID
     'CREATE INDEX IF NOT EXISTS user_id ON agile_api.project_members (user_id);',

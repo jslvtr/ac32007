@@ -16,6 +16,10 @@ module.exports = function(app, passport) {
         passport.authenticate('bearer', { session: false }),
         authRoutes.logout
     );
+    app.delete('/auth/delete',
+        passport.authenticate('bearer', { session: false }),
+        authRoutes.deleteUser
+    );
 
     app.get('/auth/facebook', passport.authenticate('facebook', { session: false, scope: [] }));
 

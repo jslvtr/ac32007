@@ -17,7 +17,7 @@
                 <md-item ng-repeat="endpoint in project.endpoints" ng-click="openEndpoint(endpoint, $index)">
                     <md-item-content>
                         <div class="md-tile-content" layout="row">
-                            <md-button class="md-fab md-primary md-tile-left endpoint_type" aria-label="endpoint" ng-class="'endpoint_type_' + endpoint.type.toLowerCase()">
+                            <md-button class="md-fab md-primary md-tile-left endpoint_type" aria-label="endpoint" ng-class="'endpoint_type_' + endpoint.method_type.toLowerCase()">
                                 {{ endpoint.method_type }}
                             </md-button>
                             <div layout="column" style="margin-top: 0.9em; cursor: hand;">
@@ -89,13 +89,16 @@
         </md-toolbar>
 
         <md-content class="endpoint-headers">
-            <div layout="row" layout-align="space-around center" ng-repeat="(key, value) in endpoint.headers">
-                <md-text-float label="Header" ng-model="key"></md-text-float>
-                <md-text-float label="Value" ng-model="value"></md-text-float>
-            </div>
-            <div layout="row" layout-align="space-around center">
-                <md-text-float label="Header" ng-model="head.head"></md-text-float>
+            <div layout="row" layout-align="space-around center" ng-repeat="head in endpoint.headers">
+                <md-text-float label="Header" ng-model="head.key"></md-text-float>
                 <md-text-float label="Value" ng-model="head.value"></md-text-float>
+            </div>
+            <form layout="row" layout-align="space-around center" ng-submit="addNewHeader()">
+                <md-text-float label="Header" ng-model="header.key"></md-text-float>
+                <md-text-float label="Value" ng-model="header.value"></md-text-float>
+            </form>
+            <div layout="row" layout-align="center" style="width: 90%;">
+                <md-button ng-click="addNewHeader()">Add Header</md-button>
             </div>
         </md-content>
     </md-card>
@@ -112,9 +115,12 @@
                 <md-text-float label="Key" ng-model="param.key"></md-text-float>
                 <md-text-float label="Value" ng-model="param.value"></md-text-float>
             </div>
-            <div layout="row" layout-align="space-around center">
+            <form layout="row" layout-align="space-around center" ng-submit="addNewURLParam()">
                 <md-text-float label="Key" ng-model="param.key"></md-text-float>
                 <md-text-float label="Value" ng-model="param.value"></md-text-float>
+            </form>
+            <div layout="row" layout-align="center" style="width: 90%;">
+                <md-button ng-click="addNewURLParam()">Add URL Param</md-button>
             </div>
         </md-content>
     </md-card>
@@ -137,6 +143,10 @@
             <md-radio-button value="xml"  aria-label="XML">XML</md-radio-button>
         </md-radio-group>
     </md-card>
+
+    <md-button ng-click="saveEndpoint($event)" class="md-fab md-primary" style="background-color: #8bc34a; position: fixed; bottom: 1.5em; right: 1.5em;" aria-label="add endpoint">
+        <md-icon icon="assets/icons/ic_add_24px.svg"></md-icon>
+    </md-button>
 
     <br />
     <br />

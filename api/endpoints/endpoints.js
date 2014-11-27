@@ -25,11 +25,11 @@ function endpointAdd(req, res)  {
                     var token_id = hat();
                     var title = req.body.title;
                     var description = req.body.description;
-                    var url = req.body.urlpath;
-                    var headers_content = req.body.headers;
-                    var url_params = req.body.url_params;
+                    var url = req.body.url;
+                    var headers_content = parseMe.toDatabaseFormat(req.body.headers);
+                    var url_params = parseMe.toDatabaseFormat(req.body.url_params);
                     var method_type = req.body.method_type;
-                    var body = JSON.stringify(req.body.body);
+                    var body = ''+req.body.body;
                     var body_type = req.body.body_type;
 
                     var query       = 'insert into agile_api.endpoints (project_id, owner_id, token_id, title, description, url, headers, url_params, method_type, body, body_type, category_id) values (?,?,?,?,?,?,?,?, ?, ?, ?, ?) IF NOT EXISTS;';
@@ -115,13 +115,13 @@ function endpointGetAll(req, res)   {
                             }
                             res.json(HttpStatus.OK, {
                                 status: 200,
-                                projects: jsonResult
+                                endpoints: jsonResult
                             });
 
                         }   else {
                             res.json(HttpStatus.NOT_FOUND , {
                                 status: 404,
-                                project : "Project not found"
+                                endpoint : "Project not found"
                             });
                         }
                     });
@@ -171,25 +171,25 @@ function endpointGet(req, res)  {
                                     body : result.rows[row].body,
                                     body_type : result.rows[row].body_type,
                                     description : result.rows[row].description,
-                                    headers : result.rows[row].headers,
+                                    headers : parseMe.toArrayFormat(result.rows[row].headers),
                                     method_type : result.rows[row].method_type,
                                     owner_id : result.rows[row].owner_id,
                                     project_id : result.rows[row].project_id,
                                     title : result.rows[row].title,
                                     url : result.rows[row].url,
-                                    url_params : result.rows[row].url_params,
+                                    url_params : parseMe.toArrayFormat(result.rows[row].url_params),
                                     category    : result.rows[row].category_id
                                 });
                             }
                             res.json(HttpStatus.OK, {
                                 status: 200,
-                                projects: jsonResult
+                                endpoint: jsonResult[0]
                             });
 
                         }   else {
                             res.json(HttpStatus.NOT_FOUND , {
                                 status: 404,
-                                project : "Endpoint not found"
+                                endpoint : "Endpoint not found"
                             });
                         }
                     });
@@ -223,13 +223,14 @@ function endpointUpdate(req, res)   {
                 if (result.rows[0].user_id == sessionUser.username)  {
                     var title = req.body.title;
                     var description = req.body.description;
-                    var url = req.body.urlpath;
-                    var headers_content = req.body.headers;
-                    var url_params = req.body.url_params;
+                    var url = req.body.url;
+                    var headers_content = parseMe.toDatabaseFormat(req.body.headers);
+                    var url_params = parseMe.toDatabaseFormat(req.body.url_params);
                     var method_type = req.body.method_type;
-                    var category = req.body.category;
-                    var body = JSON.stringify(req.body.body);
+                    var body = ''+req.body.body;
                     var body_type = req.body.body_type;
+                    var category = req.body.category;
+                    
                                                             //project_id, owner_id, token_id, title, description, url, headers, url_params, method_type, body, body_type, category_id
                     var query       = 'update agile_api.endpoints set title = ? , description = ? , url = ? , headers = ? , url_params = ? , method_type = ? , body = ? , body_type = ? , category_id = ? where token_id = ?;';
                     var params      = [ title, description, url, headers_content, url_params, method_type, body, body_type, category, token_id ];

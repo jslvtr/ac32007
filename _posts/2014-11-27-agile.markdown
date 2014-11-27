@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  “AgileAPI: an Agile approach“
+title:  "An Agile approach"
 date:   2014-11-27 22:21:00
-categories: agileapi priamubaio agile
+categories: agileapi priamubaio
 ---
 
 # AgileAPI: an Agile approach

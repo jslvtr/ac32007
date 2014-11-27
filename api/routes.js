@@ -13,14 +13,9 @@ module.exports = function(app, io, passport) {
 
     // Socket
     io.on('connection', function (socket) {
-        console.log('Connected: ' + socket.id + ', From Address: '+socket.conn.remoteAddress);
-        //socket.broadcast.emit('project', 'Hello!!');
-
-        io.emit('project', 'Muahahahahahaha, you looser!!!');
-
-        //io.on('project', function (access_token, title, owner, error, message) {
-        //    projectsRoom.on(io, access_token, title, owner, error, message);
-        //});
+        socket.on('project', function (data) {
+            projectsRoom.on(io, socket, data.access_token, data.project, data.owner, data.error, data.message);
+        });
     });
 
     // Auth
@@ -136,7 +131,9 @@ module.exports = function(app, io, passport) {
 
     app.post('/user/:owner/project/:project/endpoint',
         passport.authenticate('bearer', { session: false }),
-        endpointRoutes.endpointAdd
+        function (req, res) {
+            endpointRoutes.endpointAdd(req, res, io);
+        }
     )
 
     app.get('/user/:owner/project/:project/endpoint',

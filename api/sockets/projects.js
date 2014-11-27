@@ -16,27 +16,24 @@ function findByToken(token, fn) {
     );
 }
 
-function checkAuth (token) {
-    findByToken(token, function (err, user) {
-        if (err) {
-            return null;
+function on (io, socket, access_token, title, owner, error, message) {
+    var room = '#' + title + '-' + owner;
+    console.log('listening on room '+room);
+
+    socket.on(room, function (data) {
+        if (data.chat) {
+            io.emit(room, data.access_token, data.project, data.owner, data.error, data.chat);
         }
-        if (!user) {
-            return null;
+    });
+
+    findByToken(access_token, function (err, sessionUser) {
+        if (sessionUser) {
+            io.emit(room, access_token, title, owner, err, 'Welcome ' + sessionUser.username);
+
+        } else {
+            io.emit('project', access_token, title, owner, err, 'Go Away!!');
         }
-        return user;
-    })
-}
-
-function on (io, access_token, title, owner, error, message) {
-    var sessionUser = checkAuth(access_token);
-
-    if (sessionUser) {
-        io.emit('project', access_token, title, owner, null, 'Welcome ' + sessionUser.username);
-
-    } else {
-        io.emit('project', access_token, title, owner, 'access denied!!', 'Go Away!!');
-    }
+    });
 }
 
 module.exports = {

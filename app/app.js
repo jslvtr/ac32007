@@ -20,6 +20,8 @@ angular
   'angular-table',
   'app.listDialog',
   'ngAnimate',
+  'ui.ace',
+  'ngSanitize',
 
   //Controllers
   'app.indexController',
@@ -31,6 +33,7 @@ angular
   'app.profileController',
   'app.listController',
   'app.projectsController',
+  'app.endpointsController',
 
   //Services
   'app.toast',

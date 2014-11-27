@@ -10,6 +10,7 @@
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/cryptojslib/rollups/sha512.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
@@ -22,6 +23,10 @@
     <script src="bower_components/angular-material/angular-material.js"></script>
     <script src="bower_components/angular-route-animation-manager/angular-route-animation-manager.js"></script>
     <script src="bower_components/at-table/dist/angular-table.js"></script>
+
+    <!-- ACE Editor -->
+    <script type="text/javascript" src="bower_components/ace-builds/src-min-noconflict/ace.js"></script>
+    <script type="text/javascript" src="bower_components/angular-ui-ace/ui-ace.js"></script>
 
     <!-- include files -->
     <script src="app.js"></script>
@@ -43,6 +48,7 @@
     <script src="views/profile/profileController.js"></script>
     <script src="views/list/listController.js"></script>
     <script src="views/projects/projectsController.js"></script>
+    <script src="views/endpoints/endpointsController.js"></script>
 
     <script src="config.js"></script>
 
@@ -53,7 +59,7 @@
     <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="bower_components/angular-material/angular-material.css">
     <link rel="stylesheet" type="text/css" href="bower_components/angular-material/themes/cyan-theme.css">
-    <link rel="stylesheet" type="text/css" href="bower_components/angular-material/themes/brown-theme.css">
+    <link rel="stylesheet" type="text/css" href="bower_components/angular-material/themes/blue-theme.css">
     <link rel="stylesheet" type="text/css" href="bower_components/angular-material/themes/light-blue-dark-theme.css">
     <link rel="stylesheet" type="text/css" href="bower_components/angular-material/themes/pink-theme.css">
     <link rel="stylesheet" type="text/css" href="bower_components/angular-material/themes/amber-theme.css">
@@ -65,27 +71,57 @@
 
     <link rel="stylesheet" type="text/css" href="css/style.css">
   </head>
-  <body ng-controller="appController" layout="row">
-    <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" is-locked-open="$media('md')" md-theme="light-blue-dark">
-        <md-toolbar class="md-theme-indigo" >
-            <h1 class="md-toolbar-tools">Agile API</h1>
-        </md-toolbar>
-        <md-content  ng-controller="LeftCtrl" md-theme="green">
-            <button class="menu-item menu-title" onClick="parent.location='#'" ink-ripple >Home</button>
-            <div ng-hide="isLoggedIn">
-                <button class="menu-item menu-title" onClick="parent.location='#/login'" ink-ripple>Login</button>
-                <button class="menu-item menu-title" onClick="parent.location='#/register'" ink-ripple>Register</button>
-            </div>
-            <div ng-show="isLoggedIn">
-                <button class="menu-item menu-title" onClick="parent.location='#/profile'" ink-ripple>Profile</button>
-                <button class="menu-item menu-title" onClick="parent.location='#/projects'" ink-ripple>Projects</button>
-                <button class="menu-item menu-title" onClick="parent.location='#/logout'" ink-ripple>Logout</button>
-            </div>
-            <button class="menu-item menu-title" onClick="parent.location='#/about'" ink-ripple>About</button>
-        </md-content>
-    </md-sidenav>
-    <div layout="column" layout-fill tabindex="-1" role="main" id="container2" class="ng-cloak" ng-view>
-    </div>
-    <div ng-include="'partials/rightsidebar.html'" ng-show="isLoggedIn"></div>
+  <body ng-controller="appController" layout="column">
+    <section class="md-header" style="z-index: 9;">
+      <md-toolbar ng-class="showTabs?'':'md-whiteframe-z1'">
+          <h1 class="md-toolbar-tools">
+              <div ng-hide="showTabs" ng-include="'partials/back.html'"></div>
+              <span ng-show="showTabs" flex></span>
+              <b>Agile API</b>
+              <span flex></span>
+              <div ng-show="isLoggedIn">
+                  <md-button onClick="parent.location='#/logout'" aria-label="logout">
+                      <md-icon icon="assets/icons/ic_input_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+                  </md-button>
+              </div>
+          </h1>
+      </md-toolbar>
+      <md-tabs md-selected="$root.selectedIndex" class="md-whiteframe-z1" ng-show="showTabs">
+          <md-tab ng-repeat="tab in tabs" ng-click="$root.openTab($index)" aria-controls="{{ tab.name + '-content' }}">{{ tab.title }}</md-tab>
+      </md-tabs>
+    </section>
+    <section class="md-tabs-content top-bar-tabs-content" style="margin-top: 3em; overflow-y: auto;">
+      <!--<md-tabs md-selected="tabs.selectedIndex">-->
+          <!--<md-tab ng-hide="isLoggedIn" id="login_tab" onClick="parent.location='#/login'" aria-controls="login-content">Login</md-tab>-->
+          <!--<md-tab ng-hide="isLoggedIn" id="register_tab" onClick="parent.location='#/register'" aria-controls="register-content">Register</md-tab>-->
+          <!--<md-tab ng-show="isLoggedIn" id="profile_tab" onClick="parent.location='#/profile'" aria-controls="profile-content">Profile</md-tab>-->
+          <!--<md-tab ng-show="isLoggedIn" id="project_tab" onClick="parent.location='#/project'" aria-controls="project-content">Project</md-tab>-->
+          <!--<md-tab id="about_tab" onClick="parent.location='#/about'" aria-controls="about-content">About</md-tab>-->
+      <!--</md-tabs>-->
+
+      <div role="tabpanel" aria-labelledby="content" md-swipe-left="next()" md-swipe-right="previous()" ng-view></div>
+      <!--<div layout="column" role="main" ng-view></div>-->
+    </section>
+    <!--<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" is-locked-open="$media('md')" md-theme="light-blue-dark">-->
+        <!--<md-toolbar class="md-theme-indigo" >-->
+            <!--<h1 class="md-toolbar-tools">Agile API</h1>-->
+        <!--</md-toolbar>-->
+        <!--<md-content  ng-controller="LeftCtrl" md-theme="green">-->
+            <!--<button class="menu-item menu-title" onClick="parent.location='#'" ink-ripple >Home</button>-->
+            <!--<div ng-hide="isLoggedIn">-->
+                <!--<button class="menu-item menu-title" onClick="parent.location='#/login'" ink-ripple>Login</button>-->
+                <!--<button class="menu-item menu-title" onClick="parent.location='#/register'" ink-ripple>Register</button>-->
+            <!--</div>-->
+            <!--<div ng-show="isLoggedIn">-->
+                <!--<button class="menu-item menu-title" onClick="parent.location='#/profile'" ink-ripple>Profile</button>-->
+                <!--<button class="menu-item menu-title" onClick="parent.location='#/projects'" ink-ripple>Projects</button>-->
+                <!--<button class="menu-item menu-title" onClick="parent.location='#/logout'" ink-ripple>Logout</button>-->
+            <!--</div>-->
+            <!--<button class="menu-item menu-title" onClick="parent.location='#/about'" ink-ripple>About</button>-->
+        <!--</md-content>-->
+    <!--</md-sidenav>-->
+    <!--<div layout="column" layout-fill tabindex="-1" role="main" id="container2" class="ng-cloak" ng-view>-->
+    <!--</div>-->
+    <!--<div ng-include="'partials/rightsidebar.html'" ng-show="isLoggedIn"></div>-->
   </body>
 </html>

@@ -77,7 +77,16 @@ var creationQueries = [
     'CREATE INDEX IF NOT EXISTS method_type ON agile_api.endpoints (method_type);',
     'CREATE INDEX IF NOT EXISTS project_id ON agile_api.endpoints (project_id);',
     'CREATE INDEX IF NOT EXISTS owner_id_2 ON agile_api.endpoints (owner_id);',
-    'CREATE INDEX IF NOT EXISTS category_id ON agile_api.endpoints (category_id);'
+    'CREATE INDEX IF NOT EXISTS category_id ON agile_api.endpoints (category_id);',
+
+    // Create logs Table
+    'CREATE TABLE if not exists agile_api.endpoint_logs ('
+    +   'token_id text,'
+    +   'time timestamp,'
+    +   'res_time int,'
+    +   'req_method text,'
+    +   'PRIMARY KEY (token_id, time)'
+    +   ');'
 ];
 
 function createSchema (pos, errors) {

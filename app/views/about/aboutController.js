@@ -1,5 +1,6 @@
 angular.module('app.aboutController', [])
-    .controller('aboutController', function($scope, $http, $timeout, $mdSidenav) {
+    .controller('aboutController', function($rootScope, $scope, $http, $timeout, $mdSidenav) {
+      $rootScope.$broadcast('showTabs', true);
       $scope.title = "About";
 
       $http({

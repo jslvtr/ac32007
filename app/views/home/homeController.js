@@ -1,5 +1,6 @@
 angular.module('app.homeController', [])
-    .controller('homeController', function($scope, $http) {
+    .controller('homeController', function($rootScope, $scope, $http) {
+        $rootScope.$broadcast('showTabs', true);
         $scope.title = "Home";
 
         $http({

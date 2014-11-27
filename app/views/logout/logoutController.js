@@ -1,5 +1,6 @@
 angular.module('app.logoutController', [])
   .controller('logoutController', function($scope, $http, $location, toastService, $rootScope) {
+    $rootScope.$broadcast('showTabs', true);
       $scope.title = "Logout";
 
       var json_user = localStorage.getItem('user');

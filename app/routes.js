@@ -42,6 +42,10 @@ angular.module('app.routes', ['ngRoute'])
       templateUrl: 'views/projects/projects.html',
       controller: 'projectsController'
     })
+    .when('/user/:owner/project/:title/endpoint/:endpoint', {
+      templateUrl: 'views/endpoints/endpoints.html',
+      controller: 'endpointsController'
+    })
     .otherwise({
       templateUrl: 'views/404.html'
     })

@@ -3,7 +3,6 @@ function toArrayFormat(array) {
     var headerArray = [];
     if (array != null)  {
         Object.keys(array).forEach(function (key) {
-            console.log(key, array[key])
             headerArray.push({
                 key : key,
                 value : array[key]
@@ -18,9 +17,10 @@ function toArrayFormat(array) {
 function toDatabaseFormat(array)    {
     var database_format = {};
     if (array != null) {
-        array.forEach(function (keyVal) {
+        for (var i=0;i<array.length;i++) {
+            var keyVal = array[i];
             database_format[keyVal.key] = keyVal.value;
-        });
+        }
     }
 
     return database_format;

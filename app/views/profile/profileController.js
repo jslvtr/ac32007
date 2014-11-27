@@ -1,5 +1,6 @@
 angular.module('app.profileController', [])
-    .controller('profileController', function ($scope, $http, $location, toastService) {
+    .controller('profileController', function ($rootScope, $scope, $http, $location, toastService) {
+        $rootScope.$broadcast('showTabs', true);
         $scope.title = 'Profile';
         $scope.$$phase || $scope.$apply();
 

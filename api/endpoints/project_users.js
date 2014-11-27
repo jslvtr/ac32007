@@ -219,13 +219,13 @@ function projectGetMembers(req, res)    {
                     members.push({
                         username: row.user_id
                     });
+                });
 
-                    res.json(HttpStatus.OK, {
-                        status: 200,
-                        members: members,
-                        owner: row.owner_id,
-                        project_name: row.project_id
-                    });
+                res.json(HttpStatus.OK, {
+                    status: 200,
+                    members: members,
+                    owner: owner,
+                    project_name: project
                 });
             }
         }

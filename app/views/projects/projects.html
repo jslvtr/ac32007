@@ -87,15 +87,17 @@
             </md-card>
             <md-list>
                 <md-item ng-repeat="member in project.members">
-                    <md-item-content class="endpoint">
-                        <div class="md-tile-content">
-                            <div>
-                                <h3>{{ member.username }}</h3>
-                                <h4>{{ member.email }}</h4>
-                            </div>
-                        </div>
-                    </md-item-content>
-                    <md-divider ng-if="!$last"></md-divider>
+                    <md-item layout="row" layout-align="center" class="md-whiteframe-z1">
+                        <span flex></span>
+                        <span flex></span>
+                        <span flex></span>
+                        <h3>{{ member.username }}</h3>
+                        <span flex></span>
+                        <md-button class="md-primary" md-theme="red" text-align="right" ng-click="removeMember(project, $index, $event)">Remove</md-button>
+                        <span flex></span>
+                        <span flex></span>
+                        <span flex></span>
+                    </md-item>
                 </md-item>
             </md-list>
 
@@ -105,7 +107,7 @@
                 <span flex></span>
                 <md-text-float class="invite-box" label="Invite user" ng-model="newMember"> </md-text-float>
                 <span flex></span>
-                <md-button class="md-primary" md-theme="cyan">Invite</md-button>
+                <md-button class="md-primary" md-theme="cyan" ng-click="inviteMember(project, newMember, $event)">Invite</md-button>
                 <span flex></span>
                 <span flex></span>
                 <span flex></span>

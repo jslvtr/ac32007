@@ -90,6 +90,91 @@ angular.module('app.projectsController', ['ngRoute', 'ngMaterial', 'ngAnimate'])
             }
         };
 
+        $scope.removeMember = function(project, $index, ev) {
+            var index = $index;
+
+            if (project.members[$index].username == project.owner) {
+                toastService.displayToast("This member is the owner. Delete the project instead!");
+            } else {
+                var confirm = $mdDialog.confirm()
+                    .title('Would you like to remove this member?')
+                    .content("If you confirm, you'll be removing " + project.members[$index].username + " from `" + project.title + "`")
+                    .ariaLabel('Confirm Remove Member')
+                    .ok('Remove Member')
+                    .cancel('cancel')
+                    .targetEvent(ev);
+
+                $mdDialog.show(confirm).then(function () {
+                    $http({
+                        url: backend + '/user/' + project.owner + '/project/' + project.title + '/remove/' + project.members[$index].username,
+                        method: 'DELETE',
+                        dataType: 'json',
+                        data: '',
+                        headers: {
+                            'Authorization': 'Bearer ' + $scope.sessionUser.access_token
+                        }
+
+                    }).error(function (data, status, headers, config) {
+                        if (status === 404) {
+                            toastService.displayToast("Member doesn't exist!");
+                        } else {
+                            toastService.displayToast("Unknown Error");
+                            console.error(data);
+                        }
+
+                        $scope.loaded = true;
+
+                    }).success(function (data, status, headers, config) {
+                        if (status === 202) {
+                            for (var i = 0; i < $scope.projects.length; i++) {
+                                if ($scope.projects[i].title == project.title) {
+                                    $scope.projects[i].members.splice(index, 1);
+                                }
+                            }
+                            localStorage.setItem('projects', JSON.stringify($scope.projects));
+                        } else {
+                            toastService.displayToast("Error deleting this member.");
+                            console.error(data);
+                        }
+                    });
+
+                }, function () {
+                });
+            }
+        }
+
+        $scope.inviteMember = function(project, newMember, ev) {
+            $http({
+                url: backend + '/user/' + project.owner + '/project/' + project.title + '/invite/' + newMember,
+                method: 'POST',
+                dataType: 'json',
+                data: '',
+                headers: {
+                    'Authorization': 'Bearer ' + $scope.sessionUser.access_token
+                }
+
+            }).error(function (data, status, headers, config) {
+                if (status === 404) {
+                    toastService.displayToast("Member doesn't exist!");
+                } else {
+                    toastService.displayToast("Unknown Error");
+                    console.error(data);
+                }
+
+                $scope.loaded = true;
+
+            }).success(function (data, status, headers, config) {
+                if (status === 200) {
+                    toastService.displayToast("Invitation sent to " + newMember + "!");
+                    localStorage.setItem('projects', JSON.stringify($scope.projects));
+                } else {
+                    toastService.displayToast("Error inviting this member.");
+                    console.error(data);
+                }
+            });
+        }
+
+
         $scope.addProject = function (ev) {
             $scope.index = -1;
             $scope.action = 'add';

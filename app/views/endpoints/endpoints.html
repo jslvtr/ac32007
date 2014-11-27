@@ -184,17 +184,35 @@
     <br />
     <br />
     <br />
-
-    <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="right" is-locked-open="$media('md')" md-theme="light-blue-dark" style="z-index: 5;">
-        <br />
-        <md-toolbar style="background-color: #ffffff; color: #000000;" layout="row">
-            <h1 class="md-toolbar-tools">
-                Activity
-            </h1>
-        </md-toolbar>
-        <md-content ng-controller="RightCtrl" md-theme="blue">
-            <section>
-            </section>
-        </md-content>
-    </md-sidenav>
 </md-content>
+
+<md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="right" is-locked-open="$media('md')" md-theme="light-blue-dark" style="margin-top: 4.6em; z-index: 5;">
+    <md-toolbar style="background-color: #ffffff; color: #000000;" layout="row">
+        <h1 class="md-toolbar-tools">
+            Activity
+        </h1>
+    </md-toolbar>
+    <md-content ng-controller="endpointsController" md-theme="blue" layout="column">
+        <md-list layout="column">
+            <md-item ng-repeat="message in messages">
+                <md-item-content>
+                    <div class="md-tile-content" layout="row">
+                        <div layout="column" style="margin-top: 0.9em; cursor: hand;">
+                            <b style="color: #3f51b5;">{{ message.room }}</b>
+                            <h3 style="color: #212121;">{{ message.text }}</h3>
+                            <i style="color: #9e9e9e;">{{ message.date | date: 'dd/MM/yyyy HH:mm:ss' }}</i>
+                        </div>
+                    </div>
+                </md-item-content>
+                <md-divider ng-if="!$last"></md-divider>
+            </md-item>
+        </md-list>
+        <span flex></span>
+        <div layout="row" layout-align="center" style="width: 100%;">
+            <md-text-float label="Message" ng-model="newMessage"></md-text-float>
+            <md-button ng-click="sendMessage(newMessage)" aria-label="send message">
+                <md-icon icon="assets/icons/ic_send_24px.svg"></md-icon>
+            </md-button>
+        </div>
+    </md-content>
+</md-sidenav>

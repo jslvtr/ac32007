@@ -1,5 +1,17 @@
 var configDB = require('../config/database.js');
 
+var openedRooms = [];
+
+function inRoom (name, callback) {
+    for (var i=0;i<openedRooms.length;i+=1) {
+        if (openedRooms[i] === name) {
+            return callback(true);
+        }
+    }
+
+    return callback(false);
+}
+
 function findByToken(token, fn) {
     var query = 'SELECT * FROM agile_api.users WHERE access_token = ?';
     var params = [ token ];
@@ -18,11 +30,17 @@ function findByToken(token, fn) {
 
 function on (io, socket, access_token, title, owner, error, message) {
     var room = '#' + title + '-' + owner;
-    console.log('listening on room '+room);
 
-    socket.on(room, function (data) {
-        if (data.chat) {
-            io.emit(room, data.access_token, data.project, data.owner, data.error, data.chat);
+    inRoom(room, function (listening) {
+        if (!listening) {
+            console.log('listening on room '+room);
+            openedRooms.push(room);
+
+            socket.on(room, function (data) {
+                if (data.chat) {
+                    io.emit(room, data.access_token, data.project, data.owner, data.error, data.chat);
+                }
+            });
         }
     });
 

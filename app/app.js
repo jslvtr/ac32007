@@ -49,11 +49,24 @@ angular
   .factory('agileSocket', function (socketFactory) {
       var myIoSocket = io.connect(backend + '/');
 
+      var openedRooms = [];
+
       var agileSocket = socketFactory({
         ioSocket: myIoSocket
       });
 
       agileSocket.forward('project');
+
+      agileSocket.openRoom = function (room, socket) {
+        for (var i=0;i<openedRooms.length;i+=1) {
+          if (openedRooms[i] === room) {
+            return;
+          }
+        }
+
+        openedRooms.push(room);
+        socket.forward(room);
+      };
 
       return agileSocket;
 

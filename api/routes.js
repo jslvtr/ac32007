@@ -148,12 +148,16 @@ module.exports = function(app, io, passport) {
 
     app.put('/user/:owner/project/:project/endpoint/:id',
         passport.authenticate('bearer', { session: false }),
-        endpointRoutes.endpointUpdate
+        function (req, res) {
+            endpointRoutes.endpointUpdate(req, res, io);
+        }
     )
 
     app.delete('/user/:owner/project/:project/endpoint/:id',
         passport.authenticate('bearer', { session: false }),
-        endpointRoutes.endpointDel
+        function (req, res) {
+            endpointRoutes.endpointDel(req, res, io);
+        }
     )
 
 
@@ -167,12 +171,18 @@ module.exports = function(app, io, passport) {
 
     app.put('/user/:owner/project/:project/endpoint/:id/category/:category/add',
         passport.authenticate('bearer', { session: false }),
-        endpointCategoryRoutes.endpointAddCategory
+        function (req, res) {
+            endpointCategoryRoutes.endpointAddCategory(req, res, io);
+        }
+
     )
 
     app.delete('/user/:owner/project/:project/endpoint/:id/category/:category/remove',
         passport.authenticate('bearer', { session: false }),
-        endpointCategoryRoutes.endpointRemoveCategory
+        function (req, res) {
+            endpointCategoryRoutes.endpointRemoveCategory(req, res, io);
+        }
+
     )
 
 

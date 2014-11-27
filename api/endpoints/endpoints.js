@@ -47,7 +47,7 @@ function endpointAdd(req, res, io)  {
                                 });
                                 console.log(err);
                             } else if (result.rows["0"]["[applied]"] === true) {
-                                io.emit(room, sessionUser.access_token, title, owner, null, 'Project ' + title + ' was added.');
+                                io.emit(room, sessionUser.access_token, title, owner, null, 'Endpoint ' + title + ' was added by ' + sessionUser.username);
 
                                 res.json(HttpStatus.CREATED, {
                                     status  : 201,
@@ -209,67 +209,77 @@ function endpointGet(req, res)  {
     );
 }
 
-function endpointUpdate(req, res)   {
+function endpointUpdate(req, res, io)   {
 
     var project = req.params.project;
     var owner = req.params.owner;
     var token_id = req.params.id;
     var sessionUser = req.user;
+
+    var room = '#' + project + '-' + owner;
 
     //Check if the user is a member of the project
     var query = 'select user_id from agile_api.project_members where user_id = ?';
     var params = [ sessionUser.username ];
 
-
-    configDB.client.execute(query, params, {prepare: true}, function(err, result) {
-            if (err) {
-                res.json(HttpStatus.METHOD_FAILURE, {
-                    status: 420,
-                    message: 'Cant find user.'
-                });
-            } else {
-                if (result.rows[0].user_id == sessionUser.username)  {
-                    var title = req.body.title;
-                    var description = req.body.description;
-                    var url = req.body.url;
-                    var headers_content = parseMe.toDatabaseFormat(req.body.headers);
-                    var url_params = parseMe.toDatabaseFormat(req.body.url_params);
-                    var method_type = req.body.method_type;
-                    var body = ''+req.body.body;
-                    var body_type = req.body.body_type;
-                    var category = req.body.category;
-
-                                                            //project_id, owner_id, token_id, title, description, url, headers, url_params, method_type, body, body_type, category_id
-                    var query       = 'update agile_api.endpoints set title = ? , description = ? , url = ? , headers = ? , url_params = ? , method_type = ? , body = ? , body_type = ? , category_id = ? where token_id = ?;';
-                    var params      = [ title, description, url, headers_content, url_params, method_type, body, body_type, category, token_id ];
-
-                    configDB.client.execute(query, params, {prepare: true}, function(err, result) {
-                        if (err) {
-                            res.json(HttpStatus.METHOD_FAILURE, {
-                                status: 420,
-                                message: 'Can\'t find Endpoint.'
-                            });
-                        }   else     {
-                            res.json(HttpStatus.RESET_CONTENT);
-
-                        }
+    try {
+        configDB.client.execute(query, params, {prepare: true}, function(err, result) {
+                if (err) {
+                    res.json(HttpStatus.METHOD_FAILURE, {
+                        status: 420,
+                        message: 'Cant find user.'
                     });
-                }   else    {
-                    res.json({message:"Couldn't find Endpoint"});
+                } else {
+                    if (result.rows[0].user_id == sessionUser.username)  {
+                        var title = req.body.title;
+                        var description = req.body.description;
+                        var url = req.body.url;
+                        var headers_content = parseMe.toDatabaseFormat(req.body.headers);
+                        var url_params = parseMe.toDatabaseFormat(req.body.url_params);
+                        var method_type = req.body.method_type;
+                        var body = ''+req.body.body;
+                        var body_type = req.body.body_type;
+                        var category = req.body.category;
+
+                        //project_id, owner_id, token_id, title, description, url, headers, url_params, method_type, body, body_type, category_id
+                        var query       = 'update agile_api.endpoints set title = ? , description = ? , url = ? , headers = ? , url_params = ? , method_type = ? , body = ? , body_type = ? , category_id = ? where token_id = ?;';
+                        var params      = [ title, description, url, headers_content, url_params, method_type, body, body_type, category, token_id ];
+
+                        configDB.client.execute(query, params, {prepare: true}, function(err, result) {
+                            if (err) {
+                                res.json(HttpStatus.METHOD_FAILURE, {
+                                    status: 420,
+                                    message: 'Can\'t find Endpoint.'
+                                });
+                            }   else     {
+
+
+                                io.emit(room, sessionUser.access_token, title, owner, null, 'Endpoint ' + title + ' was edited.');
+                                res.json(HttpStatus.RESET_CONTENT);
+
+
+                            }
+                        });
+                    }   else    {
+                        res.json({message:"Couldn't find Endpoint"});
+                    }
                 }
             }
-        }
-    );
+        );
+    }   catch (err) {
+        console.log("Error updating endpoint");
+    }
+
 
 
 }
 
-function endpointDel(req, res)  {
+function endpointDel(req, res, io)  {
     var project = req.params.project;
     var owner = req.params.owner;
     var token_id = req.params.id;
     var sessionUser = req.user;
-
+    var room = '#' + project + '-' + owner;
     //Check if the user is a member of the project
     var query = 'select user_id from agile_api.project_members where user_id = ?';
     var params = [ sessionUser.username ];
@@ -293,6 +303,7 @@ function endpointDel(req, res)  {
                                     message: 'Can\'t delete endpoint.'
                                 });
                             } else {
+                                io.emit(room, sessionUser.access_token, project, owner, null, 'Endpoint ' + project + ' was deleted by ' + sessionUser.username);
                                 res.json(HttpStatus.NO_CONTENT, {
                                     status: 204,
                                     message: 'Endpoint deleted'

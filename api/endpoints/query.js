@@ -1,6 +1,4 @@
-/**
- * Created by remon on 25/11/2014.
- */
+
 var configDB     = require('../config/database.js');
 var HttpStatus   = require('http-status-codes');
 var hat          = require('hat');
@@ -149,4 +147,4 @@ function getLogs(req, res)  {
 module.exports = {
     query   :   query,
     getLogs :   getLogs
-}
+};

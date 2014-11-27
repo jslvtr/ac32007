@@ -3,38 +3,78 @@ var HttpStatus = require('http-status-codes');
 
 function projectGet(req, res) {
     //Gets the information from the uri
-    var owner = req.params.user;
-    var query = 'select title, description, owner from agile_api.projects where owner = ? allow filtering;';
-    var params = [ owner ];
 
-    configDB.client.execute(query, params, {prepare: true}, function (err, result) {
+    // Get all the projects this user is member in
+    var user_member_in_query = 'SELECT * FROM agile_api.project_members WHERE user_id = ?;';
+    var user_member_in_params = [ req.params.user ];
+    var user_member_in = [];
+
+    configDB.client.execute(user_member_in_query, user_member_in_params, {prepare: true}, function (err, result) {
         if (err) {
-            res.json(HttpStatus.METHOD_FAILURE, {
-                status: 420,
-                message: 'Can\'t find project.'
-            });
         } else if (result.rows["0"] != null) {
-            var jsonResult = [];
-
             for (var row in result.rows) {
-                jsonResult.push({
-                    title: result.rows[row].title,
-                    description: result.rows[row].description,
-                    owner: result.rows[row].owner
-                });
+                var project_identifier = {
+                    title: result.rows[row].project_id,
+                    owner: result.rows[row].owner_id
+                };
+                if (user_member_in.indexOf(project_identifier) == -1) {
+                    user_member_in.push(project_identifier);
+                }
             }
-            res.json(HttpStatus.OK, {
-                status: 200,
-                projects: jsonResult
-            });
-
-        } else {
-            res.json(HttpStatus.NOT_FOUND, {
-                status: 404,
-                project: "Project not found"
-            });
+            getProjectDetailsForAllIdentifiers(user_member_in, function (status, project_details) {
+                    if (status == 200) {
+                        res.json(HttpStatus.OK, {
+                            status: status,
+                            projects: project_details
+                        });
+                    } else {
+                        res.json(HttpStatus.INTERNAL_SERVER_ERROR, {
+                            status: status,
+                            projects: project_details
+                        });
+                    }
+                });
         }
     });
+}
+
+function getProjectDetailsForAllIdentifiers(projects, callback) {
+    var jsonResult = [];
+    var index = 0;
+
+    projects.forEach(function (project_user_member_of) {
+        index += 1;
+        var owner = project_user_member_of.owner;
+        var title = project_user_member_of.title;
+        var query = 'select * from agile_api.projects where title = ? and owner = ? allow filtering;';
+        var params = [ title, owner ];
+        var last = index == projects.length;
+
+        configDB.client.execute(query, params, {prepare: true}, function (err, result) {
+            if (err) {
+                console.log('Can\'t find project \'' + project_user_member_of.title + '\' with owner \'' + project_user_member_of.owner + '\'');
+            } else if (result.rows["0"] != null) {
+                for (var i = 0; i < result.rows.length; i++) {
+                    jsonResult.push({
+                        title: result.rows[i].title,
+                        description: result.rows[i].description,
+                        owner: result.rows[i].owner
+                    });
+                }
+                if (last) {
+                    if (jsonResult.length > 0) {
+                        callback(200, jsonResult.slice())
+                    } else {
+                        callback(500, 'Error getting projects for user')
+                    }
+                }
+            } else {
+                console.log('Can\'t find project \'' + project_user_member_of.title + '\' with owner \'' + project_user_member_of.owner + '\'');
+            }
+        });
+    });
+
+
 }
 
 function projectGetID(req, res) {

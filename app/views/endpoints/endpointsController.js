@@ -4,6 +4,9 @@ angular.module('app.endpointsController', [])
         $scope.title = "Endpoint";
         $scope.showActions = false;
 
+        $scope.messages = [];
+        $scope.newMessage = '';
+
         $scope.output = {
             type : 'text',
             content : '',
@@ -143,19 +146,59 @@ angular.module('app.endpointsController', [])
         // Sockets
 
         $scope.$on('socket:' + $scope.room, function (ev, access_token, title, owner, error, message) {
-            console.log('['+$scope.room+'] > ' + message);
+            if (message) {
+                $scope.messages.push({
+                    room : $scope.room,
+                    text : message,
+                    project : {
+                        title : title,
+                        owner : owner
+                    },
+                    date : new Date()
+                });
+            } else {
+                console.error(error);
+            }
         });
 
         $scope.$on('socket:project', function (ev, access_token, title, owner, error, message) {
-            console.log('['+$scope.room+'] > ' + message);
+            if (message) {
+                $scope.messages.push({
+                    room : 'project',
+                    text : message,
+                    project : {
+                        title : title,
+                        owner : owner
+                    },
+                    date : new Date()
+                });
+            } else {
+                console.error(error);
+            }
         });
+
+        $scope.sendMessage = function (message) {
+            if (message) {
+                agileSocket.emit($scope.room, {
+                    access_token: $scope.sessionUser.access_token,
+                    project: project_title,
+                    owner: project_owner,
+                    error: null,
+                    sender: $scope.sessionUser.username,
+                    message: message,
+                    chat: message
+                });
+
+                $scope.newMessage = '';
+            }
+        }
 
         agileSocket.emit('project', {
             access_token    : $scope.sessionUser.access_token,
             project         : project_title,
             owner           : project_owner,
             error           : null,
-            message         : 'Am I allowed???'
+            message         : 'beep'
         });
     }
 );

@@ -194,10 +194,9 @@
     </md-toolbar>
     <md-content ng-controller="endpointsController" md-theme="blue" layout="column">
         <div layout="row" layout-align="center" style="width: 100%;">
-            <md-text-float label="Message" ng-model="newMessage"></md-text-float>
-            <md-button ng-click="sendMessage(newMessage)" aria-label="send message">
-                <md-icon icon="assets/icons/ic_send_24px.svg"></md-icon>
-            </md-button>
+            <form class="login-form" name="loginform" ng-submit="sendMessage(newMessage)" >
+                <md-text-float label="Message" ng-model="newMessage"></md-text-float>
+            </form>
         </div>
         <md-list layout="column">
             <md-item ng-repeat="message in messages">

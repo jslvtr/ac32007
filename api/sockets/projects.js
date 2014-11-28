@@ -40,7 +40,18 @@ function on (io, socket, access_token, title, owner, error, message) {
             socket.on(room, function (data) {
                 if (data.chat && last_chat_message !== data.chat) {
                     last_chat_message = data.chat;
-                    io.emit(room, data.access_token, data.project, data.owner, data.error, data.chat, null, data.sender);
+                    var query = 'insert into agile_api.chat_logs (project_id, owner_id, message, user, time) values (?, ?, ?, ?, dateof(now())) if not exists;';
+                    var params = [data.project, data.owner, data.chat, data.sender];
+
+                    configDB.client.execute(query, params, {prepare: true}, function (err, result) {
+                        if (err) {
+                            console.log(err);
+
+                        } else {
+
+                        }
+                    });
+                    io.emit(room, data.access_token, data.project, data.owner, data.error, (data.sender + ': ' + data.chat), null, data.sender);
 
                     // dirty hack
                     setTimeout(function () {

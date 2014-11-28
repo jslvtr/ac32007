@@ -147,11 +147,12 @@ angular.module('app.endpointsController', [])
 
         // Sockets
 
-        $scope.$on('socket:' + $scope.room, function (ev, access_token, title, owner, error, message) {
+        $scope.$on('socket:' + $scope.room, function (ev, access_token, title, owner, error, message, data, sender) {
             if (message) {
-                $scope.messages.push({
+                $scope.messages.splice(0, 0, {
                     room : $scope.room,
                     text : message,
+                    sender : sender,
                     project : {
                         title : title,
                         owner : owner
@@ -163,11 +164,12 @@ angular.module('app.endpointsController', [])
             }
         });
 
-        $scope.$on('socket:project', function (ev, access_token, title, owner, error, message) {
+        $scope.$on('socket:project', function (ev, access_token, title, owner, error, message, data, sender) {
             if (message) {
-                $scope.messages.push({
+                $scope.messages.splice(0, 0, {
                     room : 'project',
                     text : message,
+                    sender : sender,
                     project : {
                         title : title,
                         owner : owner

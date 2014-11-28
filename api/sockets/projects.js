@@ -40,7 +40,7 @@ function on (io, socket, access_token, title, owner, error, message) {
             socket.on(room, function (data) {
                 if (data.chat && last_chat_message !== data.chat) {
                     last_chat_message = data.chat;
-                    io.emit(room, data.access_token, data.project, data.owner, data.error, data.chat);
+                    io.emit(room, data.access_token, data.project, data.owner, data.error, data.chat, null, data.sender);
 
                     // dirty hack
                     setTimeout(function () {
@@ -56,7 +56,7 @@ function on (io, socket, access_token, title, owner, error, message) {
             //io.emit(room, access_token, title, owner, err, 'Welcome ' + sessionUser.username);
 
         } else {
-            io.emit('project', access_token, title, owner, err, 'Go Away!!');
+            io.emit('project', access_token, title, owner, err, '[[ Access Denied ]]', null, null);
         }
     });
 }

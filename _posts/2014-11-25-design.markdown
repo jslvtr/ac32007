@@ -1,8 +1,40 @@
 ---
 layout: post
-title:  "Cassandra and maps."
-date:   2014-11-27 20:21:00
+title:  "Design"
+date:   2014-11-28 08:25:00
 categories: agileapi priamubaio
 ---
 
-#Design
+# Design
+
+The design of our Web App is based around Google's Angular Material design specification. It is therefore fully responsive.
+
+
+## Projects view
+
+![](http://i.imgur.com/DDZHmHp.png)
+
+In the projects you get a overview of all the endpoints that you have in projects that you are a member of. By selecting one of the endpoints it will bring you to the endpoint viewer which will allow you to view, edit, and run endpoints. You can create a new project by clicking the + button at the bottom right.
+
+## Endpoint view
+
+![](http://i.imgur.com/epYPAyH.png)
+
+Here you can view/run/edit/delete your endpoints, you can do this by clicking one of the options showing on the bottom right. In the endpoint view you can also click the menu icon which will reveal the other endpoints in your project so that you can switch to them with ease.
+
+![](http://i.imgur.com/Vgy0ULE.png)
+
+## Run result
+
+![](http://i.imgur.com/s43XORP.png)
+
+Scrolling to the bottom of the endpoint views you will see the results given by running your endpoint, the view shows you the headers results along with the body. If the response has HTML and is not large it will be previewed below.
+
+## Activity
+
+![](http://i.imgur.com/7Cb8uAg.png) 
+
+Clicking the notification icon at the top will open the activity sidebar. This tells you, in **real time**, what other members of the project are doing.
+
+Notifications will appear in this list when members make any changes or add new endpoints. You can also chat in the activity so you can get feedback about your changes without having to rely on another app or contacting them through other means.
+

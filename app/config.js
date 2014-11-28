@@ -3,11 +3,11 @@
       Exclude http:// and do not add / at the end
 */
 
-var domain = 'https://agileapi.herokuapp.com';
-var port = ':443';
+//var domain = 'https://agileapi.herokuapp.com';
+//var port = ':443';
 
-//var domain = 'http://localhost:8080';
-//var port = '';
+var domain = 'http://localhost:8080';
+var port = '';
 
 /*
         Do not touch unless developers

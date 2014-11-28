@@ -365,7 +365,7 @@ function DialogController($rootScope, $scope, $http, $mdDialog, toastService, pa
 
     var url = '/project';
     if ($scope.action == 'edit') {
-        url = '/user/' + project.owner + '/project/' + $scope.title;
+        url = '/user/' + $scope.owner + '/project/' + $scope.title;
     }
 
     $scope.hide = function () {

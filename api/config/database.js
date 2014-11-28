@@ -86,7 +86,17 @@ var creationQueries = [
     +   'res_time int,'
     +   'req_method text,'
     +   'PRIMARY KEY (token_id, time)'
-    +   ');'
+    +   ');',
+
+    // Create logs table
+    'CREATE TABLE if not exists agile_api.chat_logs ('
+    +   'project_id varchar,'
+    +   'owner_id varchar,'
+    +   'user text,'
+    +   'message text,'
+    +   'time timestamp,'
+    +   'PRIMARY KEY (project_id, time, owner_id )'
+    +   ') WITH CLUSTERING ORDER BY (time DESC);'
 ];
 
 function createSchema (pos, errors) {

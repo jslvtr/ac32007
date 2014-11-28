@@ -165,11 +165,11 @@
         <br />
     </md-card>
 
-    <md-button ng-click="runEndpoint($event)" ng-show="showActions" class="md-fab md-primary" style="background-color: #ff9800; position: fixed; bottom: 16.5em; right: 1.5em;" aria-label="delete endpoint">
+    <md-button ng-click="runEndpoint($event)" ng-show="showActions && endpoint_token !== 'null'" class="md-fab md-primary" style="background-color: #ff9800; position: fixed; bottom: 16.5em; right: 1.5em;" aria-label="delete endpoint">
         <md-icon icon="assets/icons/ic_send_24px.svg"></md-icon>
     </md-button>
 
-    <md-button ng-click="deleteEndpoint($event)" ng-show="showActions" class="md-fab md-primary" style="background-color: #ff5722; position: fixed; bottom: 11.5em; right: 1.5em;" aria-label="delete endpoint">
+    <md-button ng-click="deleteEndpoint($event)" ng-show="showActions && endpoint_token !== 'null'" class="md-fab md-primary" style="background-color: #ff5722; position: fixed; bottom: 11.5em; right: 1.5em;" aria-label="delete endpoint">
         <md-icon icon="assets/icons/ic_delete_24px.svg"></md-icon>
     </md-button>
 

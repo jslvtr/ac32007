@@ -43,6 +43,7 @@ angular.module('app.endpointsController', [])
         var project_owner   = $routeParams.owner;
         var project_title   = $routeParams.title;
         var endpoint_token  = $routeParams.endpoint;
+        $scope.endpoint_token = endpoint_token;
 
         $scope.room = '#' + project_title + '-' + project_owner;
         agileSocket.openRoom($scope.room, agileSocket);

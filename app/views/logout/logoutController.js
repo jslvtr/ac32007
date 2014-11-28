@@ -24,6 +24,7 @@ angular.module('app.logoutController', [])
             console.log("Error logging user out");
             toastService.displayToast("Error, Can't logout");
             $location.path("/");
+            localStorage.clear();
 
           }).success(function (data, status, headers, config) {
             localStorage.clear();
@@ -38,6 +39,7 @@ angular.module('app.logoutController', [])
         $rootScope.isLoggedIn = false;
         $location.path("/");
         toastService.displayToast("You are already logged out");
+        localStorage.clear();
       }
   }
 );

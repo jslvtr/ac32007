@@ -180,7 +180,7 @@ angular.module('app.endpointsController', [])
         });
 
         $scope.sendMessage = function (message) {
-            if (message) {
+            if ($scope.newMessage) {
                 agileSocket.emit($scope.room, {
                     access_token: $scope.sessionUser.access_token,
                     project: project_title,
@@ -193,7 +193,7 @@ angular.module('app.endpointsController', [])
 
                 $scope.newMessage = '';
             }
-        }
+        };
 
         agileSocket.emit('project', {
             access_token    : $scope.sessionUser.access_token,
@@ -397,9 +397,18 @@ function runEndpoint ($scope, $http, $location, toastService) {
             $scope.output.headers = JSON.stringify(data.header, undefined, 2);
 
             if (data.header['content-type']) {
-                var results = data.header['content-type'].match('text/(\\S+);');
-                if (results.length > 0) {
-                    $scope.output.type = results[1].toLowerCase();
+                var resultsHTML = data.header['content-type'].match('text/(\\S+);');
+                var resultsJSON = data.header['content-type'].match('application/(\\S+);');
+                if (resultsHTML.length > 0) {
+                    $scope.output.type = resultsHTML[1].toLowerCase();
+
+                    if ($scope.output.type === 'json') {
+                        $scope.output.content = JSON.stringify($scope.output.content, undefined, 2);
+                    }
+
+                    $scope.outputModeChanged();
+                } else if (resultsJSON.length > 0) {
+                    $scope.output.type = resultsJSON[1].toLowerCase();
 
                     if ($scope.output.type === 'json') {
                         $scope.output.content = JSON.stringify($scope.output.content, undefined, 2);

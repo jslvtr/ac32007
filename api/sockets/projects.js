@@ -1,10 +1,11 @@
 var configDB = require('../config/database.js');
 
+var last_chat_message = '';
 var openedRooms = [];
 
-function inRoom (name, callback) {
+function inRoom (name, client, callback) {
     for (var i=0;i<openedRooms.length;i+=1) {
-        if (openedRooms[i] === name) {
+        if (openedRooms[i].name === name && openedRooms.client === client) {
             return callback(true);
         }
     }
@@ -31,18 +32,24 @@ function findByToken(token, fn) {
 function on (io, socket, access_token, title, owner, error, message) {
     var room = '#' + title + '-' + owner;
 
-    //inRoom(room, function (listening) {
-    //    if (!listening) {
+    inRoom(room, socket.client.id, function (listening) {
+        if (!listening) {
             console.log('listening on room '+room);
             openedRooms.push(room);
 
             socket.on(room, function (data) {
-                if (data.chat) {
+                if (data.chat && last_chat_message !== data.chat) {
+                    last_chat_message = data.chat;
                     io.emit(room, data.access_token, data.project, data.owner, data.error, data.chat);
+
+                    // dirty hack
+                    setTimeout(function () {
+                        last_chat_message = '';
+                    }, 500);
                 }
             });
-        //}
-    //});
+        }
+    });
 
     findByToken(access_token, function (err, sessionUser) {
         if (sessionUser) {
